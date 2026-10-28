@@ -568,7 +568,7 @@ function vcKey(text,slow){const s=(slow?'s|':'n|')+String(text).replace(/\s+/g,'
   for(let i=0;i<s.length;i++){const c=s.charCodeAt(i);h1=Math.imul(h1^c,2654435761);h2=Math.imul(h2^c,1597334677)}
   h1=Math.imul(h1^(h1>>>16),2246822507)^Math.imul(h2^(h2>>>13),3266489909);h2=Math.imul(h2^(h2>>>16),2246822507)^Math.imul(h1^(h1>>>13),3266489909);
   return(4294967296*(2097151&h2)+(h1>>>0)).toString(16)}
-const BUILD='20261028d';/* bump when voice files change: it forces browsers to fetch the new files together */
+const BUILD='20261028e';/* bump when voice files change: it forces browsers to fetch the new files together */
 try{fetch('voice/index.json?v='+BUILD).then(r=>r.ok?r.json():null).then(j=>{if(j&&j.clips&&j.bundles)VC.idx=j}).catch(e=>{VC.err='index: '+e})}catch(e){}
 /* One shared <audio> element (works with the iPhone silent switch). It is "unlocked" by the first tap. */
 function vcEl(){try{if(!VC.el){VC.el=new Audio();VC.el.preload='auto';VC.el.setAttribute('playsinline','')}
@@ -1896,8 +1896,8 @@ SCENES.push({id:'gate1',name:'Gate 1 · Phibun School',th:'ประตู 1 โ
    c.box(sx+s*3.5,1.45,sz,1.0,2.1,.5,PINK);c.box(sx+s*3.5,1.45,sz+.26,.75,1.4,.03,BLUE);
    c.box(sx+s*4.75,1.75,sz-.05,1.25,2.7,.5,PINK);c.box(sx+s*4.75,1.75,sz+.21,1.0,2.2,.03,DARK);
    for(const [dx,dy] of [[-.25,.7],[.25,.4],[-.2,0],[.22,-.35],[-.15,-.7]])c.box(sx+s*4.75+dx,1.75+dy,sz+.23,.18,.18,.02,[.84,.7,.36])}
-  /* small open pavilion behind the sign */
-  {const px=-5.6,pz=-4.2,P=[.9,.88,.84];c.box(px,.1,pz,3.8,.2,3.8,[.79,.77,.72]);
+  /* small open pavilion behind the sign (about 10 m back on the real map; set back so the sign does not hide it) */
+  {const px=-5.6,pz=-7.4,P=[.9,.88,.84];c.box(px,.1,pz,3.8,.2,3.8,[.79,.77,.72]);
    for(const [dx,dz] of [[-1.6,-1.6],[1.6,-1.6],[-1.6,1.6],[1.6,1.6]])c.box(px+dx,1.4,pz+dz,.3,2.6,.3,P,true);
    tPyr(A,px,2.7,pz,4.6,1.5,4.6,[.71,.32,.23]);c.bench(px,pz+.6)}
   /* guard booth just inside the gate */
@@ -1962,7 +1962,11 @@ SCENES.push({id:'gate1',name:'Gate 1 · Phibun School',th:'ประตู 1 โ
  NPCDEF('fruit','Auntie Jan','Fruit seller⁣แม่ค้าผลไม้',10.2,12.6,0,[.35,.7,.35],[.25,.22,.2],[.1,.08,.07],'hat',[
   TT("Fresh fruit! Mango, watermelon and guava!",'ผลไม้สดจ้า มะม่วง แตงโม ฝรั่งจ้า',"How much is the mango?","How much is the milk tea?","Mango, watermelon and guava!",'แม่ค้าบอกว่ามีผลไม้อะไรบ้าง ให้ถามราคา','How much is ...? = ... ราคาเท่าไร'),
   TT("Twenty baht a bag. It's very sweet today.",'ถุงละยี่สิบบาท วันนี้หวานมากจ้ะ',"OK. One bag of mango, please.","One stick of meatballs, please.","How much is the mango?",'ได้ราคาแล้ว ให้สั่งมะม่วงหนึ่งถุง','a bag of ... = ... หนึ่งถุง'),
-  TT("Do you want some chili salt?",'เอาพริกเกลือไหมจ๊ะ',"Yes, please. I like it.","Yes, I am. I like it.","Do you want some chili salt?",'ถามว่าเอาพริกเกลือไหม ให้ตอบรับ','chili salt = พริกเกลือ')])]});
+  TT("Do you want some chili salt?",'เอาพริกเกลือไหมจ๊ะ',"Yes, please. I like it.","Yes, I am. I like it.","Do you want some chili salt?",'ถามว่าเอาพริกเกลือไหม ให้ตอบรับ','chili salt = พริกเกลือ')]),
+ NPCDEF('beam','Beam','Friend⁣เพื่อน',7,-5,0,[.96,.96,.95],[.14,.2,.42],[.1,.08,.07],'',[
+  TT("How are you getting home?",'เธอจะกลับบ้านยังไง',"My dad is picking me up.","I'm fine. And you?","I live near the market.",'เพื่อนถามว่าจะกลับบ้านอย่างไร (How are you getting home?) ไม่ได้ถามว่าสบายดีไหม ให้ตอบว่าใครมารับ','pick ... up = มารับ, My dad is picking me up. = พ่อจะมารับ (is + -ing ใช้พูดถึงสิ่งที่นัดไว้แล้ว)'),
+  TT("Is your ride here yet?",'คนที่มารับมาถึงหรือยัง',"Not yet.","Yes, I do.","My dad is picking me up.",'ถามว่าคนมารับมาถึงหรือยัง (... yet?) ถ้ายังไม่มา ตอบ Not yet.','ride = คนหรือรถที่มารับ, yet = แล้วหรือยัง, Not yet. = ยังเลย'),
+  TT("Wanna walk around the market together?",'ไปเดินเล่นที่ตลาดด้วยกันไหม',"Sure! Let's go!","Sure! Let's go home now.","Not yet.",'เพื่อนชวนไปเดินตลาด (Wanna ...?) ให้ตอบรับ',"Wanna = want to (ภาษาพูด), walk around = เดินเล่นรอบ ๆ, Let's go! = ไปกันเถอะ")])]});
 
 const GROUP={gate1:'phibun',market:'daily',restaurant:'daily',seven:'daily',bigc:'daily',lotus:'daily',amazon:'daily',school:'school',bus:'places',clinic:'places',park:'places',hotel:'places',airport:'places',candle:'ubon',longboat:'ubon',songkran:'ubon',khongchiam:'ubon',phuphrao:'ubon',phataem:'ubon',train:'places',cafeteria:'school',classroom:'school',home:'daily',clothes:'daily',sports:'school',pharmacy:'daily',post:'daily',bank:'places',library:'school',police:'places',gas:'places',mall:'daily',samphanbok:'ubon',sirindhorn:'ubon',museum:'ubon',thungsi:'ubon',localfood:'ubon'};
 SCENES.forEach(s=>s.group=GROUP[s.id]);
