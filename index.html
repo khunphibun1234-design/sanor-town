@@ -568,7 +568,7 @@ function vcKey(text,slow){const s=(slow?'s|':'n|')+String(text).replace(/\s+/g,'
   for(let i=0;i<s.length;i++){const c=s.charCodeAt(i);h1=Math.imul(h1^c,2654435761);h2=Math.imul(h2^c,1597334677)}
   h1=Math.imul(h1^(h1>>>16),2246822507)^Math.imul(h2^(h2>>>13),3266489909);h2=Math.imul(h2^(h2>>>16),2246822507)^Math.imul(h1^(h1>>>13),3266489909);
   return(4294967296*(2097151&h2)+(h1>>>0)).toString(16)}
-const BUILD='20261028h';/* bump when voice files change: it forces browsers to fetch the new files together */
+const BUILD='20261028i';/* bump when voice files change: it forces browsers to fetch the new files together */
 try{fetch('voice/index.json?v='+BUILD).then(r=>r.ok?r.json():null).then(j=>{if(j&&j.clips&&j.bundles)VC.idx=j}).catch(e=>{VC.err='index: '+e})}catch(e){}
 /* One shared <audio> element (works with the iPhone silent switch). It is "unlocked" by the first tap. */
 function vcEl(){try{if(!VC.el){VC.el=new Audio();VC.el.preload='auto';VC.el.setAttribute('playsinline','')}
@@ -1985,7 +1985,8 @@ spawn:[1,4.6,Math.PI],bounds:[-12.4,12.4,-9,15.2],
    Here the camera looks north: the flagpole is in front, the dome and the lines of students behind it.
    Walk out on the east path to go back to Gate 1. NPC names are made up. */
 SCENES.push({id:'flagpole',name:'Flagpole · Phibun School',th:'ลานเสาธง โรงเรียนพิบูลมังสาหาร',color:'#B91C1C',orbit:true,spawn:[10.2,-6.4,-Math.PI/2],bounds:[-12.4,12.4,-9,9],
- exits:[{x0:11.6,x1:12.4,z0:-7.6,z1:-5.2,to:'gate1',at:[-7,-7.4,0]}],
+ exits:[{x0:11.6,x1:12.4,z0:-7.6,z1:-5.2,to:'gate1',at:[-7,-7.4,0]},
+  {x0:-1.6,x1:1.6,z0:8.3,z1:9.2,to:'gate1',at:[-7,-7.4,0]}],/* east path and the front walkway both lead back to Gate 1 */
  build(){const c=mk(),A=c.a;
   const STEEL=[.42,.44,.48],ROOF=[.85,.53,.35],ROOF2=[.8,.49,.32],CONC=[.76,.75,.71];
   c.box(0,-.06,0,140,.12,140,[.47,.68,.36]);
@@ -2015,11 +2016,13 @@ SCENES.push({id:'flagpole',name:'Flagpole · Phibun School',th:'ลานเส�
    tPyr(A,bx+.6,10.8,bz,6.6,2.6,21,[.48,.29,.2])}
   /* path back to Gate 1 on the east side, with a sign */
   c.box(10.6,.05,-6.4,4,.08,2.4,CONC);wayPost(c,10.8,-4.4);wayMarks(c,9.4,-6.4,.7,0,4);
+  /* front walkway back to the school front (Gate 1): wide path to the bottom edge, arrows and a sign */
+  c.box(0,.05,6.4,3.4,.08,5.6,CONC);wayPost(c,3.1,5.6);wayMarks(c,0,5.4,0,.7,5);
   /* trees, benches and lamps around the yard */
   for(const [x,z] of [[-11,6.6],[11.2,6.6],[6,7.6],[-6,7.6],[11.6,1.5]])c.tree(x,z);
   c.bench(-8,4.6);c.bench(8,4.6);c.lamp(-10,2);c.lamp(10,2);
   return{a:new Float32Array(A),ob:c.ob}},
- decals:[waySign(10.8,-4.4+.03,0,'Gate 1','ไปประตู 1','→')],
+ decals:[waySign(10.8,-4.4+.03,0,'Gate 1','ไปประตู 1','→'),waySign(3.1,5.6+.03,0,'School front','กลับหน้าโรงเรียน','↓')],
  npcs:[
  NPCDEF('homeroom','Ms. Suda','Homeroom teacher⁣ครูประจำชั้น',-2.8,-2.2,Math.PI,[.85,.35,.45],[.2,.2,.26],[.08,.06,.07],'bun',[
   TT("Good morning, class! Please stand in your line.",'สวัสดีตอนเช้า นักเรียน ยืนเข้าแถวของตัวเองนะ',"Good morning, teacher. OK!","Good night, teacher. OK!","Please stand in your line.",'ครูทักตอนเช้าและบอกให้เข้าแถว ให้ทักทายกลับและรับคำ','Good morning = สวัสดีตอนเช้า (Good night ใช้ตอนลาไปนอน)'),
