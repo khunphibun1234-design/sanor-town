@@ -568,7 +568,7 @@ function vcKey(text,slow){const s=(slow?'s|':'n|')+String(text).replace(/\s+/g,'
   for(let i=0;i<s.length;i++){const c=s.charCodeAt(i);h1=Math.imul(h1^c,2654435761);h2=Math.imul(h2^c,1597334677)}
   h1=Math.imul(h1^(h1>>>16),2246822507)^Math.imul(h2^(h2>>>13),3266489909);h2=Math.imul(h2^(h2>>>16),2246822507)^Math.imul(h1^(h1>>>13),3266489909);
   return(4294967296*(2097151&h2)+(h1>>>0)).toString(16)}
-const BUILD='20261028c';/* bump when voice files change: it forces browsers to fetch the new files together */
+const BUILD='20261028d';/* bump when voice files change: it forces browsers to fetch the new files together */
 try{fetch('voice/index.json?v='+BUILD).then(r=>r.ok?r.json():null).then(j=>{if(j&&j.clips&&j.bundles)VC.idx=j}).catch(e=>{VC.err='index: '+e})}catch(e){}
 /* One shared <audio> element (works with the iPhone silent switch). It is "unlocked" by the first tap. */
 function vcEl(){try{if(!VC.el){VC.el=new Audio();VC.el.preload='auto';VC.el.setAttribute('playsinline','')}
@@ -1859,16 +1859,29 @@ SCENES.push({id:'localfood',name:'Ubon Local Food',th:'อาหารอุบ�
    Seen from the road, the sign is on the RIGHT and Gate 1 on the LEFT, as at the real school (teacher's correction, 28 Oct 2569).
    The build code below is written the other way round and then flipped with mirrorWorld();
    the decals and NPCs below already use the final (flipped) x values. */
-SCENES.push({id:'gate1',name:'Gate 1 · Phibun School',th:'ประตู 1 โรงเรียนพิบูลมังสาหาร',color:'#23407A',spawn:[1,4.6,Math.PI],bounds:[-12.4,12.4,-9,11.6],
+SCENES.push({id:'gate1',name:'Gate 1 · Phibun School',th:'ประตู 1 โรงเรียนพิบูลมังสาหาร',color:'#23407A',spawn:[1,4.6,Math.PI],bounds:[-12.4,12.4,-9,15.2],
  build(){const c=mk(),A=c.a;
   const CREAM=[.94,.9,.82],CAP=[.18,.37,.66],PINK=[.79,.55,.53],TRIM=[.7,.44,.42],CONC=[.72,.71,.68],BLUE=[.13,.28,.54],GOLD=[.94,.86,.6],WHITE=[.96,.95,.92],DARK=[.08,.08,.08];
   /* ground, road (Thetsaban 2) with a zebra crossing in front of Gate 1, and sidewalks on both sides */
-  c.box(0,-.06,0,40,.12,32,[.47,.68,.36]);
+  c.box(0,-.06,4,46,.12,48,[.47,.68,.36]);
   c.box(0,.02,8.2,40,.06,4.4,[.36,.37,.41]);for(let x=-15;x<=15;x+=3.2)if(Math.abs(x-6)>2.6)c.box(x,.06,8.2,1.4,.02,.16,[.95,.9,.5]);
   for(let z=6.35;z<10.2;z+=.8)c.box(6,.06,z,3.2,.02,.42,[.97,.97,.95]);
   c.ob.push([-20,4.3,6,10.4],[7.7,20,6,10.4]);/* cars' road: people cross only on the zebra crossing (x 4.3 to 7.7) */
   c.box(0,.05,4.2,40,.1,3.4,[.8,.79,.76]);c.box(0,.1,5.95,40,.12,.18,[.62,.62,.6]);
-  c.box(0,.05,11.3,40,.1,1.8,[.8,.79,.76]);c.box(0,.1,10.45,40,.12,.18,[.62,.62,.6]);
+  c.box(0,.05,13,40,.1,5.2,[.8,.79,.76]);c.box(0,.1,10.45,40,.12,.18,[.62,.62,.6]);
+  /* street market across the road: four stalls with their backs to the road, sellers stand in front on the walkway; gap at the crossing (x 4.3 to 7.7) */
+  const stall=(x,roof,items)=>{c.counter(x,11.65,3,[.95,.95,.92]);
+   for(const dx of [-1.45,1.45])c.box(x+dx,1.3,10.7,.12,2.6,.12,[.5,.5,.55]);
+   for(let k=0;k<4;k++)c.box(x-1.2+k*.8,2.62,11.5,.8,.12,2.2,k%2?[.97,.97,.95]:roof);
+   items(x)};
+  stall(11,[.85,.2,.2],x=>{c.box(x-.6,1.3,11.65,.9,.25,.6,[.25,.25,.27]);for(let k=0;k<6;k++)c.box(x-.95+k*.14,1.5,11.65,.05,.3,.05,k%2?[.62,.38,.2]:[.82,.33,.3]);
+   for(const [dx,cl] of [[.5,[.95,.85,.3]],[.9,[.9,.4,.2]]])c.box(x+dx,1.25,11.65,.3,.2,.3,cl)});
+  stall(-.2,[.95,.55,.15],x=>{c.box(x-.4,1.25,11.65,1.6,.15,.7,[.15,.15,.16]);for(let k=0;k<5;k++)c.box(x-1+k*.3,1.37,11.65,.12,.08,.5,[.72,.42,.32]);
+   c.box(x+.95,1.4,11.65,.6,.45,.6,[.85,.75,.55])});
+  stall(-5.2,[.2,.55,.85],x=>{for(const [dx,cl] of [[-1.1,[.85,.6,.4]],[-.7,[.95,.4,.6]],[-.3,[.4,.75,.95]],[.1,[.6,.9,.4]]])c.box(x+dx,1.35,11.65,.22,.36,.22,cl);
+   c.box(x+.85,1.45,11.65,.7,.6,.6,[.3,.6,.9])});
+  stall(-10.2,[.3,.65,.3],x=>{for(const [dx,cl] of [[-1.05,[.98,.8,.2]],[-.6,[.4,.75,.3]],[-.15,[.9,.25,.3]],[.3,[.98,.8,.2]],[.75,[.95,.55,.5]]])c.box(x+dx,1.27,11.6,.32,.2,.5,cl);
+   c.box(x+1.15,1.3,11.65,.3,.3,.3,[.8,.85,.95])});
   /* school fence with Gate 1 (gap from x=2.6 to x=9.4) */
   for(const [x0,x1] of [[-20,1.9],[10.1,20]])c.box((x0+x1)/2,.8,-.6,x1-x0,1.6,.35,CREAM,true);
   for(let x=-19;x<=19;x+=3)if(x<1.9||x>10.1)c.box(x,1.75,-.6,.5,.3,.5,CAP);
@@ -1901,7 +1914,7 @@ SCENES.push({id:'gate1',name:'Gate 1 · Phibun School',th:'ประตู 1 โ
   /* trees and lamps */
   for(const [x,z] of [[-11.6,-3],[-1.2,-3.4],[12,-5],[-12,3.6],[12.2,3.6],[-8.6,-8.4]])c.tree(x,z);
   c.lamp(-9.5,4.9);c.lamp(1,4.9);c.lamp(11,4.9);
-  for(const x of [-11,-4,2.5,12])c.tree(x,13.4);c.lamp(-8,11.9);c.lamp(10,11.9);/* across the road */
+  for(const x of [-11,-4,2.5,12])c.tree(x,16.6);c.lamp(-8,15.3);c.lamp(10,15.3);/* behind the street market */
   return mirrorWorld({a:new Float32Array(A),ob:c.ob})},
  /* real name, words and emblem on the school sign (emblem file supplied by the teacher) */
  decals:(()=>{const sx=5.6,sz=1.5,fit=(g,t,f,max,font)=>{do{g.font=font.replace('#',f);f-=2}while(g.measureText(t).width>max&&f>10)};
@@ -1933,7 +1946,23 @@ SCENES.push({id:'gate1',name:'Gate 1 · Phibun School',th:'ประตู 1 โ
  NPCDEF('teacher','Mr. Wichai','Teacher on duty⁣ครูเวร',-3.6,-3.4,Math.PI,[.3,.45,.7],[.2,.2,.24],[.12,.1,.08],'',[
   TT("Good morning! You are early today.",'อรุณสวัสดิ์ วันนี้มาเช้านะ',"Good morning, sir. I woke up early.","Good night, sir. I woke up early.","You are early today.",'ครูทักว่ามาเช้า ให้ทักทายกลับและบอกว่าตื่นเช้า','woke up = ตื่นนอน (อดีตของ wake up), sir = ใช้เรียกครูผู้ชายอย่างสุภาพ'),
   TT("Did you have breakfast?",'กินข้าวเช้าหรือยัง',"Yes, I did. I had sticky rice.","Yes, I do. I like breakfast.","I woke up early.",'ถามด้วย Did you ...? ให้ตอบ Yes, I did.','Did you ...? ตอบ Yes, I did. / had = กิน (อดีตของ have)'),
-  TT("Good. Please go to the dome. We line up there.",'ดีมาก ไปที่โดมนะ เราเข้าแถวที่นั่น',"OK, sir. I'm going now.","OK, sir. I'm going home now.","Where do students line up?",'ครูบอกให้ไปเข้าแถวที่โดม ให้รับคำ',"I'm going now. = กำลังไปเดี๋ยวนี้")])]});
+  TT("Good. Please go to the dome. We line up there.",'ดีมาก ไปที่โดมนะ เราเข้าแถวที่นั่น',"OK, sir. I'm going now.","OK, sir. I'm going home now.","Where do students line up?",'ครูบอกให้ไปเข้าแถวที่โดม ให้รับคำ',"I'm going now. = กำลังไปเดี๋ยวนี้")]),
+ NPCDEF('meatball','Auntie Lamai','Meatball seller⁣แม่ค้าลูกชิ้นทอด',-11,12.6,0,[.9,.45,.45],[.25,.22,.28],[.08,.06,.07],'bun',[
+  TT("Hi! Fried meatballs and sausages! Ten baht a stick.",'สวัสดีจ้ะ ลูกชิ้นทอด ไส้กรอกทอด ไม้ละสิบบาทจ้ะ',"Two sticks of meatballs, please.","Ten baht a stick.","Two cups of milk tea, please.",'แม่ค้าบอกราคา ให้สั่งลูกชิ้นพร้อมบอกจำนวน','two sticks of ... = ... สองไม้'),
+  TT("Would you like sweet sauce or spicy sauce?",'เอาน้ำจิ้มหวานหรือน้ำจิ้มเผ็ดจ๊ะ',"Sweet sauce, please.","Yes, I would.","Two sticks of meatballs, please.",'ถามให้เลือก A หรือ B ให้ตอบสิ่งที่เลือก ไม่ตอบ Yes','A or B? ตอบด้วยสิ่งที่เลือก เช่น Sweet sauce, please.'),
+  TT("Here you are. That's twenty baht.",'นี่จ้ะ ยี่สิบบาทจ้ะ',"Here you are. Thank you!","That's twenty baht.","Ten baht a stick, please.",'แม่ค้าบอกราคารวม ให้ยื่นเงินและขอบคุณ','Here you are. = นี่ครับ/ค่ะ ใช้ตอนยื่นเงินหรือของ')]),
+ NPCDEF('pork','Uncle Sombat','Grilled pork seller⁣ลุงขายหมูปิ้ง',.2,12.6,0,[.95,.75,.3],[.2,.2,.24],[.6,.6,.62],'cap',[
+  TT("Good morning! Would you like grilled pork?",'อรุณสวัสดิ์ เอาหมูปิ้งไหม',"Yes, please. I'd like three sticks.","Yes, please. I'd like a bag of mango.","Would you like grilled pork?",'ลุงชวนซื้อหมูปิ้ง ให้ตอบรับและบอกจำนวน',"I'd like ... = ฉันต้องการ ..., three sticks = สามไม้"),
+  TT("Do you want sticky rice too?",'เอาข้าวเหนียวด้วยไหม',"Yes, one bag, please.","It's very hot today.","Do you want sticky rice too?",'ลุงถามว่าเอาข้าวเหนียวด้วยไหม ให้ตอบรับและบอกจำนวนห่อ','one bag = หนึ่งห่อ, too = ด้วย'),
+  TT("The pork is hot. Be careful!",'หมูร้อนนะ ระวังด้วย',"OK, thanks. I'll be careful.","OK. I'll eat it all now.","The pork is hot.",'ลุงเตือนว่าร้อน ให้รับคำและบอกว่าจะระวัง','be careful = ระวัง')]),
+ NPCDEF('drink','Ms. Fon','Drink seller⁣แม่ค้าน้ำหวาน',5.2,12.6,0,[.4,.75,.85],[.2,.22,.3],[.1,.07,.06],'long',[
+  TT("Hello! What would you like to drink?",'สวัสดีจ้ะ จะดื่มอะไรดีจ๊ะ',"An iced milk tea, please.","I'd like sticky rice, please.","What would you like to drink?",'ถามว่าจะดื่มอะไร ให้สั่งเครื่องดื่ม','iced milk tea = ชานมเย็น'),
+  TT("Small or large?",'แก้วเล็กหรือแก้วใหญ่จ๊ะ',"Small, please.","Yes, please.","An iced milk tea, please.",'ถามให้เลือกขนาด ให้ตอบขนาดที่เลือก ไม่ตอบ Yes','small = แก้วเล็ก, large = แก้วใหญ่'),
+  TT("Do you want less sugar?",'เอาหวานน้อยไหมจ๊ะ',"Yes, please. Less sugar.","Yes, it is. It's small.","Small or large?",'ถามว่าเอาหวานน้อยไหม (Do you want ...?) ให้ตอบรับ','less sugar = หวานน้อย')]),
+ NPCDEF('fruit','Auntie Jan','Fruit seller⁣แม่ค้าผลไม้',10.2,12.6,0,[.35,.7,.35],[.25,.22,.2],[.1,.08,.07],'hat',[
+  TT("Fresh fruit! Mango, watermelon and guava!",'ผลไม้สดจ้า มะม่วง แตงโม ฝรั่งจ้า',"How much is the mango?","How much is the milk tea?","Mango, watermelon and guava!",'แม่ค้าบอกว่ามีผลไม้อะไรบ้าง ให้ถามราคา','How much is ...? = ... ราคาเท่าไร'),
+  TT("Twenty baht a bag. It's very sweet today.",'ถุงละยี่สิบบาท วันนี้หวานมากจ้ะ',"OK. One bag of mango, please.","One stick of meatballs, please.","How much is the mango?",'ได้ราคาแล้ว ให้สั่งมะม่วงหนึ่งถุง','a bag of ... = ... หนึ่งถุง'),
+  TT("Do you want some chili salt?",'เอาพริกเกลือไหมจ๊ะ',"Yes, please. I like it.","Yes, I am. I like it.","Do you want some chili salt?",'ถามว่าเอาพริกเกลือไหม ให้ตอบรับ','chili salt = พริกเกลือ')])]});
 
 const GROUP={gate1:'phibun',market:'daily',restaurant:'daily',seven:'daily',bigc:'daily',lotus:'daily',amazon:'daily',school:'school',bus:'places',clinic:'places',park:'places',hotel:'places',airport:'places',candle:'ubon',longboat:'ubon',songkran:'ubon',khongchiam:'ubon',phuphrao:'ubon',phataem:'ubon',train:'places',cafeteria:'school',classroom:'school',home:'daily',clothes:'daily',sports:'school',pharmacy:'daily',post:'daily',bank:'places',library:'school',police:'places',gas:'places',mall:'daily',samphanbok:'ubon',sirindhorn:'ubon',museum:'ubon',thungsi:'ubon',localfood:'ubon'};
 SCENES.forEach(s=>s.group=GROUP[s.id]);
