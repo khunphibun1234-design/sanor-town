@@ -358,7 +358,7 @@ label.row{cursor:pointer}
 body.tlock{overflow:hidden}
 .town{position:fixed;inset:0;z-index:50;background:#9fd2f2;touch-action:none;user-select:none;-webkit-user-select:none}
 .tcv{position:absolute;inset:0;width:100%;height:100%;display:block}
-.tzoom{position:absolute;right:12px;top:42%;display:flex;flex-direction:column;gap:10px}.tzoom button{width:48px;height:48px;border-radius:50%;border:2px solid #fff;background:#ffffffcc;color:#1f2937;font-size:1.6rem;font-weight:800;line-height:1;box-shadow:0 2px 6px #0004;padding:0}.tzoom button:disabled{opacity:.45}
+.tzoom{position:absolute;right:12px;top:112px;bottom:112px;display:flex;flex-direction:column;flex-wrap:wrap-reverse;justify-content:center;align-content:flex-start;gap:10px;pointer-events:none}.tzoom button{pointer-events:auto}.tzoom button{width:48px;height:48px;border-radius:50%;border:2px solid #fff;background:#ffffffcc;color:#1f2937;font-size:1.6rem;font-weight:800;line-height:1;box-shadow:0 2px 6px #0004;padding:0}.tzoom button:disabled{opacity:.45}.tzoom button.on{background:#F5C518;border-color:#F5C518}.tzoom .tsm{font-size:1.25rem}
 .ttop{position:absolute;left:0;right:0;top:0;display:flex;gap:8px;align-items:center;padding:8px 10px;background:linear-gradient(#0008,#0000);color:#fff}
 .ttitle{flex:1;min-width:0;display:flex;flex-direction:column;font-size:.85rem;line-height:1.2}.ttitle .tbadge{align-self:flex-start}
 .tback{background:#fff;color:#222;border:0;border-radius:8px;padding:6px 10px;min-height:40px;font-weight:700}
@@ -568,7 +568,7 @@ function vcKey(text,slow){const s=(slow?'s|':'n|')+String(text).replace(/\s+/g,'
   for(let i=0;i<s.length;i++){const c=s.charCodeAt(i);h1=Math.imul(h1^c,2654435761);h2=Math.imul(h2^c,1597334677)}
   h1=Math.imul(h1^(h1>>>16),2246822507)^Math.imul(h2^(h2>>>13),3266489909);h2=Math.imul(h2^(h2>>>16),2246822507)^Math.imul(h1^(h1>>>13),3266489909);
   return(4294967296*(2097151&h2)+(h1>>>0)).toString(16)}
-const BUILD='20261028e';/* bump when voice files change: it forces browsers to fetch the new files together */
+const BUILD='20261028f';/* bump when voice files change: it forces browsers to fetch the new files together */
 try{fetch('voice/index.json?v='+BUILD).then(r=>r.ok?r.json():null).then(j=>{if(j&&j.clips&&j.bundles)VC.idx=j}).catch(e=>{VC.err='index: '+e})}catch(e){}
 /* One shared <audio> element (works with the iPhone silent switch). It is "unlocked" by the first tap. */
 function vcEl(){try{if(!VC.el){VC.el=new Audio();VC.el.preload='auto';VC.el.setAttribute('playsinline','')}
@@ -1859,11 +1859,11 @@ SCENES.push({id:'localfood',name:'Ubon Local Food',th:'อาหารอุบ�
    Seen from the road, the sign is on the RIGHT and Gate 1 on the LEFT, as at the real school (teacher's correction, 28 Oct 2569).
    The build code below is written the other way round and then flipped with mirrorWorld();
    the decals and NPCs below already use the final (flipped) x values. */
-SCENES.push({id:'gate1',name:'Gate 1 · Phibun School',th:'ประตู 1 โรงเรียนพิบูลมังสาหาร',color:'#23407A',spawn:[1,4.6,Math.PI],bounds:[-12.4,12.4,-9,15.2],
+SCENES.push({id:'gate1',name:'Gate 1 · Phibun School',th:'ประตู 1 โรงเรียนพิบูลมังสาหาร',color:'#23407A',orbit:true,spawn:[1,4.6,Math.PI],bounds:[-12.4,12.4,-9,15.2],
  build(){const c=mk(),A=c.a;
   const CREAM=[.94,.9,.82],CAP=[.18,.37,.66],PINK=[.79,.55,.53],TRIM=[.7,.44,.42],CONC=[.72,.71,.68],BLUE=[.13,.28,.54],GOLD=[.94,.86,.6],WHITE=[.96,.95,.92],DARK=[.08,.08,.08];
   /* ground, road (Thetsaban 2) with a zebra crossing in front of Gate 1, and sidewalks on both sides */
-  c.box(0,-.06,4,46,.12,48,[.47,.68,.36]);
+  c.box(0,-.06,4,140,.12,140,[.47,.68,.36]);
   c.box(0,.02,8.2,40,.06,4.4,[.36,.37,.41]);for(let x=-15;x<=15;x+=3.2)if(Math.abs(x-6)>2.6)c.box(x,.06,8.2,1.4,.02,.16,[.95,.9,.5]);
   for(let z=6.35;z<10.2;z+=.8)c.box(6,.06,z,3.2,.02,.42,[.97,.97,.95]);
   c.ob.push([-20,4.3,6,10.4],[7.7,20,6,10.4]);/* cars' road: people cross only on the zebra crossing (x 4.3 to 7.7) */
@@ -1926,10 +1926,10 @@ SCENES.push({id:'gate1',name:'Gate 1 · Phibun School',th:'ประตู 1 โ
    g.textAlign='center';g.textBaseline='middle';const all=(head?[head]:[]).concat(lines),lh=H/(all.length+1.2);
    all.forEach((L,k)=>{const hd=head&&k===0;g.fillStyle=hd?'#efdc9a':'#f6f3ea';fit(g,L,hd?36:40,W-40,"700 #px Anuphan, 'Noto Sans Thai', sans-serif");g.fillText(L,W/2,lh*(k+1.1))})};
   return [
-   {x:sx,y:2.05,z:sz+.345,w:4.7,h:1.9,cw:1024,ch:414,draw:board},
-   {x:sx,y:4.42,z:sz+.32,w:1.45,h:1.45,src:'img/phibun-emblem.png'},
-   {x:sx-3.5,y:1.45,z:sz+.285,w:.75,h:1.4,cw:240,ch:448,draw:plaque('ปรัชญาของโรงเรียน',['การศึกษาเป็นการ','พัฒนาชีวิต','และสังคม'])},
-   {x:sx+3.5,y:1.45,z:sz+.285,w:.75,h:1.4,cw:240,ch:448,draw:plaque('',['อัตตานัง ทมยันติ','สุพพตา','ผู้ประพฤติดี','ย่อมฝึกตน'])}]})(),
+   {x:sx,y:2.05,z:sz+.375,w:4.7,h:1.9,cw:1024,ch:414,draw:board},
+   {x:sx,y:4.42,z:sz+.33,w:1.45,h:1.45,src:'img/phibun-emblem.png'},
+   {x:sx-3.5,y:1.45,z:sz+.30,w:.75,h:1.4,cw:240,ch:448,draw:plaque('ปรัชญาของโรงเรียน',['การศึกษาเป็นการ','พัฒนาชีวิต','และสังคม'])},
+   {x:sx+3.5,y:1.45,z:sz+.30,w:.75,h:1.4,cw:240,ch:448,draw:plaque('',['อัตตานัง ทมยันติ','สุพพตา','ผู้ประพฤติดี','ย่อมฝึกตน'])}]})(),
  npcs:[
  NPCDEF('guard','Mr. Somsak','Security guard⁣ยามรักษาความปลอดภัย',-8.4,-2.4,-Math.PI/2,[.17,.22,.36],[.12,.12,.16],[.1,.08,.07],'cap',[
   TT("Good morning! Do you study at this school?",'สวัสดีตอนเช้า เรียนที่โรงเรียนนี้หรือเปล่า',"Yes, I do. I'm in Grade 8.","Yes, it is. It's a big school.","I go to school by bus.",'ยามถามว่าเรียนที่นี่ไหม (Do you ...?) ตอบ Yes, I do. แล้วบอกชั้น','Grade 8 = ชั้น ม.2, Do you ...? ตอบ Yes, I do.'),
@@ -1990,6 +1990,8 @@ const nTotal=s=>s.npcs?s.npcs.length:4;
 let TOWN=null;
 /* camera zoom: 1 = normal view, smaller = closer, bigger = farther. Kept while the app is open. */
 const ZMIN=.55,ZMAX=1.45;let ZOOM=1;
+/* look-around (scenes with orbit:true): camera turns 360 degrees around the player; EYEV = eye-level view behind the shoulder */
+let EYEV=false;
 /* ---------- pictures on objects (decals): flat textured panels, e.g. the school sign and emblem ----------
    A scene may list decals:[{x,y,z,w,h,ry, src:'img/file.png'} or {..., cw,ch, draw(g,W,H)}].
    ry = turn around the up axis (0 = faces the camera side, +z). Pictures from src load from this website. */
@@ -2060,7 +2062,7 @@ function playPlace(sc,onExit,bl){
  const talk=el('button',{class:'ttalk',type:'button',hidden:true,onclick:()=>openDlg(near)},'Talk');
  const knob=el('div',{class:'tknob'});
  const joy=el('div',{class:'tjoy','aria-label':'Move: drag the circle'},knob);
- const hint=el('div',{class:'thint'},'Walk to a person with a yellow !⁣เดินไปหาคนที่มีเครื่องหมาย ! สีเหลือง');
+ const hint=el('div',{class:'thint'},'Walk to a person with a yellow !⁣เดินไปหาคนที่มีเครื่องหมาย ! สีเหลือง',sc.orbit?el('div',{},'Drag the screen to look around. \u{1F440} = eye-level view⁣ลากนิ้วบนจอเพื่อหมุนมองรอบตัว กดปุ่ม \u{1F440} เพื่อมองระดับสายตา'):null);
  const panel=el('div',{class:'tpanel',hidden:true,role:'region','aria-label':'Conversation'});
  const win=el('div',{class:'twin',hidden:true});
  const warp=el('button',{class:'tplaces',type:'button',onclick:()=>placesSheet(s=>{if(s.id===sc.id)return;close(true);playPlace(s,onExit,bl)})},'Go to another place\u2063ไปสถานที่อื่น');
@@ -2068,9 +2070,16 @@ function playPlace(sc,onExit,bl){
  const setZ=z=>{ZOOM=Math.min(ZMAX,Math.max(ZMIN,z));zIn.disabled=ZOOM<=ZMIN+.001;zOut.disabled=ZOOM>=ZMAX-.001};setZ(ZOOM);
  zIn.addEventListener('click',()=>setZ(ZOOM-.15));zOut.addEventListener('click',()=>setZ(ZOOM+.15));
  const zoomBox=el('div',{class:'tzoom'},zIn,zOut);
+ let YAW=0,YAWT=0;const ORB=!!sc.orbit;
+ const turn=a=>{YAWT+=a};
+ const eyeB=el('button',{type:'button',class:'tsm','aria-label':'Eye-level view','title':'Eye-level view'},'\u{1F440}');
+ const setEye=v=>{EYEV=!!v;eyeB.classList.toggle('on',EYEV);eyeB.setAttribute('aria-pressed',EYEV?'true':'false')};
+ if(ORB){const rL=el('button',{type:'button',class:'tsm','aria-label':'Turn left','title':'Turn left'},'\u21BA'),rR=el('button',{type:'button',class:'tsm','aria-label':'Turn right','title':'Turn right'},'\u21BB');
+  rL.addEventListener('click',()=>turn(Math.PI/4));rR.addEventListener('click',()=>turn(-Math.PI/4));eyeB.addEventListener('click',()=>setEye(!EYEV));setEye(EYEV);
+  zoomBox.prepend(rL,rR);zoomBox.append(eyeB)}
  const pts=new Map();let pinch0=0,zoom0=1;const pd=()=>{const [a,b]=[...pts.values()];return Math.hypot(a.x-b.x,a.y-b.y)};
- cv.addEventListener('pointerdown',e=>{pts.set(e.pointerId,{x:e.clientX,y:e.clientY});if(pts.size===2){pinch0=pd();zoom0=ZOOM}});
- cv.addEventListener('pointermove',e=>{if(!pts.has(e.pointerId))return;pts.set(e.pointerId,{x:e.clientX,y:e.clientY});if(pts.size===2&&pinch0>10)setZ(zoom0*pinch0/Math.max(10,pd()))});
+ cv.addEventListener('pointerdown',e=>{pts.set(e.pointerId,{x:e.clientX,y:e.clientY});try{cv.setPointerCapture(e.pointerId)}catch(_){}if(pts.size===2){pinch0=pd();zoom0=ZOOM}});
+ cv.addEventListener('pointermove',e=>{if(!pts.has(e.pointerId))return;const pv=pts.get(e.pointerId);if(ORB&&pts.size===1){const a=-(e.clientX-pv.x)*.009;YAWT+=a;YAW+=a}pts.set(e.pointerId,{x:e.clientX,y:e.clientY});if(pts.size===2&&pinch0>10)setZ(zoom0*pinch0/Math.max(10,pd()))});
  ['pointerup','pointercancel','pointerleave'].forEach(n=>cv.addEventListener(n,e=>{pts.delete(e.pointerId);if(pts.size<2)pinch0=0}));
  cv.addEventListener('wheel',e=>{e.preventDefault();setZ(ZOOM*(e.deltaY>0?1.08:1/1.08))},{passive:false});
  root.append(cv,warp,el('div',{class:'ttop'},back,el('div',{class:'ttitle'},el('b',{},'Sanor Town · '+sc.name),el('span',{class:'tbadge'},'Prototype')),stars),hint,joy,zoomBox,talk,panel,win);
@@ -2085,7 +2094,7 @@ function playPlace(sc,onExit,bl){
  ['pointerup','pointercancel','lostpointercapture'].forEach(n=>joy.addEventListener(n,e=>{if(e.pointerId===jid){jid=null;jend()}}));
  const kd=e=>{if(e.key==='Escape'){if(dlg)closeDlg();else close();return}
   if((e.key==='Enter'||e.key==='e'||e.key==='E')&&near&&!dlg){openDlg(near);e.preventDefault();return}
-  const k=e.key.toLowerCase();if(['arrowup','arrowdown','arrowleft','arrowright','w','a','s','d'].includes(k)){keys[k]=true;e.preventDefault()}};
+  const k=e.key.toLowerCase();if(ORB&&(k==='q'||k==='r')){turn(k==='q'?Math.PI/4:-Math.PI/4);e.preventDefault();return}if(['arrowup','arrowdown','arrowleft','arrowright','w','a','s','d'].includes(k)){keys[k]=true;e.preventDefault()}};
  const ku=e=>{delete keys[e.key.toLowerCase()]};
  window.addEventListener('keydown',kd);window.addEventListener('keyup',ku);
  const rs=()=>{const d=Math.min(window.devicePixelRatio||1,1.75);cv.width=Math.round(window.innerWidth*d);cv.height=Math.round(window.innerHeight*d)};
@@ -2124,8 +2133,10 @@ function playPlace(sc,onExit,bl){
   let vx=jv.x+kv.x,vy=jv.y+kv.y;const l=Math.hypot(vx,vy);if(l>1){vx/=l;vy/=l}
   if(dlg||!win.hidden){vx=0;vy=0}
   const sp=4.2,mv=Math.hypot(vx,vy);
-  if(mv>.08){const dx=vx*sp*dt,dz=vy*sp*dt;if(!hit(P.x+dx,P.z))P.x+=dx;if(!hit(P.x,P.z+dz))P.z+=dz;
-   const want=Math.atan2(vx,vy);P.ry+=shortAng(P.ry,want)*Math.min(1,dt*12);P.walk+=(1-P.walk)*Math.min(1,dt*10)}
+  YAW+=shortAng(YAW,YAWT)*Math.min(1,dt*8);
+  if(mv>.08){const cy=Math.cos(YAW),sy=Math.sin(YAW),wx=vx*cy+vy*sy,wz=-vx*sy+vy*cy;/* joystick up = forward where the camera looks */
+   const dx=wx*sp*dt,dz=wz*sp*dt;if(!hit(P.x+dx,P.z))P.x+=dx;if(!hit(P.x,P.z+dz))P.z+=dz;
+   const want=Math.atan2(wx,wz);P.ry+=shortAng(P.ry,want)*Math.min(1,dt*12);P.walk+=(1-P.walk)*Math.min(1,dt*10)}
   else P.walk+=(0-P.walk)*Math.min(1,dt*10);
   let best=null,bd=3.2;npcs.forEach(n=>{const d=Math.hypot(P.x-n.x,P.z-n.z);if(d<bd){bd=d;best=n}});
   near=best;
@@ -2142,7 +2153,9 @@ function playPlace(sc,onExit,bl){
   update(dt);
   gl.viewport(0,0,cv.width,cv.height);gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);
   const asp=cv.width/cv.height,fov=(asp<1?58:46)*Math.PI/180;
-  const eh=asp<1?10:8.5,ed=asp<1?9.5:8.5,eye=[cam.x,.4+(eh-.4)*ZOOM,cam.z-.8+(ed+.8)*ZOOM],tgt=[cam.x,.4,cam.z-.8];
+  const eh=asp<1?10:8.5,ed=asp<1?9.5:8.5,cy=Math.cos(YAW),sy=Math.sin(YAW);let eye,tgt;
+  if(ORB&&EYEV){const d=(asp<1?4.4:3.2)*ZOOM,sh=asp<1?.55:.75,rx=cy*sh,rz=-sy*sh;/* over the right shoulder */tgt=[cam.x-sy*4+rx,1.35,cam.z-cy*4+rz];eye=[cam.x+sy*d+rx,1.85+.35*ZOOM,cam.z+cy*d+rz]}
+  else{const d=(ed+.8)*ZOOM;tgt=[cam.x-sy*.8,.4,cam.z-cy*.8];eye=[tgt[0]+sy*d,.4+(eh-.4)*ZOOM,tgt[2]+cy*d]}
   const VP=M4.mul(M4.persp(fov,asp,.5,80),M4.look(eye,tgt));
   if(sky){gl.disable(gl.DEPTH_TEST);gl.useProgram(sky.sp);gl.bindBuffer(gl.ARRAY_BUFFER,sky.sb);gl.enableVertexAttribArray(sky.loc);gl.vertexAttribPointer(sky.loc,2,gl.FLOAT,false,0,0);gl.drawArrays(gl.TRIANGLES,0,3);gl.disableVertexAttribArray(sky.loc);gl.enable(gl.DEPTH_TEST)}
   gl.useProgram(pr);gl.uniformMatrix4fv(U.VP,false,VP);gl.uniform1f(U.alpha,1);
@@ -2163,7 +2176,7 @@ function playPlace(sc,onExit,bl){
   gl.depthMask(true);gl.disable(gl.BLEND);gl.uniform1f(U.alpha,1);
   TOWN.raf=requestAnimationFrame(frame);
  }
- TOWN={raf:0,kd,ku,rs,close,P,npcs,sc,OB,DEC,setZoom:setZ,get zoom(){return ZOOM},get dlg(){return dlg},get near(){return near},openDlg,jv,keys,stars:()=>stars.textContent,win,panel,talk};
+ TOWN={raf:0,kd,ku,rs,close,P,npcs,sc,OB,DEC,setZoom:setZ,get zoom(){return ZOOM},get yaw(){return YAW},turn,setEye,get eye(){return EYEV},get dlg(){return dlg},get near(){return near},openDlg,jv,keys,stars:()=>stars.textContent,win,panel,talk};
  TOWN.raf=requestAnimationFrame(frame);
 }
 
