@@ -568,7 +568,7 @@ function vcKey(text,slow){const s=(slow?'s|':'n|')+String(text).replace(/\s+/g,'
   for(let i=0;i<s.length;i++){const c=s.charCodeAt(i);h1=Math.imul(h1^c,2654435761);h2=Math.imul(h2^c,1597334677)}
   h1=Math.imul(h1^(h1>>>16),2246822507)^Math.imul(h2^(h2>>>13),3266489909);h2=Math.imul(h2^(h2>>>16),2246822507)^Math.imul(h1^(h1>>>13),3266489909);
   return(4294967296*(2097151&h2)+(h1>>>0)).toString(16)}
-const BUILD='20261028k';/* bump when voice files change: it forces browsers to fetch the new files together */
+const BUILD='20261028m';/* bump when voice files change: it forces browsers to fetch the new files together */
 try{fetch('voice/index.json?v='+BUILD).then(r=>r.ok?r.json():null).then(j=>{if(j&&j.clips&&j.bundles)VC.idx=j}).catch(e=>{VC.err='index: '+e})}catch(e){}
 /* One shared <audio> element (works with the iPhone silent switch). It is "unlocked" by the first tap. */
 function vcEl(){try{if(!VC.el){VC.el=new Audio();VC.el.preload='auto';VC.el.setAttribute('playsinline','')}
@@ -2030,7 +2030,7 @@ SCENES.push({id:'flagpole',name:'Flagpole · Phibun School',th:'ลานเส�
   for(const [x,z] of [[-11,6.6],[11.2,6.6],[6,7.6],[-6,7.6],[11.6,1.5]])c.tree(x,z);
   c.bench(-8,4.6);c.bench(8,4.6);c.lamp(-10,2);c.lamp(10,2);
   return{a:new Float32Array(A),ob:c.ob}},
- decals:[waySign(10.8,-4.4+.03,0,'Gate 1','ไปประตู 1','→'),waySign(3.1,5.6+.03,0,'School front','กลับหน้าโรงเรียน','↓'),waySign(-9.6,-.9+.03,0,'Classroom 8/5','ห้องเรียน ม.2/5','←')],
+ decals:[waySign(10.8,-4.4+.03,0,'Gate 1','ไปประตู 1','→'),waySign(3.1,5.6+.03,0,'School front','กลับหน้าโรงเรียน','↓'),waySign(-9.6,-.9+.03,0,'Classroom','ห้องเรียน','←')],
  npcs:[
  NPCDEF('homeroom','Ms. Suda','Homeroom teacher⁣ครูประจำชั้น',-2.8,-2.2,Math.PI,[.85,.35,.45],[.2,.2,.26],[.08,.06,.07],'bun',[
   TT("Good morning, class! Please stand in your line.",'สวัสดีตอนเช้า นักเรียน ยืนเข้าแถวของตัวเองนะ',"Good morning, teacher. OK!","Good night, teacher. OK!","Please stand in your line.",'ครูทักตอนเช้าและบอกให้เข้าแถว ให้ทักทายกลับและรับคำ','Good morning = สวัสดีตอนเช้า (Good night ใช้ตอนลาไปนอน)'),
@@ -2049,11 +2049,11 @@ SCENES.push({id:'flagpole',name:'Flagpole · Phibun School',th:'ลานเส�
   TT("Which line is Grade 8, Room 5?",'แถว ม.2/5 อยู่ตรงไหน',"It's the third line from the left.","It's eight o'clock.","Hurry! Your line is over there.",'ถามว่าแถวไหน (Which line ...?) ให้บอกตำแหน่งแถว','the third line from the left = แถวที่สามจากซ้าย'),
   TT("I'll run there now!",'งั้นวิ่งไปเลยนะ',"Be careful. Don't fall!","Good night! See you.","Which line is Grade 8, Room 5?",'เพื่อนจะวิ่งไปที่แถว ให้เตือนให้ระวัง',"Be careful. = ระวังนะ, Don't fall! = อย่าล้ม")])]});
 
-/* ===== Our school: Grade 8 Room 5 classroom on the ground floor of building 6 (English lesson, prototype) =====
+/* ===== Our school: a classroom (no room number on purpose: the teacher teaches several classes) on the ground floor of building 6 (English lesson, prototype) =====
    Reached from the flagpole yard by the path to building 6 (west side); the door at the back right leads out again.
    The side and back walls are low (cut away) so the 360-degree camera can always see inside; the front wall with
-   the whiteboard is higher (2.3 m). The room number and lesson are made up for the game; NPC names are made up. */
-SCENES.push({id:'class85',name:'Classroom · Phibun School',th:'ห้องเรียน ม.2/5 อาคาร 6',color:'#0F766E',orbit:true,spawn:[4.5,1.8,Math.PI],bounds:[-5.8,5.8,-4.5,5.2],
+   the whiteboard is higher (2.3 m). The lesson is made up for the game; NPC names are made up. */
+SCENES.push({id:'class85',name:'Classroom · Phibun School',th:'ห้องเรียน อาคาร 6',color:'#0F766E',orbit:true,spawn:[4.5,1.8,Math.PI],bounds:[-5.8,5.8,-4.5,5.2],
  exits:[{x0:3.7,x1:5.3,z0:4.4,z1:5.2,to:'flagpole',at:[-10.8,.4,Math.PI/2]}],/* the classroom door leads back to the flagpole yard */
  build(){const c=mk();
   const WALL=[.93,.9,.82],CAP=[.62,.5,.36],DESK=[.86,.72,.5],LEG=[.42,.44,.48],CHAIR=[.25,.45,.7];
@@ -2091,7 +2091,7 @@ SCENES.push({id:'class85',name:'Classroom · Phibun School',th:'ห้องเ�
   return{a:new Float32Array(c.a),ob:c.ob}},
  decals:[
   {x:0,y:1.55,z:-4.77,w:4.6,h:1.12,ry:0,cw:740,ch:180,draw:(g,W,H)=>{g.fillStyle='#fbfbfb';g.fillRect(0,0,W,H);g.textAlign='left';g.textBaseline='middle';
-   g.fillStyle='#1d4ed8';g.font="700 38px Anuphan, 'Noto Sans Thai', sans-serif";g.fillText('English · Grade 8/5  (ม.2/5)',30,36);
+   g.fillStyle='#1d4ed8';g.font="700 38px Anuphan, 'Noto Sans Thai', sans-serif";g.fillText('English class  ·  คาบภาษาอังกฤษ',30,36);
    g.fillStyle='#b91c1c';g.font="700 34px Anuphan, sans-serif";g.fillText('Unit 3: My School Day',30,88);
    g.fillStyle='#111827';g.font="600 30px Anuphan, 'Noto Sans Thai', sans-serif";g.fillText('Open your book to page 25.  เปิดหนังสือหน้า 25',30,140)}},
   Object.assign(waySign(4.5,4.98-.08,Math.PI,'Flagpole','ไปลานเสาธง','↑'),{y:2.75,w:1.8,h:.79})],
