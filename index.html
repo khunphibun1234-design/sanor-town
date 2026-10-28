@@ -568,7 +568,7 @@ function vcKey(text,slow){const s=(slow?'s|':'n|')+String(text).replace(/\s+/g,'
   for(let i=0;i<s.length;i++){const c=s.charCodeAt(i);h1=Math.imul(h1^c,2654435761);h2=Math.imul(h2^c,1597334677)}
   h1=Math.imul(h1^(h1>>>16),2246822507)^Math.imul(h2^(h2>>>13),3266489909);h2=Math.imul(h2^(h2>>>16),2246822507)^Math.imul(h1^(h1>>>13),3266489909);
   return(4294967296*(2097151&h2)+(h1>>>0)).toString(16)}
-const BUILD='20261028b';/* bump when voice files change: it forces browsers to fetch the new files together */
+const BUILD='20261028c';/* bump when voice files change: it forces browsers to fetch the new files together */
 try{fetch('voice/index.json?v='+BUILD).then(r=>r.ok?r.json():null).then(j=>{if(j&&j.clips&&j.bundles)VC.idx=j}).catch(e=>{VC.err='index: '+e})}catch(e){}
 /* One shared <audio> element (works with the iPhone silent switch). It is "unlocked" by the first tap. */
 function vcEl(){try{if(!VC.el){VC.el=new Audio();VC.el.preload='auto';VC.el.setAttribute('playsinline','')}
@@ -1859,20 +1859,20 @@ SCENES.push({id:'localfood',name:'Ubon Local Food',th:'อาหารอุบ�
    Seen from the road, the sign is on the RIGHT and Gate 1 on the LEFT, as at the real school (teacher's correction, 28 Oct 2569).
    The build code below is written the other way round and then flipped with mirrorWorld();
    the decals and NPCs below already use the final (flipped) x values. */
-SCENES.push({id:'gate1',name:'Gate 1 · Phibun School',th:'ประตู 1 โรงเรียนพิบูลมังสาหาร',color:'#23407A',spawn:[1,4.6,Math.PI],bounds:[-12.4,12.4,-9,5.6],
+SCENES.push({id:'gate1',name:'Gate 1 · Phibun School',th:'ประตู 1 โรงเรียนพิบูลมังสาหาร',color:'#23407A',spawn:[1,4.6,Math.PI],bounds:[-12.4,12.4,-9,11.6],
  build(){const c=mk(),A=c.a;
   const CREAM=[.94,.9,.82],CAP=[.18,.37,.66],PINK=[.79,.55,.53],TRIM=[.7,.44,.42],CONC=[.72,.71,.68],BLUE=[.13,.28,.54],GOLD=[.94,.86,.6],WHITE=[.96,.95,.92],DARK=[.08,.08,.08];
-  /* ground, road (Thetsaban 2) and sidewalk */
+  /* ground, road (Thetsaban 2) with a zebra crossing in front of Gate 1, and sidewalks on both sides */
   c.box(0,-.06,0,40,.12,32,[.47,.68,.36]);
-  c.box(0,.02,8.2,40,.06,4.4,[.36,.37,.41]);for(let x=-15;x<=15;x+=3.2)c.box(x,.06,8.2,1.4,.02,.16,[.95,.9,.5]);
-  c.ob.push([-20,20,6,12]);
+  c.box(0,.02,8.2,40,.06,4.4,[.36,.37,.41]);for(let x=-15;x<=15;x+=3.2)if(Math.abs(x-6)>2.6)c.box(x,.06,8.2,1.4,.02,.16,[.95,.9,.5]);
+  for(let z=6.35;z<10.2;z+=.8)c.box(6,.06,z,3.2,.02,.42,[.97,.97,.95]);
+  c.ob.push([-20,4.3,6,10.4],[7.7,20,6,10.4]);/* cars' road: people cross only on the zebra crossing (x 4.3 to 7.7) */
   c.box(0,.05,4.2,40,.1,3.4,[.8,.79,.76]);c.box(0,.1,5.95,40,.12,.18,[.62,.62,.6]);
+  c.box(0,.05,11.3,40,.1,1.8,[.8,.79,.76]);c.box(0,.1,10.45,40,.12,.18,[.62,.62,.6]);
   /* school fence with Gate 1 (gap from x=2.6 to x=9.4) */
   for(const [x0,x1] of [[-20,1.9],[10.1,20]])c.box((x0+x1)/2,.8,-.6,x1-x0,1.6,.35,CREAM,true);
   for(let x=-19;x<=19;x+=3)if(x<1.9||x>10.1)c.box(x,1.75,-.6,.5,.3,.5,CAP);
   for(const x of [2.25,9.75]){c.box(x,1.6,-.6,1.1,3.2,1.1,CREAM,true);c.box(x,3.38,-.6,1.4,.35,1.4,CAP)}
-  /* boom barrier across the car lane; people walk through the open part on the left */
-  c.box(7.8,.55,-.6,.5,1.1,.5,[.5,.52,.56],true);c.box(6.1,1.1,-.6,3.4,.12,.15,[.9,.25,.2]);c.box(5.2,1.1,-.6,.6,.13,.16,[.96,.96,.96]);
   c.box(.5,.03,1.4,7.8,.06,4,[.66,.66,.66]);c.box(6,.035,-.6,6.6,.06,1.4,[.66,.66,.66]);c.box(6,.03,-3,7.8,.06,4.4,[.66,.66,.66]);
   /* school name sign (pink frame, blue board, emblem on top, blue plaques and black wings) */
   const sx=-5.6,sz=1.5;
@@ -1901,6 +1901,7 @@ SCENES.push({id:'gate1',name:'Gate 1 · Phibun School',th:'ประตู 1 โ
   /* trees and lamps */
   for(const [x,z] of [[-11.6,-3],[-1.2,-3.4],[12,-5],[-12,3.6],[12.2,3.6],[-8.6,-8.4]])c.tree(x,z);
   c.lamp(-9.5,4.9);c.lamp(1,4.9);c.lamp(11,4.9);
+  for(const x of [-11,-4,2.5,12])c.tree(x,13.4);c.lamp(-8,11.9);c.lamp(10,11.9);/* across the road */
   return mirrorWorld({a:new Float32Array(A),ob:c.ob})},
  /* real name, words and emblem on the school sign (emblem file supplied by the teacher) */
  decals:(()=>{const sx=5.6,sz=1.5,fit=(g,t,f,max,font)=>{do{g.font=font.replace('#',f);f-=2}while(g.measureText(t).width>max&&f>10)};
@@ -1919,7 +1920,7 @@ SCENES.push({id:'gate1',name:'Gate 1 · Phibun School',th:'ประตู 1 โ
  npcs:[
  NPCDEF('guard','Mr. Somsak','Security guard⁣ยามรักษาความปลอดภัย',-8.4,-2.4,-Math.PI/2,[.17,.22,.36],[.12,.12,.16],[.1,.08,.07],'cap',[
   TT("Good morning! Do you study at this school?",'สวัสดีตอนเช้า เรียนที่โรงเรียนนี้หรือเปล่า',"Yes, I do. I'm in Grade 8.","Yes, it is. It's a big school.","I go to school by bus.",'ยามถามว่าเรียนที่นี่ไหม (Do you ...?) ตอบ Yes, I do. แล้วบอกชั้น','Grade 8 = ชั้น ม.2, Do you ...? ตอบ Yes, I do.'),
-  TT("OK. Please walk through the small gate. The big gate is for cars.",'โอเค เดินเข้าทางประตูเล็กนะ ประตูใหญ่ไว้สำหรับรถ',"OK. I'll use the small gate.","OK. I'll drive through the big gate.","The big gate is for cars.",'ยามบอกให้เดินเข้าประตูเล็ก ให้รับคำ',"I'll ... = ฉันจะ ... ใช้รับปากว่าจะทำ"),
+  TT("OK. Please use the crosswalk when you cross the road.",'โอเค เวลาข้ามถนนให้ข้ามทางม้าลายนะ',"OK. I'll use the crosswalk.","OK. I'll run across the road.","Please use the crosswalk.",'ยามบอกให้ข้ามถนนที่ทางม้าลาย ให้รับคำ',"crosswalk = ทางม้าลาย, I'll ... = ฉันจะ ... ใช้รับปากว่าจะทำ"),
   TT("Have a good day at school!",'ขอให้วันนี้ที่โรงเรียนเป็นวันที่ดีนะ',"Thank you. You too!","Good morning! Do you study here?","I'm in Grade 8.",'ยามอวยพร ให้ขอบคุณและอวยพรกลับ','You too. = คุณก็เช่นกัน ใช้ตอบคำอวยพร')]),
  NPCDEF('friend','Mint','Classmate⁣เพื่อนร่วมห้อง',2.4,3.2,Math.PI,[.96,.96,.95],[.14,.2,.42],[.08,.06,.07],'bun',[
   TT("Hi! Let's take a photo at the school sign!",'หวัดดี มาถ่ายรูปกับป้ายโรงเรียนกัน',"Sure! Let's stand in front of it.","Sure! Let's eat lunch first.","Let's take a photo at the school sign!",'เพื่อนชวนถ่ายรูป ให้ตอบรับและบอกว่าไปยืนหน้าป้าย',"Let's ... = ... กันเถอะ, in front of = ข้างหน้า"),
