@@ -568,7 +568,7 @@ function vcKey(text,slow){const s=(slow?'s|':'n|')+String(text).replace(/\s+/g,'
   for(let i=0;i<s.length;i++){const c=s.charCodeAt(i);h1=Math.imul(h1^c,2654435761);h2=Math.imul(h2^c,1597334677)}
   h1=Math.imul(h1^(h1>>>16),2246822507)^Math.imul(h2^(h2>>>13),3266489909);h2=Math.imul(h2^(h2>>>16),2246822507)^Math.imul(h1^(h1>>>13),3266489909);
   return(4294967296*(2097151&h2)+(h1>>>0)).toString(16)}
-const BUILD='20261028q';/* bump when voice files change: it forces browsers to fetch the new files together */
+const BUILD='20261028r';/* bump when voice files change: it forces browsers to fetch the new files together */
 try{fetch('voice/index.json?v='+BUILD).then(r=>r.ok?r.json():null).then(j=>{if(j&&j.clips&&j.bundles)VC.idx=j}).catch(e=>{VC.err='index: '+e})}catch(e){}
 /* One shared <audio> element (works with the iPhone silent switch). It is "unlocked" by the first tap. */
 function vcEl(){try{if(!VC.el){VC.el=new Audio();VC.el.preload='auto';VC.el.setAttribute('playsinline','')}
@@ -2326,16 +2326,20 @@ SCENES.push({id:'market2',name:'Street market · Phibun School',th:'ตลาด
   const kid=(x,z,girl,bag)=>{c.box(x-.1,.3,z,.14,.6,.16,[.12,.16,.33]);c.box(x+.1,.3,z,.14,.6,.16,[.12,.16,.33]);if(girl)c.box(x,.55,z,.46,.3,.3,[.12,.16,.33]);
    c.box(x,.95,z,.46,.62,.26,[.97,.97,.95]);c.box(x,1.48,z,.34,.36,.3,[.86,.66,.5]);c.box(x,1.69,z-.02,.36,.1,.34,[.08,.06,.06]);
    c.box(x,1.05,z+.2,.38,.5,.16,bag);c.ob.push([x-.3,x+.3,z-.3,z+.3])};
-  kid(-6.2,5.2,true,[.85,.3,.4]);kid(-5.6,5.6,false,[.2,.4,.75]);kid(6.4,6.4,false,[.25,.25,.28]);kid(1.8,7.2,true,[.95,.75,.2]);kid(-10.6,7.4,false,[.3,.6,.35]);
+  kid(-6.2,5.2,true,[.85,.3,.4]);kid(-5.6,5.6,false,[.2,.4,.75]);kid(6.4,6.4,false,[.25,.25,.28]);kid(2.8,6.6,true,[.95,.75,.2]);kid(-10.6,7.4,false,[.3,.6,.35]);
   c.box(10.6,.45,6.8,.3,.5,1.6,[.75,.15,.15]);c.box(10.6,.3,6.15,.12,.6,.12,[.15,.15,.16]);c.box(10.6,.3,7.45,.12,.6,.12,[.15,.15,.16]);c.box(10.6,.95,6.4,.5,.12,.5,[.12,.12,.12]);c.ob.push([10.3,10.9,5.9,7.7]);
   for(const x of [-11,-4,4,11])c.tree(x,8.4);c.lamp(-6.5,7.6);c.lamp(6.5,7.6);
   /* way back: arrow on the zebra crossing and a sign beside it */
-  wayMarks(c,0,.2,0,-1,1);wayPost(c,-1.9,4.4);
-  /* market banner on two posts over the gap at the crossing */
-  for(const x of [-1.9,1.9])c.box(x,1.95,1.2,.12,3.9,.12,[.5,.5,.55],true);c.box(0,3.35,1.2,3.6,.9,.08,[.92,.35,.05]);
+  wayMarks(c,0,.2,0,-1,1);
+  /* sign to Gate 1 on two posts over the gap at the crossing */
+  for(const x of [-1.9,1.9])c.box(x,1.95,1.2,.12,3.9,.12,[.5,.5,.55],true);c.box(0,3.35,1.2,3.6,.9,.08,[.15,.42,.27]);
+  /* market banner at the front (south) entrance of the market walkway */
+  for(const x of [-1.9,1.9])c.box(x,1.45,8.2,.12,2.9,.12,[.5,.5,.55],true);c.box(0,2.4,8.2,3.6,.9,.08,[.92,.35,.05]);
   return{a:new Float32Array(c.a),ob:c.ob}},
- decals:[waySign(-1.9,4.4+.03,0,'Gate 1','กลับหน้าโรงเรียน','↑'),
-  {x:0,y:3.35,z:1.27,w:3.4,h:.8,ry:0,cw:560,ch:132,draw:(g,W,H)=>{g.fillStyle='#ea580c';g.fillRect(0,0,W,H);g.strokeStyle='#fff7e6';g.lineWidth=6;g.strokeRect(6,6,W-12,H-12);
+ decals:[{x:0,y:3.35,z:1.27,w:3.4,h:.8,ry:0,cw:560,ch:132,draw:(g,W,H)=>{g.fillStyle='#1f6f43';g.fillRect(0,0,W,H);g.strokeStyle='#f4f1e6';g.lineWidth=6;g.strokeRect(6,6,W-12,H-12);
+   g.fillStyle='#fff';g.textAlign='center';g.textBaseline='middle';g.font="700 60px Anuphan, sans-serif";g.fillText('↑',W*.1,H*.52);
+   g.font="700 44px Anuphan, 'Noto Sans Thai', sans-serif";g.fillText('กลับหน้าโรงเรียน',W*.56,H*.38);g.font="600 32px Anuphan, sans-serif";g.fillText('Gate 1 · School',W*.56,H*.76)}},
+  {x:0,y:2.4,z:8.27,w:3.4,h:.8,ry:0,cw:560,ch:132,draw:(g,W,H)=>{g.fillStyle='#ea580c';g.fillRect(0,0,W,H);g.strokeStyle='#fff7e6';g.lineWidth=6;g.strokeRect(6,6,W-12,H-12);
    g.fillStyle='#fff';g.textAlign='center';g.textBaseline='middle';g.font="700 46px Anuphan, 'Noto Sans Thai', sans-serif";g.fillText('ตลาดหน้าโรงเรียน',W/2,H*.38);
    g.font="600 34px Anuphan, sans-serif";g.fillText('Street Market',W/2,H*.76)}}],
  npcs:[
