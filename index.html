@@ -568,7 +568,7 @@ function vcKey(text,slow){const s=(slow?'s|':'n|')+String(text).replace(/\s+/g,'
   for(let i=0;i<s.length;i++){const c=s.charCodeAt(i);h1=Math.imul(h1^c,2654435761);h2=Math.imul(h2^c,1597334677)}
   h1=Math.imul(h1^(h1>>>16),2246822507)^Math.imul(h2^(h2>>>13),3266489909);h2=Math.imul(h2^(h2>>>16),2246822507)^Math.imul(h1^(h1>>>13),3266489909);
   return(4294967296*(2097151&h2)+(h1>>>0)).toString(16)}
-const BUILD='20261028i';/* bump when voice files change: it forces browsers to fetch the new files together */
+const BUILD='20261028j';/* bump when voice files change: it forces browsers to fetch the new files together */
 try{fetch('voice/index.json?v='+BUILD).then(r=>r.ok?r.json():null).then(j=>{if(j&&j.clips&&j.bundles)VC.idx=j}).catch(e=>{VC.err='index: '+e})}catch(e){}
 /* One shared <audio> element (works with the iPhone silent switch). It is "unlocked" by the first tap. */
 function vcEl(){try{if(!VC.el){VC.el=new Audio();VC.el.preload='auto';VC.el.setAttribute('playsinline','')}
@@ -805,7 +805,12 @@ function waySign(x,z,ry,en,th,arrow){return {x,y:2.05,z,w:2.4,h:1.05,ry,cw:480,c
 /* the post and board behind a waySign (world boxes); the board faces +z */
 function wayPost(c,x,z){c.box(x,1.1,z-.08,.14,2.2,.14,[.4,.4,.42],true);c.box(x,2.05,z-.06,2.5,1.15,.08,[.15,.42,.27])}
 /* ground chevrons that show the way out */
-function wayMarks(c,x,z,dx,dz,n){for(let k=0;k<n;k++)c.box(x+dx*k,.07,z+dz*k,dx?0.25:1.2,.02,dx?1.2:0.25,[.98,.85,.25])}
+/* big yellow ground arrows pointing along (dx,dz) (only the sign is used): n arrows, 2.1 m apart, starting at (x,z).
+   Each arrow = a shaft plus a stepped head (blocky, like the rest of the town), 1.8 m long and 1.7 m wide. */
+function wayMarks(c,x,z,dx,dz,n){const ux=Math.sign(dx),uz=Math.sign(dz),Y=[.99,.84,.18];
+ const seg=(a,len,wid)=>{const cx=x+ux*a,cz=z+uz*a;c.box(cx,.075,cz,ux?len:wid,.03,ux?wid:len,Y)};
+ for(let k=0;k<n;k++){const b=k*2.1;seg(b+.4,.8,.55);
+  for(let i=0;i<6;i++)seg(b+.9+i*.17,.18,1.7-i*.3)}}
 const SCENES=[];
 /* 1 Market (built earlier) */
 SCENES.push({id:'market',name:'Market',th:'ตลาด',fx:true,color:'#E4572E',spawn:[0,2.6,Math.PI],bounds:[-14.2,14.2,-10.2,10.2],
@@ -1919,7 +1924,7 @@ spawn:[1,4.6,Math.PI],bounds:[-12.4,12.4,-9,15.2],
   for(const [bx,w] of [[-10,8],[-1.4,8]]){c.box(bx,5.4,-11.4,w,10.8,3.4,[.93,.9,.84],true);c.box(bx,10.95,-11.4,w+.6,.3,4,[.91,.93,.91]);
    for(let f=0;f<3;f++){c.box(bx,1.5+f*3.6,-9.62,w-.4,.16,.12,[.75,.72,.66]);for(let k=-1;k<=1;k++)c.box(bx+k*2.4,2.4+f*3.6,-9.68,1.5,1.3,.04,WIN)}}
   /* way to the flagpole: arrows on the ground at final x=-7, sign beside the path at final x=-10 (build code is pre-mirror) */
-  wayPost(c,10,-7.2);wayMarks(c,7,-5.4,0,-.7,4);
+  wayPost(c,10,-7.2);wayMarks(c,7,-5.2,0,-1,2);
   /* trees and lamps */
   for(const [x,z] of [[-11.6,-3],[-1.2,-3.4],[12,-5],[-12,3.6],[12.2,3.6],[-8.6,-8.4]])c.tree(x,z);
   c.lamp(-9.5,4.9);c.lamp(1,4.9);c.lamp(11,4.9);
@@ -2015,9 +2020,9 @@ SCENES.push({id:'flagpole',name:'Flagpole · Phibun School',th:'ลานเส�
    for(let f=0;f<3;f++)for(let k=-4;k<=4;k++)c.box(bx+2.02,1.9+f*3.6,bz+k*2.2,.04,1.3,1.2,WIN);
    tPyr(A,bx+.6,10.8,bz,6.6,2.6,21,[.48,.29,.2])}
   /* path back to Gate 1 on the east side, with a sign */
-  c.box(10.6,.05,-6.4,4,.08,2.4,CONC);wayPost(c,10.8,-4.4);wayMarks(c,9.4,-6.4,.7,0,4);
+  c.box(10.6,.05,-6.4,4,.08,2.4,CONC);wayPost(c,10.8,-4.4);wayMarks(c,8.3,-6.4,1,0,2);
   /* front walkway back to the school front (Gate 1): wide path to the bottom edge, arrows and a sign */
-  c.box(0,.05,6.4,3.4,.08,5.6,CONC);wayPost(c,3.1,5.6);wayMarks(c,0,5.4,0,.7,5);
+  c.box(0,.05,6.4,3.4,.08,5.6,CONC);wayPost(c,3.1,5.6);wayMarks(c,0,4.6,0,1,2);
   /* trees, benches and lamps around the yard */
   for(const [x,z] of [[-11,6.6],[11.2,6.6],[6,7.6],[-6,7.6],[11.6,1.5]])c.tree(x,z);
   c.bench(-8,4.6);c.bench(8,4.6);c.lamp(-10,2);c.lamp(10,2);
