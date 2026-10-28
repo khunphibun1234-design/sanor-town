@@ -568,7 +568,7 @@ function vcKey(text,slow){const s=(slow?'s|':'n|')+String(text).replace(/\s+/g,'
   for(let i=0;i<s.length;i++){const c=s.charCodeAt(i);h1=Math.imul(h1^c,2654435761);h2=Math.imul(h2^c,1597334677)}
   h1=Math.imul(h1^(h1>>>16),2246822507)^Math.imul(h2^(h2>>>13),3266489909);h2=Math.imul(h2^(h2>>>16),2246822507)^Math.imul(h1^(h1>>>13),3266489909);
   return(4294967296*(2097151&h2)+(h1>>>0)).toString(16)}
-const BUILD='20261028n';/* bump when voice files change: it forces browsers to fetch the new files together */
+const BUILD='20261028o';/* bump when voice files change: it forces browsers to fetch the new files together */
 try{fetch('voice/index.json?v='+BUILD).then(r=>r.ok?r.json():null).then(j=>{if(j&&j.clips&&j.bundles)VC.idx=j}).catch(e=>{VC.err='index: '+e})}catch(e){}
 /* One shared <audio> element (works with the iPhone silent switch). It is "unlocked" by the first tap. */
 function vcEl(){try{if(!VC.el){VC.el=new Audio();VC.el.preload='auto';VC.el.setAttribute('playsinline','')}
@@ -1993,7 +1993,8 @@ SCENES.push({id:'flagpole',name:'Flagpole · Phibun School',th:'ลานเส�
  exits:[{x0:11.6,x1:12.4,z0:-7.6,z1:-5.2,to:'gate1',at:[-7,-7.4,0]},
   {x0:-1.6,x1:1.6,z0:8.3,z1:9.2,to:'gate1',at:[-7,-7.4,0]},
   {x0:-12.4,x1:-11.6,z0:-.5,z1:1.3,to:'class85',at:[4.5,1.8,Math.PI]},
-  {x0:-12.4,x1:-11.6,z0:2.8,z1:4.4,to:'canteen',at:[7.8,3.2,-Math.PI/2]}],/* south-west path: to the canteen *//* west path: into the classroom in building 6 *//* east path and the front walkway both lead back to Gate 1 */
+  {x0:-12.4,x1:-11.6,z0:2.8,z1:4.4,to:'canteen',at:[7.8,3.2,-Math.PI/2]},
+  {x0:11.6,x1:12.4,z0:2.6,z1:4,to:'football',at:[-15.4,7.5,Math.PI/2]}],/* east path (south of the Gate 1 path): to the football field *//* south-west path: to the canteen *//* west path: into the classroom in building 6 *//* east path and the front walkway both lead back to Gate 1 */
  build(){const c=mk(),A=c.a;
   const STEEL=[.42,.44,.48],ROOF=[.85,.53,.35],ROOF2=[.8,.49,.32],CONC=[.76,.75,.71];
   c.box(0,-.06,0,140,.12,140,[.47,.68,.36]);
@@ -2031,9 +2032,11 @@ SCENES.push({id:'flagpole',name:'Flagpole · Phibun School',th:'ลานเส�
   for(const [x,z] of [[-11,6.6],[11.2,6.6],[6,7.6],[-6,7.6],[11.6,1.5]])c.tree(x,z);
   c.bench(-7,6.2);c.bench(8,4.6);
   /* south-west path to the canteen (the canteen building is further west on the map) */
-  c.box(-10,.05,3.6,4.8,.08,1.6,CONC);wayPost(c,-11.3,2.15);wayMarks(c,-8.2,3.6,-1,0,2);c.lamp(-10,2);c.lamp(10,2);
+  c.box(-10,.05,3.6,4.8,.08,1.6,CONC);wayPost(c,-11.3,2.15);wayMarks(c,-8.2,3.6,-1,0,2);
+  /* east path to the football field (the field is east of the dome on the map) */
+  c.box(10.4,.05,3.3,4,.08,1.4,CONC);wayPost(c,9,1.7);wayMarks(c,8.6,3.3,1,0,2);c.lamp(-10,2);c.lamp(10,2);
   return{a:new Float32Array(A),ob:c.ob}},
- decals:[waySign(10.8,-4.4+.03,0,'Gate 1','ไปประตู 1','→'),waySign(3.1,5.6+.03,0,'School front','กลับหน้าโรงเรียน','↓'),waySign(-9.6,-.9+.03,0,'Classroom','ห้องเรียน','←'),waySign(-11.3,2.15+.03,0,'Canteen','โรงอาหาร','←')],
+ decals:[waySign(10.8,-4.4+.03,0,'Gate 1','ไปประตู 1','→'),waySign(3.1,5.6+.03,0,'School front','กลับหน้าโรงเรียน','↓'),waySign(-9.6,-.9+.03,0,'Classroom','ห้องเรียน','←'),waySign(-11.3,2.15+.03,0,'Canteen','โรงอาหาร','←'),waySign(9,1.7+.03,0,'Football field','สนามฟุตบอล','→')],
  npcs:[
  NPCDEF('homeroom','Ms. Suda','Homeroom teacher⁣ครูประจำชั้น',-2.8,-2.2,Math.PI,[.85,.35,.45],[.2,.2,.26],[.08,.06,.07],'bun',[
   TT("Good morning, class! Please stand in your line.",'สวัสดีตอนเช้า นักเรียน ยืนเข้าแถวของตัวเองนะ',"Good morning, teacher. OK!","Good night, teacher. OK!","Please stand in your line.",'ครูทักตอนเช้าและบอกให้เข้าแถว ให้ทักทายกลับและรับคำ','Good morning = สวัสดีตอนเช้า (Good night ใช้ตอนลาไปนอน)'),
@@ -2177,7 +2180,65 @@ SCENES.push({id:'canteen',name:'Canteen · Phibun School',th:'โรงอาห
   TT("What did you get for lunch?",'กลางวันนี้ซื้ออะไรมากิน',"I got green curry and fried chicken.","I get up at six.","Yes, I did.",'เพื่อนถามว่าซื้ออะไรมา (What did you get?) ให้บอกอาหารที่ซื้อ','I got ... = ฉันได้ ... มา (ซื้อมา)'),
   TT("Let's put our plates back over there after we eat.",'กินเสร็จแล้วเอาจานไปเก็บตรงโน้นกันนะ',"OK. And let's wash our hands too.","OK. Let's leave them on the table.","Let's put our plates back.",'เพื่อนชวนเก็บจานหลังกินเสร็จ ให้ตอบรับและชวนล้างมือ','put back = เอาไปเก็บ, wash our hands = ล้างมือ')])]});
 
-const GROUP={gate1:'phibun',flagpole:'phibun',class85:'phibun',canteen:'phibun',market:'daily',restaurant:'daily',seven:'daily',bigc:'daily',lotus:'daily',amazon:'daily',school:'school',bus:'places',clinic:'places',park:'places',hotel:'places',airport:'places',candle:'ubon',longboat:'ubon',songkran:'ubon',khongchiam:'ubon',phuphrao:'ubon',phataem:'ubon',train:'places',cafeteria:'school',classroom:'school',home:'daily',clothes:'daily',sports:'school',pharmacy:'daily',post:'daily',bank:'places',library:'school',police:'places',gas:'places',mall:'daily',samphanbok:'ubon',sirindhorn:'ubon',museum:'ubon',thungsi:'ubon',localfood:'ubon'};
+/* ===== Our school: the football field with the running track (from the teacher's map: 400 m track on the east side,
+   "ศาลาสนามฟุตบอล" = long shelter with a green roof on the west side of the field) =====
+   Shortened to fit a phone: pitch with goals and lines, a red track around it, the green-roof shelter with steps.
+   Enter from the flagpole yard at the south-west corner. NPC names are made up. */
+SCENES.push({id:'football',name:'Football field · Phibun School',th:'สนามฟุตบอล',color:'#15803D',orbit:true,spawn:[-15.4,7.5,Math.PI/2],bounds:[-17,13.4,-9.4,9.4],
+ exits:[{x0:-17,x1:-16.4,z0:6.5,z1:8.5,to:'flagpole',at:[9.4,3.3,-Math.PI/2]}],/* south-west corner path leads back to the flagpole yard */
+ build(){const c=mk();
+  const TRACK=[.7,.33,.24],LINE=[.97,.96,.92],PITCH=[.36,.66,.3],PITCH2=[.33,.62,.28],ROOF=[.25,.54,.42];
+  c.box(0,-.06,0,90,.12,90,[.47,.68,.36]);
+  /* red track around the pitch, lane lines on the long sides */
+  c.box(0,.03,0,27,.04,19,TRACK);
+  for(let k=1;k<4;k++){const o=k*.75;c.box(0,.055,-6.5-o,21,.01,.05,LINE);c.box(0,.055,6.5+o,21,.01,.05,LINE)}
+  c.box(-9,.055,7.25+.75,.08,.01,3,LINE);/* start line */
+  /* pitch with mowing stripes and white lines */
+  for(let i=0;i<7;i++)c.box(-9+i*3,.06,0,3,.04,13,i%2?PITCH2:PITCH);
+  const ln=(x,z,sx,sz)=>c.box(x,.085,z,sx,.01,sz,LINE);
+  ln(0,-6.2,20.4,.1);ln(0,6.2,20.4,.1);ln(-10.2,0,.1,12.5);ln(10.2,0,.1,12.5);ln(0,0,.1,12.5);
+  for(let a=0;a<24;a++){const t=a/24*Math.PI*2;ln(Math.cos(t)*2,Math.sin(t)*2,.32,.32)}
+  for(const s of [-1,1]){ln(s*8.6,0,.1,6);ln(s*9.4,-3,1.6,.1);ln(s*9.4,3,1.6,.1);
+   /* goals: two posts, crossbar and a net at the back */
+   const gx=s*10.35;c.box(gx,1,-1.8,.12,2,.12,LINE,true);c.box(gx,1,1.8,.12,2,.12,LINE,true);c.box(gx,2,0,.12,.12,3.72,LINE);
+   c.box(gx+s*.8,1,0,.04,2,3.6,[.86,.88,.9]);c.box(gx+s*.4,1.98,0,.8,.04,3.6,[.86,.88,.9])}
+  c.box(1.2,.17,.6,.3,.3,.3,[.98,.98,.98]);c.box(1.2,.17,.6,.12,.31,.12,[.15,.15,.15]);/* ball */
+  for(const [x,z] of [[-6,-3],[-6,3],[-4.5,0]])c.box(x,.18,z,.3,.36,.3,[1,.5,.1]);/* cones */
+  /* classmates in PE clothes playing on the pitch */
+  const kid=(x,z,shirt,ry)=>{c.box(x-.1,.3,z,.14,.6,.16,[.86,.66,.5]);c.box(x+.1,.3,z,.14,.6,.16,[.86,.66,.5]);c.box(x,.66,z,.46,.24,.3,[.12,.16,.33]);
+   c.box(x,1.02,z,.46,.5,.26,shirt);c.box(x,1.48,z,.34,.36,.3,[.86,.66,.5]);c.box(x,1.69,z,.36,.1,.34,[.08,.06,.06]);c.ob.push([x-.3,x+.3,z-.25,z+.25])};
+  kid(4,2.5,[.2,.45,.85]);kid(6,-1.5,[.2,.45,.85]);kid(9.4,.4,[.95,.8,.2]);kid(2.5,-3.5,[.85,.25,.25]);kid(5.5,4.2,[.85,.25,.25]);kid(-2.5,3.8,[.85,.25,.25]);
+  kid(0,-8.2,[.2,.45,.85]);kid(-5,8.3,[.95,.8,.2]);
+  /* the green-roof shelter (sala) on the west side with three steps of seats */
+  for(let k=0;k<3;k++)c.box(-15.6+k*.7,.25+k*.25,0,.9,.5+k*.5,10,[.85,.83,.78]);
+  c.ob.push([-16.8,-14.2,-5,5]);
+  for(const z of [-5,-1.7,1.7,5]){c.box(-16.6,1.7,z,.25,3.4,.25,[.75,.76,.78],true);c.box(-14.1,1.5,z,.25,3,.25,[.75,.76,.78],true)}
+  c.box(-15.35,3.35,0,3.4,.18,10.8,ROOF);c.box(-15.35,3.5,0,1.6,.18,10.8,[.22,.48,.38]);
+  for(const [x,z] of [[-14.6,2.8],[-15.2,-1.2],[-14.6,-3.6]])c.box(x,1.5,z,.36,.5,.26,[.97,.97,.95]);/* students resting on the steps */
+  c.tree(12.2,-9.8);c.tree(12.2,9.8);c.tree(-16.4,-8.4);
+  /* way out: path at the south-west corner, arrow and sign */
+  c.box(-15.4,.05,7.5,3.4,.08,2,[.76,.75,.71]);wayMarks(c,-13.9,7.5,-1,0,1);wayPost(c,-15.4,5.9);
+  return{a:new Float32Array(c.a),ob:c.ob}},
+ decals:[waySign(-15.4,5.9+.03,0,'Flagpole','กลับลานเสาธง','←')],
+ npcs:[
+ NPCDEF('pe','Mr. Tee','PE teacher⁣ครูพลศึกษา',-9,8.2,Math.PI,[.95,.95,.95],[.15,.2,.45],[.08,.06,.07],'cap',[
+  TT("Everyone, line up! First, we warm up for five minutes.",'ทุกคนเข้าแถว อบอุ่นร่างกายก่อนห้านาที',"OK, sir. Let's warm up.","OK, sir. Let's go home.","First, we warm up.",'ครูพละให้เข้าแถวและอบอุ่นร่างกาย ให้รับคำ','warm up = อบอุ่นร่างกาย, line up = เข้าแถว'),
+  TT("Now, run two laps around the track.",'ต่อไปวิ่งรอบลู่สองรอบ',"Two laps? OK, I'll try.","Two cups? OK, I'll try.","Now, run two laps.",'ครูสั่งให้วิ่งสองรอบ ให้ทวนคำสั่งและรับคำ','lap = รอบ (วิ่ง), track = ลู่วิ่ง'),
+  TT("Good job! Drink some water and take a rest.",'เก่งมาก ดื่มน้ำแล้วพักก่อนนะ',"Thank you, sir. I'm very tired.","Thank you, sir. I'll run ten more laps.","Take a rest.",'ครูชมและให้พัก ให้ขอบคุณและบอกว่าเหนื่อย','take a rest = พัก, tired = เหนื่อย')]),
+ NPCDEF('arm','Arm','Classmate⁣เพื่อนร่วมห้อง',-2.4,.4,-Math.PI/2,[.2,.45,.85],[.12,.16,.33],[.08,.06,.07],'',[
+  TT("Hey! Do you want to play football with us?",'เฮ้ เล่นฟุตบอลด้วยกันไหม',"Sure! I love football.","Sure! I love fried chicken.","Do you want to play?",'เพื่อนชวนเล่นฟุตบอล ให้ตอบรับ','play football = เล่นฟุตบอล'),
+  TT("Can you be the goalkeeper?",'เป็นผู้รักษาประตูได้ไหม',"OK. I'll stand in the goal.","OK. I'll sit in the canteen.","Can you be the goalkeeper?",'เพื่อนขอให้เป็นผู้รักษาประตู ให้ตอบรับว่าจะยืนเฝ้าประตู','goalkeeper = ผู้รักษาประตู, goal = ประตู (ฟุตบอล)'),
+  TT("Pass the ball to me!",'ส่งบอลมาให้ฉัน',"OK! Here it comes!","OK! Here's my homework.","Pass the ball to me!",'เพื่อนขอให้ส่งบอล ให้บอกว่ากำลังส่งไป','pass the ball = ส่งบอล, Here it comes! = มาแล้ว')]),
+ NPCDEF('fah','Fah','Runner⁣นักวิ่ง',4.5,-7.6,-Math.PI/2,[.95,.8,.2],[.12,.16,.33],[.08,.06,.07],'long',[
+  TT("I'm practicing for sports day. Do you want to run with me?",'ฉันซ้อมวิ่งไว้แข่งกีฬาสี วิ่งด้วยกันไหม',"Sure. Let's run together.","Sure. Let's sleep together.","Sports day.",'เพื่อนชวนวิ่งด้วยกัน ให้ตอบรับ','sports day = วันกีฬาสี, together = ด้วยกัน'),
+  TT("Wow, you run fast! Who taught you?",'ว้าว วิ่งเร็วจัง ใครสอนเธอ',"My dad taught me.","I'm fine, thank you.","You run fast!",'ถามด้วย Who ...? ให้ตอบว่าใคร','Who taught you? = ใครสอนเธอ, taught = สอน (อดีตของ teach)'),
+  TT("Which color team are you on for sports day?",'กีฬาสีเธออยู่สีอะไร',"I'm on the blue team.","I'm on the bus.","Sports day is fun.",'ถามว่าอยู่ทีมสีอะไร ให้บอกสีของทีม','color team = ทีมสี (กีฬาสี), blue = สีฟ้า/น้ำเงิน')]),
+ NPCDEF('jo','Jo','Hurt friend⁣เพื่อนที่บาดเจ็บ',-13,-2.2,Math.PI/2,[.85,.25,.25],[.12,.16,.33],[.1,.08,.07],'',[
+  TT("Ouch! I hurt my ankle.",'โอ๊ย ข้อเท้าเจ็บ',"Oh no! Let's go to the nurse's room.","Oh no! Let's play more football.","I hurt my ankle.",'เพื่อนเจ็บข้อเท้า ให้ชวนไปห้องพยาบาล','ankle = ข้อเท้า, nurse\'s room = ห้องพยาบาล'),
+  TT("Can you help me walk there?",'ช่วยพยุงฉันเดินไปหน่อยได้ไหม',"Of course. Hold my arm.","No. I can't walk.","Can you help me?",'เพื่อนขอให้ช่วยพยุงเดิน ให้ตอบรับและให้จับแขน','Hold my arm. = จับแขนฉันไว้'),
+  TT("Thanks. You're a good friend.",'ขอบคุณนะ เธอเป็นเพื่อนที่ดี',"You're welcome. Get well soon!","You're welcome. Good night!","You're a good friend.",'เพื่อนขอบคุณ ให้ตอบและอวยพรให้หายเร็ว ๆ','Get well soon! = หายเร็ว ๆ นะ')])]});
+
+const GROUP={gate1:'phibun',flagpole:'phibun',class85:'phibun',canteen:'phibun',football:'phibun',market:'daily',restaurant:'daily',seven:'daily',bigc:'daily',lotus:'daily',amazon:'daily',school:'school',bus:'places',clinic:'places',park:'places',hotel:'places',airport:'places',candle:'ubon',longboat:'ubon',songkran:'ubon',khongchiam:'ubon',phuphrao:'ubon',phataem:'ubon',train:'places',cafeteria:'school',classroom:'school',home:'daily',clothes:'daily',sports:'school',pharmacy:'daily',post:'daily',bank:'places',library:'school',police:'places',gas:'places',mall:'daily',samphanbok:'ubon',sirindhorn:'ubon',museum:'ubon',thungsi:'ubon',localfood:'ubon'};
 SCENES.forEach(s=>s.group=GROUP[s.id]);
 const SUB={khongchiam:'nature',phataem:'nature',samphanbok:'nature',sirindhorn:'nature',candle:'culture',longboat:'culture',songkran:'culture',phuphrao:'culture',museum:'culture',thungsi:'culture',localfood:'food'};
 SCENES.forEach(s=>{if(SUB[s.id])s.sub=SUB[s.id]});
