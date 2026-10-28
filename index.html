@@ -568,7 +568,7 @@ function vcKey(text,slow){const s=(slow?'s|':'n|')+String(text).replace(/\s+/g,'
   for(let i=0;i<s.length;i++){const c=s.charCodeAt(i);h1=Math.imul(h1^c,2654435761);h2=Math.imul(h2^c,1597334677)}
   h1=Math.imul(h1^(h1>>>16),2246822507)^Math.imul(h2^(h2>>>13),3266489909);h2=Math.imul(h2^(h2>>>16),2246822507)^Math.imul(h1^(h1>>>13),3266489909);
   return(4294967296*(2097151&h2)+(h1>>>0)).toString(16)}
-const BUILD='20261028j';/* bump when voice files change: it forces browsers to fetch the new files together */
+const BUILD='20261028k';/* bump when voice files change: it forces browsers to fetch the new files together */
 try{fetch('voice/index.json?v='+BUILD).then(r=>r.ok?r.json():null).then(j=>{if(j&&j.clips&&j.bundles)VC.idx=j}).catch(e=>{VC.err='index: '+e})}catch(e){}
 /* One shared <audio> element (works with the iPhone silent switch). It is "unlocked" by the first tap. */
 function vcEl(){try{if(!VC.el){VC.el=new Audio();VC.el.preload='auto';VC.el.setAttribute('playsinline','')}
@@ -808,7 +808,7 @@ function wayPost(c,x,z){c.box(x,1.1,z-.08,.14,2.2,.14,[.4,.4,.42],true);c.box(x,
 /* big yellow ground arrows pointing along (dx,dz) (only the sign is used): n arrows, 2.1 m apart, starting at (x,z).
    Each arrow = a shaft plus a stepped head (blocky, like the rest of the town), 1.8 m long and 1.7 m wide. */
 function wayMarks(c,x,z,dx,dz,n){const ux=Math.sign(dx),uz=Math.sign(dz),Y=[.99,.84,.18];
- const seg=(a,len,wid)=>{const cx=x+ux*a,cz=z+uz*a;c.box(cx,.075,cz,ux?len:wid,.03,ux?wid:len,Y)};
+ const seg=(a,len,wid)=>{const cx=x+ux*a,cz=z+uz*a;c.box(cx,.105,cz,ux?len:wid,.03,ux?wid:len,Y)};
  for(let k=0;k<n;k++){const b=k*2.1;seg(b+.4,.8,.55);
   for(let i=0;i<6;i++)seg(b+.9+i*.17,.18,1.7-i*.3)}}
 const SCENES=[];
@@ -1991,7 +1991,8 @@ spawn:[1,4.6,Math.PI],bounds:[-12.4,12.4,-9,15.2],
    Walk out on the east path to go back to Gate 1. NPC names are made up. */
 SCENES.push({id:'flagpole',name:'Flagpole · Phibun School',th:'ลานเสาธง โรงเรียนพิบูลมังสาหาร',color:'#B91C1C',orbit:true,spawn:[10.2,-6.4,-Math.PI/2],bounds:[-12.4,12.4,-9,9],
  exits:[{x0:11.6,x1:12.4,z0:-7.6,z1:-5.2,to:'gate1',at:[-7,-7.4,0]},
-  {x0:-1.6,x1:1.6,z0:8.3,z1:9.2,to:'gate1',at:[-7,-7.4,0]}],/* east path and the front walkway both lead back to Gate 1 */
+  {x0:-1.6,x1:1.6,z0:8.3,z1:9.2,to:'gate1',at:[-7,-7.4,0]},
+  {x0:-12.4,x1:-11.6,z0:-.5,z1:1.3,to:'class85',at:[4.5,1.8,Math.PI]}],/* west path: into the classroom in building 6 *//* east path and the front walkway both lead back to Gate 1 */
  build(){const c=mk(),A=c.a;
   const STEEL=[.42,.44,.48],ROOF=[.85,.53,.35],ROOF2=[.8,.49,.32],CONC=[.76,.75,.71];
   c.box(0,-.06,0,140,.12,140,[.47,.68,.36]);
@@ -2023,11 +2024,13 @@ SCENES.push({id:'flagpole',name:'Flagpole · Phibun School',th:'ลานเส�
   c.box(10.6,.05,-6.4,4,.08,2.4,CONC);wayPost(c,10.8,-4.4);wayMarks(c,8.3,-6.4,1,0,2);
   /* front walkway back to the school front (Gate 1): wide path to the bottom edge, arrows and a sign */
   c.box(0,.05,6.4,3.4,.08,5.6,CONC);wayPost(c,3.1,5.6);wayMarks(c,0,4.6,0,1,2);
+  /* west path to the classroom door on building 6 (ground floor) */
+  c.box(-10.6,.05,.4,4.6,.08,1.8,CONC);c.box(-13.95,1.1,.4,.1,2.2,1.4,DOOR);wayPost(c,-9.6,-.9);wayMarks(c,-8.4,.4,-1,0,2);
   /* trees, benches and lamps around the yard */
   for(const [x,z] of [[-11,6.6],[11.2,6.6],[6,7.6],[-6,7.6],[11.6,1.5]])c.tree(x,z);
   c.bench(-8,4.6);c.bench(8,4.6);c.lamp(-10,2);c.lamp(10,2);
   return{a:new Float32Array(A),ob:c.ob}},
- decals:[waySign(10.8,-4.4+.03,0,'Gate 1','ไปประตู 1','→'),waySign(3.1,5.6+.03,0,'School front','กลับหน้าโรงเรียน','↓')],
+ decals:[waySign(10.8,-4.4+.03,0,'Gate 1','ไปประตู 1','→'),waySign(3.1,5.6+.03,0,'School front','กลับหน้าโรงเรียน','↓'),waySign(-9.6,-.9+.03,0,'Classroom 8/5','ห้องเรียน ม.2/5','←')],
  npcs:[
  NPCDEF('homeroom','Ms. Suda','Homeroom teacher⁣ครูประจำชั้น',-2.8,-2.2,Math.PI,[.85,.35,.45],[.2,.2,.26],[.08,.06,.07],'bun',[
   TT("Good morning, class! Please stand in your line.",'สวัสดีตอนเช้า นักเรียน ยืนเข้าแถวของตัวเองนะ',"Good morning, teacher. OK!","Good night, teacher. OK!","Please stand in your line.",'ครูทักตอนเช้าและบอกให้เข้าแถว ให้ทักทายกลับและรับคำ','Good morning = สวัสดีตอนเช้า (Good night ใช้ตอนลาไปนอน)'),
@@ -2046,7 +2049,71 @@ SCENES.push({id:'flagpole',name:'Flagpole · Phibun School',th:'ลานเส�
   TT("Which line is Grade 8, Room 5?",'แถว ม.2/5 อยู่ตรงไหน',"It's the third line from the left.","It's eight o'clock.","Hurry! Your line is over there.",'ถามว่าแถวไหน (Which line ...?) ให้บอกตำแหน่งแถว','the third line from the left = แถวที่สามจากซ้าย'),
   TT("I'll run there now!",'งั้นวิ่งไปเลยนะ',"Be careful. Don't fall!","Good night! See you.","Which line is Grade 8, Room 5?",'เพื่อนจะวิ่งไปที่แถว ให้เตือนให้ระวัง',"Be careful. = ระวังนะ, Don't fall! = อย่าล้ม")])]});
 
-const GROUP={gate1:'phibun',flagpole:'phibun',market:'daily',restaurant:'daily',seven:'daily',bigc:'daily',lotus:'daily',amazon:'daily',school:'school',bus:'places',clinic:'places',park:'places',hotel:'places',airport:'places',candle:'ubon',longboat:'ubon',songkran:'ubon',khongchiam:'ubon',phuphrao:'ubon',phataem:'ubon',train:'places',cafeteria:'school',classroom:'school',home:'daily',clothes:'daily',sports:'school',pharmacy:'daily',post:'daily',bank:'places',library:'school',police:'places',gas:'places',mall:'daily',samphanbok:'ubon',sirindhorn:'ubon',museum:'ubon',thungsi:'ubon',localfood:'ubon'};
+/* ===== Our school: Grade 8 Room 5 classroom on the ground floor of building 6 (English lesson, prototype) =====
+   Reached from the flagpole yard by the path to building 6 (west side); the door at the back right leads out again.
+   The side and back walls are low (cut away) so the 360-degree camera can always see inside; the front wall with
+   the whiteboard is higher (2.3 m). The room number and lesson are made up for the game; NPC names are made up. */
+SCENES.push({id:'class85',name:'Classroom · Phibun School',th:'ห้องเรียน ม.2/5 อาคาร 6',color:'#0F766E',orbit:true,spawn:[4.5,1.8,Math.PI],bounds:[-5.8,5.8,-4.5,5.2],
+ exits:[{x0:3.7,x1:5.3,z0:4.4,z1:5.2,to:'flagpole',at:[-10.8,.4,Math.PI/2]}],/* the classroom door leads back to the flagpole yard */
+ build(){const c=mk();
+  const WALL=[.93,.9,.82],CAP=[.62,.5,.36],DESK=[.86,.72,.5],LEG=[.42,.44,.48],CHAIR=[.25,.45,.7];
+  c.box(0,-.06,0,80,.12,80,[.47,.68,.36]);
+  c.box(0,.03,6.3,16,.06,2.6,[.74,.73,.69]);/* corridor outside the door */
+  /* tiled floor */
+  for(let i=0;i<10;i++)for(let j=0;j<8;j++)c.box(-5.4+i*1.2,.04,-4.2+j*1.2,1.2,.04,1.2,(i+j)%2?[.88,.86,.8]:[.8,.78,.72]);
+  /* front wall (full height) with whiteboard, clock and a notice board */
+  c.box(0,1.15,-4.95,12.6,2.3,.2,WALL,true);c.box(0,2.33,-4.95,12.7,.06,.3,CAP);
+  c.box(0,1.55,-4.83,4.9,1.3,.04,[.55,.56,.6]);c.box(0,1.55,-4.8,4.7,1.16,.04,[.98,.98,.98]);c.box(0,.88,-4.72,4.6,.06,.14,[.55,.56,.6]);
+  c.box(3.6,1.95,-4.83,.44,.44,.04,[.98,.98,.98]);c.box(3.6,1.95,-4.8,.05,.26,.02,[.1,.1,.1]);
+  c.box(-4.2,1.5,-4.83,1.8,1,.04,[.62,.42,.25]);c.box(-4.4,1.6,-4.8,.5,.55,.02,[.95,.85,.4]);c.box(-3.8,1.45,-4.8,.5,.45,.02,[.6,.85,.95]);
+  /* low side and back walls (cut away), with a door gap at the back right */
+  for(const x of [-6.2,6.2]){c.box(x,.6,0,.2,1.2,10,WALL,true);c.box(x,1.23,0,.3,.06,10,CAP)}
+  c.box(-1.3,.6,4.95,9.8,1.2,.2,WALL,true);c.box(-1.3,1.23,4.95,9.9,.06,.3,CAP);
+  c.box(5.85,.6,4.95,.7,1.2,.2,WALL,true);c.box(5.85,1.23,4.95,.7,.06,.3,CAP);
+  c.box(3.55,1.1,4.95,.14,2.2,.24,CAP);c.box(5.45,1.1,4.95,.14,2.2,.24,CAP);c.box(4.5,2.25,4.95,2.05,.14,.24,CAP);
+  /* lockers along the back wall */
+  for(let k=0;k<6;k++)c.box(-5.2+k*.75,.55,4.55,.7,1.1,.5,k%2?[.3,.5,.75]:[.35,.56,.8]);c.ob.push([-5.6,-.7,4.3,4.9]);
+  /* teacher's desk and chair */
+  c.box(-3.4,.75,-3.5,1.7,.08,.85,[.6,.4,.26]);c.box(-3.4,.38,-3.5,1.6,.72,.7,[.52,.34,.22],true);
+  c.box(-3.4,.45,-2.8,.5,.08,.5,CHAIR);c.box(-3.4,.75,-2.57,.5,.55,.06,CHAIR);
+  c.box(-3.8,.84,-3.6,.5,.1,.36,[.9,.3,.3]);c.box(-3.1,.84,-3.5,.36,.06,.26,[.95,.95,.92]);
+  /* 4 x 3 student desks with chairs; some classmates are already sitting */
+  const desk=(x,z)=>{c.box(x,.72,z,.9,.06,.6,DESK);c.box(x-.38,.36,z,.06,.72,.5,LEG);c.box(x+.38,.36,z,.06,.72,.5,LEG);
+   c.box(x,.44,z+.6,.44,.06,.42,CHAIR);c.box(x,.7,z+.8,.44,.46,.05,CHAIR);c.box(x,.22,z+.6,.06,.44,.06,LEG);c.ob.push([x-.45,x+.45,z-.3,z+.85])};
+  const sit=(x,z,girl)=>{const p=z+.58;c.box(x,.97,p,.42,.52,.24,[.97,.97,.95]);c.box(x,1.39,p,.32,.32,.28,[.86,.66,.5]);
+   c.box(x,1.58,p+.02,.34,.08,.32,[.08,.06,.06]);if(girl)c.box(x,1.4,p+.15,.34,.3,.06,[.08,.06,.06]);
+   c.box(x-.1,.52,p-.15,.14,.14,.36,[.12,.16,.33]);c.box(x+.1,.52,p-.15,.14,.14,.36,[.12,.16,.33]);c.box(x,.77,z,.3,.03,.22,[.95,.95,.92])};
+  const DX=[-3.6,-1.2,1.2,3.6],DZ=[-1.6,.5,2.5];
+  for(const x of DX)for(const z of DZ)desk(x,z);
+  sit(-3.6,-1.6,true);sit(-1.2,-1.6,false);sit(3.6,-1.6,true);sit(-3.6,2.5,false);sit(1.2,.5,true);sit(-1.2,2.5,true);
+  /* way out: big arrow to the door and a sign beside it */
+  c.box(4.5,2.75,4.98,1.95,.85,.1,[.15,.42,.27]);wayMarks(c,4.5,2.6,0,1,1);/* sign board above the door */
+  return{a:new Float32Array(c.a),ob:c.ob}},
+ decals:[
+  {x:0,y:1.55,z:-4.77,w:4.6,h:1.12,ry:0,cw:740,ch:180,draw:(g,W,H)=>{g.fillStyle='#fbfbfb';g.fillRect(0,0,W,H);g.textAlign='left';g.textBaseline='middle';
+   g.fillStyle='#1d4ed8';g.font="700 38px Anuphan, 'Noto Sans Thai', sans-serif";g.fillText('English · Grade 8/5  (ม.2/5)',30,36);
+   g.fillStyle='#b91c1c';g.font="700 34px Anuphan, sans-serif";g.fillText('Unit 3: My School Day',30,88);
+   g.fillStyle='#111827';g.font="600 30px Anuphan, 'Noto Sans Thai', sans-serif";g.fillText('Open your book to page 25.  เปิดหนังสือหน้า 25',30,140)}},
+  Object.assign(waySign(4.5,4.98-.08,Math.PI,'Flagpole','ไปลานเสาธง','↑'),{y:2.75,w:1.8,h:.79})],
+ npcs:[
+ NPCDEF('teacher','Mr. Krit','English teacher⁣ครูภาษาอังกฤษ',1,-3.7,0,[.35,.55,.8],[.2,.2,.26],[.1,.08,.07],'',[
+  TT("Good morning, everyone. How are you today?",'สวัสดีตอนเช้าทุกคน วันนี้เป็นอย่างไรบ้าง',"I'm fine, thank you. And you?","I'm twelve years old.","Good morning, everyone.",'ครูทักและถามว่าเป็นอย่างไรบ้าง ให้ตอบว่าสบายดีและถามกลับ','How are you? ตอบ I\'m fine, thank you. And you?'),
+  TT("Please open your book to page twenty-five.",'เปิดหนังสือหน้ายี่สิบห้านะ',"OK. Page twenty-five.","OK. Page fifteen.","Please close your book.",'ครูสั่งให้เปิดหนังสือ ให้รับคำและทวนเลขหน้าให้ถูก','open your book = เปิดหนังสือ, twenty-five = 25 (fifteen = 15)'),
+  TT("Do you have any questions?",'มีคำถามไหม',"Yes. What does 'library' mean?","Yes, I do. I'm fine.","Page twenty-five.",'ครูถามว่ามีคำถามไหม ให้ถามความหมายของคำศัพท์','What does ... mean? = ... แปลว่าอะไร, library = ห้องสมุด')]),
+ NPCDEF('pim','Pim','Deskmate⁣เพื่อนข้างโต๊ะ',-2.4,1.1,Math.PI/2,[.97,.97,.95],[.14,.2,.42],[.08,.06,.07],'long',[
+  TT("Oh no! I forgot my pencil. Can I borrow yours?",'แย่แล้ว ลืมดินสอ ขอยืมของเธอได้ไหม',"Sure. Here you are.","Sure. I forgot my pencil.","No, thanks. I'm full.",'เพื่อนขอยืมดินสอ ให้ตอบตกลงและยื่นให้','borrow = ยืม, Here you are. = นี่จ้ะ (พูดตอนยื่นของให้)'),
+  TT("Thanks! I'll give it back after class.",'ขอบคุณ เลิกคาบแล้วจะคืนให้นะ',"No problem.","Yes, I'll borrow it.","Thanks! I'll give it back.",'เพื่อนขอบคุณและบอกว่าจะคืน ให้ตอบว่าไม่เป็นไร','No problem. = ไม่เป็นไร, give it back = คืนให้'),
+  TT("What's the English word for 'ยางลบ'?",'ยางลบ ภาษาอังกฤษว่าอะไร',"It's 'eraser'.","It's 'ruler'.","It's 'pencil'.",'เพื่อนถามคำศัพท์ ยางลบ ให้ตอบคำที่ถูก','eraser = ยางลบ, ruler = ไม้บรรทัด, pencil = ดินสอ')]),
+ NPCDEF('fame2','Fame','Classmate⁣เพื่อนร่วมห้อง',2.4,-.9,-Math.PI/2,[.97,.97,.95],[.14,.2,.42],[.1,.08,.07],'',[
+  TT("Here's my homework. Can you check my answers?",'นี่การบ้านของฉัน ช่วยตรวจคำตอบให้หน่อยได้ไหม',"Sure. Number three is wrong.","Sure. I'm number twelve.","Here's my homework.",'เพื่อนขอให้ช่วยตรวจการบ้าน ให้ตอบรับและบอกข้อที่ผิด','check = ตรวจ, Number three is wrong. = ข้อสามผิด'),
+  TT("Really? What's the right answer?",'จริงเหรอ แล้วคำตอบที่ถูกคืออะไร',"It's 'went', not 'goed'.","It's eight o'clock.","Yes, it is. It's right.",'เพื่อนถามคำตอบที่ถูก ให้บอกคำที่ถูก','go เป็นอดีตว่า went (ไม่ใช่ goed)'),
+  TT("Thanks! You're good at English.",'ขอบคุณ เธอเก่งภาษาอังกฤษนะ',"Thanks! Let's study together.","No, I'm not. I'm English.","You're good at English.",'เพื่อนชม ให้ขอบคุณและชวนเรียนด้วยกัน','be good at = เก่ง..., study together = เรียนด้วยกัน')]),
+ NPCDEF('monitor','Bank','Class monitor⁣หัวหน้าห้อง',5,-2.6,-Math.PI/2,[.97,.97,.95],[.14,.2,.42],[.12,.1,.08],'',[
+  TT("Please pass your homework to the front.",'ส่งการบ้านไปข้างหน้าด้วยนะ',"OK. Here's my homework.","OK. Here's my lunch.","Please pass your homework.",'หัวหน้าห้องให้ส่งการบ้าน ให้รับคำและยื่นการบ้าน','pass = ส่งต่อ, to the front = ไปข้างหน้า'),
+  TT("Who is on cleaning duty today?",'วันนี้ใครเป็นเวรทำความสะอาด',"Me and Pim. We'll sweep the floor.","It's Monday today.","Yes, I am. I'm clean.",'ถามด้วย Who ...? ให้ตอบว่าใคร และจะทำอะไร','cleaning duty = เวรทำความสะอาด, sweep the floor = กวาดพื้น'),
+  TT("Don't forget to close the windows after school.",'หลังเลิกเรียนอย่าลืมปิดหน้าต่างนะ',"OK. I won't forget.","OK. I'll open the door.","Don't forget.",'หัวหน้าห้องเตือนให้ปิดหน้าต่าง ให้รับคำว่าจะไม่ลืม',"Don't forget ... = อย่าลืม..., I won't forget. = จะไม่ลืม")])]});
+
+const GROUP={gate1:'phibun',flagpole:'phibun',class85:'phibun',market:'daily',restaurant:'daily',seven:'daily',bigc:'daily',lotus:'daily',amazon:'daily',school:'school',bus:'places',clinic:'places',park:'places',hotel:'places',airport:'places',candle:'ubon',longboat:'ubon',songkran:'ubon',khongchiam:'ubon',phuphrao:'ubon',phataem:'ubon',train:'places',cafeteria:'school',classroom:'school',home:'daily',clothes:'daily',sports:'school',pharmacy:'daily',post:'daily',bank:'places',library:'school',police:'places',gas:'places',mall:'daily',samphanbok:'ubon',sirindhorn:'ubon',museum:'ubon',thungsi:'ubon',localfood:'ubon'};
 SCENES.forEach(s=>s.group=GROUP[s.id]);
 const SUB={khongchiam:'nature',phataem:'nature',samphanbok:'nature',sirindhorn:'nature',candle:'culture',longboat:'culture',songkran:'culture',phuphrao:'culture',museum:'culture',thungsi:'culture',localfood:'food'};
 SCENES.forEach(s=>{if(SUB[s.id])s.sub=SUB[s.id]});
