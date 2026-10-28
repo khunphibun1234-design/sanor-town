@@ -568,7 +568,7 @@ function vcKey(text,slow){const s=(slow?'s|':'n|')+String(text).replace(/\s+/g,'
   for(let i=0;i<s.length;i++){const c=s.charCodeAt(i);h1=Math.imul(h1^c,2654435761);h2=Math.imul(h2^c,1597334677)}
   h1=Math.imul(h1^(h1>>>16),2246822507)^Math.imul(h2^(h2>>>13),3266489909);h2=Math.imul(h2^(h2>>>16),2246822507)^Math.imul(h1^(h1>>>13),3266489909);
   return(4294967296*(2097151&h2)+(h1>>>0)).toString(16)}
-const BUILD='20261028f';/* bump when voice files change: it forces browsers to fetch the new files together */
+const BUILD='20261028g';/* bump when voice files change: it forces browsers to fetch the new files together */
 try{fetch('voice/index.json?v='+BUILD).then(r=>r.ok?r.json():null).then(j=>{if(j&&j.clips&&j.bundles)VC.idx=j}).catch(e=>{VC.err='index: '+e})}catch(e){}
 /* One shared <audio> element (works with the iPhone silent switch). It is "unlocked" by the first tap. */
 function vcEl(){try{if(!VC.el){VC.el=new Audio();VC.el.preload='auto';VC.el.setAttribute('playsinline','')}
@@ -1854,7 +1854,7 @@ SCENES.push({id:'localfood',name:'Ubon Local Food',th:'อาหารอุบ�
 
 /* ===== Our school: Phibunmangsahan School · Gate 1 (prototype) =====
    Layout follows the teacher's 3D campus map: Thetsaban 2 road in front, the school name sign beside Gate 1,
-   the small pavilion behind the sign, the guard booth inside the gate, the motorcycle shed and buildings 7-8 behind.
+   the small pavilion behind the sign, the guard booth inside the gate and buildings 7-8 behind (no motorcycle shed: the teacher says there is none here).
    NPC names are made up (not real staff or students).
    Seen from the road, the sign is on the RIGHT and Gate 1 on the LEFT, as at the real school (teacher's correction, 28 Oct 2569).
    The build code below is written the other way round and then flipped with mirrorWorld();
@@ -1903,11 +1903,6 @@ SCENES.push({id:'gate1',name:'Gate 1 · Phibun School',th:'ประตู 1 โ
   /* guard booth just inside the gate */
   {const bx=10.6,bz=-2.6;c.box(bx,1.3,bz,2.2,2.6,2.2,[.95,.94,.9],true);c.box(bx,2.68,bz,2.6,.16,2.6,CAP);
    c.box(bx,1.6,bz+1.11,1.4,.9,.04,[.55,.75,.9]);c.box(bx-1.11,1.0,bz,.04,2.0,.8,DOOR)}
-  /* motorcycle shed (long roof parallel to the road) */
-  {const z=-6.6;for(let x=2;x<=12;x+=2.5){c.box(x,1.3,z-1.2,.2,2.6,.2,[.55,.57,.6],true);c.box(x,1.3,z+1.2,.2,2.6,.2,[.55,.57,.6],true)}
-   c.box(7,2.7,z,11,.15,3.2,[.36,.45,.6]);c.box(7,.03,z,11,.06,3,[.68,.68,.68]);
-   const MC=[[.8,.15,.15],[.15,.15,.18],[.2,.35,.7],[.92,.92,.92],[.15,.15,.18],[.8,.15,.15]];
-   MC.forEach((col,i)=>{const x=2.8+i*1.7;c.box(x,.45,z,.35,.5,1.3,col);c.box(x,.25,z-.55,.12,.5,.12,[.1,.1,.1]);c.box(x,.25,z+.55,.12,.5,.12,[.1,.1,.1]);c.box(x,.85,z-.45,.6,.08,.08,[.2,.2,.2])})}
   /* buildings 7 and 8 behind (3 floors, light roofs) */
   for(const [bx,w] of [[-10,8],[-1.4,8]]){c.box(bx,5.4,-11.4,w,10.8,3.4,[.93,.9,.84],true);c.box(bx,10.95,-11.4,w+.6,.3,4,[.91,.93,.91]);
    for(let f=0;f<3;f++){c.box(bx,1.5+f*3.6,-9.62,w-.4,.16,.12,[.75,.72,.66]);for(let k=-1;k<=1;k++)c.box(bx+k*2.4,2.4+f*3.6,-9.68,1.5,1.3,.04,WIN)}}
