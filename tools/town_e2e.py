@@ -1,6 +1,6 @@
 """town_e2e.py — play the standalone Sanor Town app like a student (headless browser).
 
-Usage: python3 town_e2e.py URL [--scene market]
+Usage: python3 town_e2e.py URL [--scene market] [--novoice id,id]
 Checks: progress copy from the main app's key (once, old key untouched), tap a place on the map,
 talk to every NPC in that place (one wrong answer, then the right one), win screen, stars saved,
 back to map shows Done, Passport and Review phrases open, every spoken line has a voice clip and
@@ -14,6 +14,7 @@ NEW_KEY, OLD_KEY = 'sanor-town-app-v1', 'sanor-town-v1'
 def main():
     url = sys.argv[1]
     scene = sys.argv[sys.argv.index('--scene') + 1] if '--scene' in sys.argv else 'market'
+    novoice = sys.argv[sys.argv.index('--novoice') + 1].split(',') if '--novoice' in sys.argv else []
     res, errs = [], []
     def check(name, ok, info=''):
         res.append(bool(ok)); print(('OK  ' if ok else 'FAIL'), name, info)
@@ -75,12 +76,12 @@ def main():
         else:
             check('D2 Review phrases opens', False, 'button missing or disabled')
         # E. voices
-        v = pg.evaluate("""async()=>{for(let i=0;i<40&&!VC.idx;i++)await new Promise(r=>setTimeout(r,100));
+        v = pg.evaluate("""async(nv)=>{for(let i=0;i<40&&!VC.idx;i++)await new Promise(r=>setTimeout(r,100));
           if(!VC.idx)return {err:'no index'};let miss=[];
-          for(const s of SanorTown.SCENES)for(const n of s.npcs)for(const t of n.turns)for(const x of [t.npc,t.o[0]])if(!vcFind(x,false))miss.push(x);
+          let nvm=0;for(const s of SanorTown.SCENES)for(const n of s.npcs)for(const t of n.turns)for(const x of [t.npc,t.o[0]])if(!vcFind(x,false)){if(nv.includes(s.id))nvm++;else miss.push(x)}
           const bad=[];for(const bn of VC.idx.bundles){const r=await fetch('voice/'+bn+'.mp3?v='+BUILD,{method:'HEAD'});if(!r.ok)bad.push(bn)}
-          return {miss,bad,n:VC.idx.bundles.length}}""")
-        check('E1 every NPC line and correct answer has a voice clip', not v.get('err') and not v['miss'], str(v.get('err') or v['miss'][:3]))
+          return {miss,bad,n:VC.idx.bundles.length,nvm}}""", novoice)
+        check('E1 every NPC line and correct answer has a voice clip', not v.get('err') and not v['miss'], str(v.get('err') or v['miss'][:3]) + ('  (no AI voice yet, uses phone voice: %d lines in %s)' % (v.get('nvm', 0), ','.join(novoice)) if novoice else ''))
         check('E2 every voice file loads', not v.get('err') and not v['bad'], '%s files' % v.get('n'))
         check('E3 no page errors', not errs)
         b.close()

@@ -567,7 +567,7 @@ function vcKey(text,slow){const s=(slow?'s|':'n|')+String(text).replace(/\s+/g,'
   for(let i=0;i<s.length;i++){const c=s.charCodeAt(i);h1=Math.imul(h1^c,2654435761);h2=Math.imul(h2^c,1597334677)}
   h1=Math.imul(h1^(h1>>>16),2246822507)^Math.imul(h2^(h2>>>13),3266489909);h2=Math.imul(h2^(h2>>>16),2246822507)^Math.imul(h1^(h1>>>13),3266489909);
   return(4294967296*(2097151&h2)+(h1>>>0)).toString(16)}
-const BUILD='20261027b';/* bump when voice files change: it forces browsers to fetch the new files together */
+const BUILD='20261028a';/* bump when voice files change: it forces browsers to fetch the new files together */
 try{fetch('voice/index.json?v='+BUILD).then(r=>r.ok?r.json():null).then(j=>{if(j&&j.clips&&j.bundles)VC.idx=j}).catch(e=>{VC.err='index: '+e})}catch(e){}
 /* One shared <audio> element (works with the iPhone silent switch). It is "unlocked" by the first tap. */
 function vcEl(){try{if(!VC.el){VC.el=new Audio();VC.el.preload='auto';VC.el.setAttribute('playsinline','')}
@@ -1849,7 +1849,75 @@ SCENES.push({id:'localfood',name:'Ubon Local Food',th:'อาหารอุบ�
   TT("Yes, they are. They are soft and warm.",'ใช่ค่ะ นุ่มและอุ่น ๆ ด้วยค่ะ',"They smell so good!","Are they from Phibun Mangsahan?","They are cold and hard.",'ได้ยินว่านุ่มและอุ่น ให้ชมกลิ่น','soft = นุ่ม, warm = อุ่น, smell = มีกลิ่น'),
   TT("How many would you like?",'เอากี่ลูกดีคะ',"Two, please.","Yes, please.","They are soft and warm.",'ถูกถามจำนวน ตอบเป็นตัวเลขอย่างสุภาพ','How many ...? = กี่ ...')])]});
 
-const GROUP={market:'daily',restaurant:'daily',seven:'daily',bigc:'daily',lotus:'daily',amazon:'daily',school:'school',bus:'places',clinic:'places',park:'places',hotel:'places',airport:'places',candle:'ubon',longboat:'ubon',songkran:'ubon',khongchiam:'ubon',phuphrao:'ubon',phataem:'ubon',train:'places',cafeteria:'school',classroom:'school',home:'daily',clothes:'daily',sports:'school',pharmacy:'daily',post:'daily',bank:'places',library:'school',police:'places',gas:'places',mall:'daily',samphanbok:'ubon',sirindhorn:'ubon',museum:'ubon',thungsi:'ubon',localfood:'ubon'};
+/* ===== Our school: Phibunmangsahan School · Gate 1 (prototype) =====
+   Layout follows the teacher's 3D campus map: Thetsaban 2 road in front, the school name sign beside Gate 1,
+   the small pavilion behind the sign, the guard booth inside the gate, the motorcycle shed and buildings 7-8 behind.
+   NPC names are made up (not real staff or students). */
+SCENES.push({id:'gate1',name:'Gate 1 · Phibun School',th:'ประตู 1 โรงเรียนพิบูลมังสาหาร',color:'#23407A',spawn:[-1,4.6,Math.PI],bounds:[-12.4,12.4,-9,5.6],
+ build(){const c=mk(),A=c.a;
+  const CREAM=[.94,.9,.82],CAP=[.18,.37,.66],PINK=[.79,.55,.53],TRIM=[.7,.44,.42],CONC=[.72,.71,.68],BLUE=[.13,.28,.54],GOLD=[.94,.86,.6],WHITE=[.96,.95,.92],DARK=[.08,.08,.08];
+  /* ground, road (Thetsaban 2) and sidewalk */
+  c.box(0,-.06,0,40,.12,32,[.47,.68,.36]);
+  c.box(0,.02,8.2,40,.06,4.4,[.36,.37,.41]);for(let x=-15;x<=15;x+=3.2)c.box(x,.06,8.2,1.4,.02,.16,[.95,.9,.5]);
+  c.ob.push([-20,20,6,12]);
+  c.box(0,.05,4.2,40,.1,3.4,[.8,.79,.76]);c.box(0,.1,5.95,40,.12,.18,[.62,.62,.6]);
+  /* school fence with Gate 1 (gap from x=2.6 to x=9.4) */
+  for(const [x0,x1] of [[-20,1.9],[10.1,20]])c.box((x0+x1)/2,.8,-.6,x1-x0,1.6,.35,CREAM,true);
+  for(let x=-19;x<=19;x+=3)if(x<1.9||x>10.1)c.box(x,1.75,-.6,.5,.3,.5,CAP);
+  for(const x of [2.25,9.75]){c.box(x,1.6,-.6,1.1,3.2,1.1,CREAM,true);c.box(x,3.38,-.6,1.4,.35,1.4,CAP)}
+  /* boom barrier across the car lane; people walk through the open part on the left */
+  c.box(7.8,.55,-.6,.5,1.1,.5,[.5,.52,.56],true);c.box(6.1,1.1,-.6,3.4,.12,.15,[.9,.25,.2]);c.box(5.2,1.1,-.6,.6,.13,.16,[.96,.96,.96]);
+  c.box(.5,.03,1.4,7.8,.06,4,[.66,.66,.66]);c.box(6,.035,-.6,6.6,.06,1.4,[.66,.66,.66]);c.box(6,.03,-3,7.8,.06,4.4,[.66,.66,.66]);
+  /* school name sign (pink frame, blue board, emblem on top, blue plaques and black wings) */
+  const sx=-5.6,sz=1.5;
+  c.box(sx,.09,sz,11.4,.18,1.9,CONC,true);c.box(sx,.3,sz,10.8,.25,1.4,CONC);
+  c.box(sx,1.95,sz,5.6,3.1,.6,PINK);c.box(sx,3.62,sz,6.2,.28,.66,TRIM);c.box(sx,4.2,sz,2.2,.9,.6,PINK);
+  c.box(sx,4.3,sz+.31,1.0,.75,.04,GOLD);c.box(sx,4.3,sz+.33,.55,.42,.04,[.85,.55,.2]);
+  c.box(sx,2.05,sz+.31,4.9,2.1,.04,BLUE);c.box(sx,2.05,sz+.32,4.7,1.9,.04,[.92,.94,.96]);c.box(sx,2.05,sz+.33,4.5,1.7,.04,BLUE);
+  c.box(sx,2.45,sz+.35,3.6,.34,.03,WHITE);c.box(sx,1.75,sz+.35,3.0,.18,.03,GOLD);
+  for(const s of [-1,1]){
+   c.box(sx+s*3.5,1.45,sz,1.0,2.1,.5,PINK);c.box(sx+s*3.5,1.45,sz+.26,.75,1.4,.03,BLUE);
+   for(let k=0;k<3;k++)c.box(sx+s*3.5,1.85-k*.32,sz+.28,.5,.07,.02,WHITE);
+   c.box(sx+s*4.75,1.75,sz-.05,1.25,2.7,.5,PINK);c.box(sx+s*4.75,1.75,sz+.21,1.0,2.2,.03,DARK);
+   for(const [dx,dy] of [[-.25,.7],[.25,.4],[-.2,0],[.22,-.35],[-.15,-.7]])c.box(sx+s*4.75+dx,1.75+dy,sz+.23,.18,.18,.02,[.84,.7,.36])}
+  /* small open pavilion behind the sign */
+  {const px=-5.6,pz=-4.2,P=[.9,.88,.84];c.box(px,.1,pz,3.8,.2,3.8,[.79,.77,.72]);
+   for(const [dx,dz] of [[-1.6,-1.6],[1.6,-1.6],[-1.6,1.6],[1.6,1.6]])c.box(px+dx,1.4,pz+dz,.3,2.6,.3,P,true);
+   tPyr(A,px,2.7,pz,4.6,1.5,4.6,[.71,.32,.23]);c.bench(px,pz+.6)}
+  /* guard booth just inside the gate */
+  {const bx=10.6,bz=-2.6;c.box(bx,1.3,bz,2.2,2.6,2.2,[.95,.94,.9],true);c.box(bx,2.68,bz,2.6,.16,2.6,CAP);
+   c.box(bx,1.6,bz+1.11,1.4,.9,.04,[.55,.75,.9]);c.box(bx-1.11,1.0,bz,.04,2.0,.8,DOOR)}
+  /* motorcycle shed (long roof parallel to the road) */
+  {const z=-6.6;for(let x=2;x<=12;x+=2.5){c.box(x,1.3,z-1.2,.2,2.6,.2,[.55,.57,.6],true);c.box(x,1.3,z+1.2,.2,2.6,.2,[.55,.57,.6],true)}
+   c.box(7,2.7,z,11,.15,3.2,[.36,.45,.6]);c.box(7,.03,z,11,.06,3,[.68,.68,.68]);
+   const MC=[[.8,.15,.15],[.15,.15,.18],[.2,.35,.7],[.92,.92,.92],[.15,.15,.18],[.8,.15,.15]];
+   MC.forEach((col,i)=>{const x=2.8+i*1.7;c.box(x,.45,z,.35,.5,1.3,col);c.box(x,.25,z-.55,.12,.5,.12,[.1,.1,.1]);c.box(x,.25,z+.55,.12,.5,.12,[.1,.1,.1]);c.box(x,.85,z-.45,.6,.08,.08,[.2,.2,.2])})}
+  /* buildings 7 and 8 behind (3 floors, light roofs) */
+  for(const [bx,w] of [[-10,8],[-1.4,8]]){c.box(bx,5.4,-11.4,w,10.8,3.4,[.93,.9,.84],true);c.box(bx,10.95,-11.4,w+.6,.3,4,[.91,.93,.91]);
+   for(let f=0;f<3;f++){c.box(bx,1.5+f*3.6,-9.62,w-.4,.16,.12,[.75,.72,.66]);for(let k=-1;k<=1;k++)c.box(bx+k*2.4,2.4+f*3.6,-9.68,1.5,1.3,.04,WIN)}}
+  /* trees and lamps */
+  for(const [x,z] of [[-11.6,-3],[-1.2,-3.4],[12,-5],[-12,3.6],[12.2,3.6],[-8.6,-8.4]])c.tree(x,z);
+  c.lamp(-9.5,4.9);c.lamp(1,4.9);c.lamp(11,4.9);
+  return{a:new Float32Array(A),ob:c.ob}},
+ npcs:[
+ NPCDEF('guard','Mr. Somsak','Security guard⁣ยามรักษาความปลอดภัย',8.4,-2.4,Math.PI/2,[.17,.22,.36],[.12,.12,.16],[.1,.08,.07],'cap',[
+  TT("Good morning! Do you study at this school?",'สวัสดีตอนเช้า เรียนที่โรงเรียนนี้หรือเปล่า',"Yes, I do. I'm in Grade 8.","Yes, it is. It's a big school.","I go to school by bus.",'ยามถามว่าเรียนที่นี่ไหม (Do you ...?) ตอบ Yes, I do. แล้วบอกชั้น','Grade 8 = ชั้น ม.2, Do you ...? ตอบ Yes, I do.'),
+  TT("OK. Please walk through the small gate. The big gate is for cars.",'โอเค เดินเข้าทางประตูเล็กนะ ประตูใหญ่ไว้สำหรับรถ',"OK. I'll use the small gate.","OK. I'll drive through the big gate.","The big gate is for cars.",'ยามบอกให้เดินเข้าประตูเล็ก ให้รับคำ',"I'll ... = ฉันจะ ... ใช้รับปากว่าจะทำ"),
+  TT("Have a good day at school!",'ขอให้วันนี้ที่โรงเรียนเป็นวันที่ดีนะ',"Thank you. You too!","Good morning! Do you study here?","I'm in Grade 8.",'ยามอวยพร ให้ขอบคุณและอวยพรกลับ','You too. = คุณก็เช่นกัน ใช้ตอบคำอวยพร')]),
+ NPCDEF('friend','Mint','Classmate⁣เพื่อนร่วมห้อง',-2.4,3.2,Math.PI,[.96,.96,.95],[.14,.2,.42],[.08,.06,.07],'bun',[
+  TT("Hi! Let's take a photo at the school sign!",'หวัดดี มาถ่ายรูปกับป้ายโรงเรียนกัน',"Sure! Let's stand in front of it.","Sure! Let's eat lunch first.","Let's take a photo at the school sign!",'เพื่อนชวนถ่ายรูป ให้ตอบรับและบอกว่าไปยืนหน้าป้าย',"Let's ... = ... กันเถอะ, in front of = ข้างหน้า"),
+  TT("Look! The school name is in Thai and English.",'ดูสิ ชื่อโรงเรียนมีทั้งภาษาไทยและภาษาอังกฤษ',"Phibunmangsahan School. I can read it!","The name is only in Thai.","Let's take a photo at the school sign!",'เพื่อนบอกว่าป้ายมีชื่อภาษาอังกฤษ ให้อ่านชื่อโรงเรียนภาษาอังกฤษ','Phibunmangsahan School = โรงเรียนพิบูลมังสาหาร, I can read it! = ฉันอ่านออก'),
+  TT("Nice photo! I'll send it to you.",'รูปสวยมาก เดี๋ยวส่งให้นะ',"Great! Let's go inside now.","Can you take a photo?","The name is in Thai and English.",'เพื่อนบอกว่าจะส่งรูปให้ ให้ตอบดีใจแล้วชวนเข้าโรงเรียน',"Let's go inside. = เข้าไปข้างในกันเถอะ")]),
+ NPCDEF('parent','Mrs. Anong','Parent⁣ผู้ปกครอง',2.2,3.6,Math.PI,[.55,.3,.55],[.22,.2,.26],[.1,.07,.06],'long',[
+  TT("Excuse me. Is this Phibunmangsahan School?",'ขอโทษนะคะ ที่นี่คือโรงเรียนพิบูลมังสาหารใช่ไหมคะ',"Yes, it is. This is Gate 1.","Yes, I do. I study here.","It's in Ubon Ratchathani.",'ถามว่าใช่โรงเรียนนี้ไหม (Is this ...?) ตอบ Yes, it is.','Is this ...? ตอบ Yes, it is. / Gate 1 = ประตู 1'),
+  TT("My son is in Grade 8. Where do students line up in the morning?",'ลูกชายอยู่ ม.2 ตอนเช้านักเรียนเข้าแถวที่ไหนคะ',"They line up at the dome.","They line up every morning.","My son is in Grade 8.",'ถามว่าเข้าแถวที่ไหน (Where ...?) ให้ตอบสถานที่','line up = เข้าแถว, the dome = โดมอเนกประสงค์'),
+  TT("Thank you. Can I go in now?",'ขอบคุณค่ะ เข้าไปข้างในได้เลยไหมคะ',"Please ask the security guard at the booth.","Yes, I can. I go in every day.","They line up at the dome.",'ผู้ปกครองถามว่าเข้าได้ไหม ให้แนะนำให้ถามยามที่ป้อม','security guard = ยาม, booth = ป้อมยาม')]),
+ NPCDEF('teacher','Mr. Wichai','Teacher on duty⁣ครูเวร',3.6,-3.4,Math.PI,[.3,.45,.7],[.2,.2,.24],[.12,.1,.08],'',[
+  TT("Good morning! You are early today.",'อรุณสวัสดิ์ วันนี้มาเช้านะ',"Good morning, sir. I woke up early.","Good night, sir. I woke up early.","You are early today.",'ครูทักว่ามาเช้า ให้ทักทายกลับและบอกว่าตื่นเช้า','woke up = ตื่นนอน (อดีตของ wake up), sir = ใช้เรียกครูผู้ชายอย่างสุภาพ'),
+  TT("Did you have breakfast?",'กินข้าวเช้าหรือยัง',"Yes, I did. I had sticky rice.","Yes, I do. I like breakfast.","I woke up early.",'ถามด้วย Did you ...? ให้ตอบ Yes, I did.','Did you ...? ตอบ Yes, I did. / had = กิน (อดีตของ have)'),
+  TT("Good. Please go to the dome. We line up there.",'ดีมาก ไปที่โดมนะ เราเข้าแถวที่นั่น',"OK, sir. I'm going now.","OK, sir. I'm going home now.","Where do students line up?",'ครูบอกให้ไปเข้าแถวที่โดม ให้รับคำ',"I'm going now. = กำลังไปเดี๋ยวนี้")])]});
+
+const GROUP={gate1:'phibun',market:'daily',restaurant:'daily',seven:'daily',bigc:'daily',lotus:'daily',amazon:'daily',school:'school',bus:'places',clinic:'places',park:'places',hotel:'places',airport:'places',candle:'ubon',longboat:'ubon',songkran:'ubon',khongchiam:'ubon',phuphrao:'ubon',phataem:'ubon',train:'places',cafeteria:'school',classroom:'school',home:'daily',clothes:'daily',sports:'school',pharmacy:'daily',post:'daily',bank:'places',library:'school',police:'places',gas:'places',mall:'daily',samphanbok:'ubon',sirindhorn:'ubon',museum:'ubon',thungsi:'ubon',localfood:'ubon'};
 SCENES.forEach(s=>s.group=GROUP[s.id]);
 const SUB={khongchiam:'nature',phataem:'nature',samphanbok:'nature',sirindhorn:'nature',candle:'culture',longboat:'culture',songkran:'culture',phuphrao:'culture',museum:'culture',thungsi:'culture',localfood:'food'};
 SCENES.forEach(s=>{if(SUB[s.id])s.sub=SUB[s.id]});
@@ -2005,8 +2073,8 @@ function playPlace(sc,onExit,bl){
 }
 
 /* ---------- town map (2D menu, 3 tabs) ---------- */
-const TABS=[['daily','Daily life','ชีวิตประจำวัน'],['school','School','โรงเรียน'],['places','Travel & places','เดินทางและสถานที่'],['ubon','Ubon','อุบลของเรา']];
-let TAB='daily';
+const TABS=[['phibun','Our school','โรงเรียนของเรา'],['daily','Daily life','ชีวิตประจำวัน'],['school','School','โรงเรียน'],['places','Travel & places','เดินทางและสถานที่'],['ubon','Ubon','อุบลของเรา']];
+let TAB='phibun';
 const ROAD='#c9ced8';
 const SUBS={ubon:[['nature','Nature','ธรรมชาติ'],['culture','Culture & festivals','วัฒนธรรมและประเพณี'],['food','Food','อาหาร']]};
 function mapView(){

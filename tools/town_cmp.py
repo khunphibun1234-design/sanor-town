@@ -4,6 +4,7 @@ Usage: python3 town_cmp.py OLD_URL NEW_URL [--allow o1,o2] [--scenes id,id,...]
   --allow   fields that may change (default: o1,o2 = the two wrong options)
             field names: npc, th, o0 (correct), o1, o2, hint, ok
   --scenes  only these scenes may change (default: any scene)
+  --added   scenes that exist only in the new file (skipped)
 Exit code 0 = PASS, 1 = FAIL.
 """
 import sys, json
@@ -25,14 +26,18 @@ def main():
     old_url, new_url = a[0], a[1]
     allow = set('o1,o2'.split(','))
     scenes = None
+    added = set(a[a.index('--added') + 1].split(',')) if '--added' in a else set()
     if '--allow' in a: allow = set(a[a.index('--allow') + 1].split(','))
     if '--scenes' in a: scenes = set(a[a.index('--scenes') + 1].split(','))
     with sync_playwright() as pw:
         old, e1 = load(pw, old_url); new, e2 = load(pw, new_url)
     fails = []
     if e1 or e2: fails.append('page errors: old=%s new=%s' % (e1, e2))
+    extra = [s['id'] for s in new if s['id'] in added]
+    new = [s for s in new if s['id'] not in added]
     if [s['id'] for s in old] != [s['id'] for s in new]:
         fails.append('scene list differs')
+    if extra: print('added scenes (not compared): %s' % ','.join(extra))
     changed = {}
     nturns = 0
     om = {s['id']: s for s in old}
