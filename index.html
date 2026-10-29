@@ -376,7 +376,7 @@ body.tlock{overflow:hidden}
 .topts{display:flex;flex-direction:column;gap:8px}
 .topt{text-align:left;background:var(--card);color:var(--ink);border:2px solid var(--line);border-radius:10px;padding:10px 12px;min-height:48px;font-size:1rem}
 .topt.good{border-color:#1a8a4a;background:#e3f6ea;color:#124d2a}.topt.bad{border-color:#c0392b;background:#fdeaea;color:#7a1d14;opacity:.7}
-.tfb{margin:0;font-size:.9rem}.tfb.good{color:#1a7a40}.tfb.bad{color:#b03020}
+.tfb{margin:0;font-size:.9rem}.tfb .twhy,.tfb .thintl{display:block}.tfb .twhy{font-weight:700}.tfb .thintl{margin-top:3px;color:var(--soft)}.tscore{font-weight:700}.tprac{margin-top:2px}.tfb.good{color:#1a7a40}.tfb.bad{color:#b03020}
 .twin{position:absolute;inset:0;background:#000a;display:grid;place-items:center;padding:16px}.twin .tw{max-width:360px;text-align:center}.tbig{font-size:2rem;color:#e0a800}
 .tfail{margin:80px 16px}
 /* mission card */
@@ -589,7 +589,7 @@ function vcKey(text,slow){const s=(slow?'s|':'n|')+String(text).replace(/\s+/g,'
   for(let i=0;i<s.length;i++){const c=s.charCodeAt(i);h1=Math.imul(h1^c,2654435761);h2=Math.imul(h2^c,1597334677)}
   h1=Math.imul(h1^(h1>>>16),2246822507)^Math.imul(h2^(h2>>>13),3266489909);h2=Math.imul(h2^(h2>>>16),2246822507)^Math.imul(h1^(h1>>>13),3266489909);
   return(4294967296*(2097151&h2)+(h1>>>0)).toString(16)}
-const BUILD='20261029g';/* bump when voice files change: it forces browsers to fetch the new files together */
+const BUILD='20261029h';/* bump when voice files change: it forces browsers to fetch the new files together */
 try{fetch('voice/index.json?v='+BUILD).then(r=>r.ok?r.json():null).then(j=>{if(j&&j.clips&&j.bundles)VC.idx=j}).catch(e=>{VC.err='index: '+e})}catch(e){}
 /* One shared <audio> element (works with the iPhone silent switch). It is "unlocked" by the first tap. */
 function vcEl(){try{if(!VC.el){VC.el=new Audio();VC.el.preload='auto';VC.el.setAttribute('playsinline','')}
@@ -2415,6 +2415,9 @@ const MISSIONS={
   tasks:{meatball:['Buy fried meatballs','ซื้อลูกชิ้นทอด'],pork:['Buy grilled pork and sticky rice','ซื้อหมูปิ้งกับข้าวเหนียว'],
    drink:['Order an iced milk tea','สั่งชานมเย็น'],fruit:['Ask the price and buy mango','ถามราคาและซื้อมะม่วง']}}};
 SCENES.forEach(s=>{if(MISSIONS[s.id])s.mission=MISSIONS[s.id]});
+/* why each wrong option is wrong (step 5 Feedback & Improve): WHY[scene][person] = per turn [why wrong 1, why wrong 2]. Teacher checks each scene. */
+const WHY={"gate1": {"guard": [["ยามถามว่า Do you ...? ต้องตอบ Yes, I do. ไม่ใช่ Yes, it is.", "ยามถามว่าเรียนที่นี่ไหม ไม่ได้ถามว่ามาโรงเรียนอย่างไร"], ["ยามบอกให้ข้ามทางม้าลาย การวิ่งข้ามถนนอันตราย", "นี่คือประโยคที่ยามพูด ไม่ใช่คำตอบ"], ["ยามกำลังลา ไม่ได้ทักทายใหม่ และเราไม่ต้องถามยามแบบนี้", "ยามอวยพรให้วันนี้ดี ไม่ได้ถามว่าเรียนชั้นไหน"]], "friend": [["เพื่อนชวนถ่ายรูป ไม่ได้ชวนไปกินข้าว", "นี่คือประโยคที่เพื่อนพูด ไม่ใช่คำตอบ"], ["ไม่จริง ป้ายมีทั้งภาษาไทยและภาษาอังกฤษ", "เพื่อนให้ดูชื่อบนป้าย ไม่ได้ชวนถ่ายรูปซ้ำ"], ["ถ่ายรูปเสร็จแล้ว ไม่ต้องขอให้ถ่ายอีก", "นี่คือเรื่องที่คุยกันไปแล้ว ไม่ได้ตอบสิ่งที่เพื่อนพูด"]], "parent": [["เขาถามด้วย Is this ...? ต้องตอบ Yes, it is. ไม่ใช่ Yes, I do.", "เขาถามว่าใช่โรงเรียนนี้ไหม ไม่ได้ถามว่าอยู่จังหวัดอะไร"], ["เขาถาม Where ...? (ที่ไหน) ไม่ได้ถามว่าเมื่อไร", "นี่คือประโยคที่เขาพูด ไม่ใช่คำตอบ"], ["เขาถามว่าเขาเข้าได้ไหม ไม่ได้ถามเรื่องของเรา", "นี่คือคำตอบของข้อก่อน เขาถามเรื่องใหม่แล้ว"]], "teacher": [["Good night ใช้ตอนลาไปนอน ตอนเช้าต้องพูด Good morning", "นี่คือประโยคที่ครูพูด ไม่ใช่คำตอบ"], ["ครูถามด้วย Did you ...? ต้องตอบ Yes, I did. ไม่ใช่ Yes, I do.", "ครูถามเรื่องกินข้าวเช้า ไม่ได้ถามว่าตื่นกี่โมง"], ["ครูให้ไปที่โดม ไม่ได้ให้กลับบ้าน", "ครูบอกแล้วว่าเข้าแถวที่โดม ไม่ต้องถามซ้ำ"]], "beam": [["เพื่อนถามว่ากลับบ้านอย่างไร ไม่ได้ถามว่าสบายดีไหม", "เพื่อนถามวิธีกลับบ้าน ไม่ได้ถามว่าบ้านอยู่ที่ไหน"], ["เพื่อนถามว่า Is ... yet? ตอบ Yes, I do. ไม่ได้", "นี่คือคำตอบของข้อก่อน เพื่อนถามว่าคนมารับมาถึงหรือยัง"], ["เพื่อนชวนไปเดินตลาด ไม่ได้ชวนกลับบ้าน", "นี่คือคำตอบของข้อก่อน เพื่อนชวนไปตลาดแล้ว"]]}};
+for(const [sid,ps] of Object.entries(WHY)){const sc=SCENES.find(x=>x.id===sid);if(sc)for(const n of sc.npcs)if(ps[n.id])n.turns.forEach((t,i)=>{if(ps[n.id][i])t.why=ps[n.id][i]})}
 const SUB={khongchiam:'nature',phataem:'nature',samphanbok:'nature',sirindhorn:'nature',candle:'culture',longboat:'culture',songkran:'culture',phuphrao:'culture',museum:'culture',thungsi:'culture',localfood:'food'};
 SCENES.forEach(s=>{if(SUB[s.id])s.sub=SUB[s.id]});
 /* places not built yet (shown locked on the map) */
@@ -2566,28 +2569,51 @@ function playPlace(sc,onExit,bl){
  window.addEventListener('resize',rs);rs();
  function closeDlg(){dlg=null;panel.hidden=true;stopSay()}
  function openDlg(n){if(!n||dlg)return;if(mis){mis.remove();mis=null}dlg={n,i:0};talk.hidden=true;hint.hidden=true;showTurn()}
- function showTurn(){
-  const n=dlg.n,tn=n.turns[dlg.i],lastT=dlg.i===n.turns.length-1;
-  const opts=shuffle(tn.o.map((t,k)=>({t,ok:k===0})));
+ /* this visit only: answers right on the first try, and the turns that were missed (for "Practise missed") */
+ const stat={first:0,total:0},miss=[];
+ /* one turn of a conversation: label, button text, onFirst(ok) after the first choice, onNext() after the right answer */
+ function turnUI(n,i,label,nextLabel,onFirst,onNext){
+  const tn=n.turns[i];let tried=false;
+  const opts=shuffle(tn.o.map((t,k)=>({t,k})));
   const fb=el('p',{class:'tfb','aria-live':'polite'});
-  const nextBtn=el('button',{class:'btn tnext',type:'button',hidden:true,onclick:()=>{
-   if(lastT){n.done=true;(SAVE.done[sc.id]=SAVE.done[sc.id]||{})[n.id]=1;persist();upStars();closeDlg();if(!won&&npcs.every(x=>x.done)){won=true;showWin()}}
-   else{dlg.i++;showTurn()}}},lastT?'Finish⁣เสร็จสิ้น':'Continue⁣ต่อไป');
+  const nextBtn=el('button',{class:'btn tnext',type:'button',hidden:true,onclick:onNext},nextLabel);
   const btns=opts.map(o=>{const b=el('button',{class:'topt',type:'button'},o.t);
    b.addEventListener('click',()=>{
-    if(o.ok){btns.forEach(x=>x.disabled=true);b.classList.add('good');fb.className='tfb good';fb.textContent='Great! ✓ '+tn.ok;nextBtn.hidden=false;nextBtn.focus();
+    if(!tried){tried=true;onFirst(o.k===0)}
+    if(o.k===0){btns.forEach(x=>x.disabled=true);b.classList.add('good');fb.className='tfb good';fb.textContent='Great! ✓ '+tn.ok;nextBtn.hidden=false;nextBtn.focus();
      const ph=tn.o[0];if(!SAVE.phrases.includes(ph)){SAVE.phrases.push(ph);persist()}}
-    else{b.disabled=true;b.classList.add('bad');fb.className='tfb bad';fb.textContent='Not quite. Try again. '+tn.hint}});return b});
+    else{b.disabled=true;b.classList.add('bad');fb.className='tfb bad';const w=tn.why&&tn.why[o.k-1];
+     fb.replaceChildren(el('span',{class:'twhy'},'Not quite. '+(w?'✗ '+w:'Try again.')),el('span',{class:'thintl'},'\u{1F4A1} '+tn.hint))}});return b});
   panel.replaceChildren(
    el('div',{class:'tdh'},el('b',{},n.name),el('span',{class:'hint'},' · '+n.role),el('button',{class:'tx',type:'button','aria-label':'Close',onclick:closeDlg},'×')),
    el('div',{class:'tline'},el('p',{class:'ten'},tn.npc),el('p',{class:'tth'},tn.th),el('button',{class:'tsay',type:'button',onclick:()=>say(tn.npc,.9)},'Listen⁣ฟัง')),
-   el('p',{class:'hint'},'Choose your answer ('+(dlg.i+1)+' of '+n.turns.length+')⁣เลือกคำตอบของคุณ'),
+   el('p',{class:'hint'},label),
    el('div',{class:'topts'},btns),fb,nextBtn);
   panel.hidden=false}
- function showWin(){win.hidden=false;win.replaceChildren(el('div',{class:'card stack tw'},el('h2',{},'You finished '+sc.name+'!⁣คุณทำ'+sc.th+'สำเร็จแล้ว!'),
+ function showTurn(){
+  const n=dlg.n,i=dlg.i,lastT=i===n.turns.length-1;
+  turnUI(n,i,'Choose your answer ('+(i+1)+' of '+n.turns.length+')⁣เลือกคำตอบของคุณ',lastT?'Finish⁣เสร็จสิ้น':'Continue⁣ต่อไป',
+   ok=>{stat.total++;if(ok)stat.first++;else if(!miss.some(m=>m.n===n&&m.i===i))miss.push({n,i})},
+   ()=>{if(lastT){n.done=true;(SAVE.done[sc.id]=SAVE.done[sc.id]||{})[n.id]=1;persist();upStars();closeDlg();if(!won&&npcs.every(x=>x.done)){won=true;showWin()}}
+    else{dlg.i++;showTurn()}})}
+ /* practise only the missed turns; a turn missed again comes back in the next round */
+ function startPractice(){
+  let round=miss.slice(),again=[],k=0;win.hidden=true;talk.hidden=true;
+  const step=()=>{
+   if(k>=round.length){if(again.length){round=again;again=[];k=0;toast('Once more: '+round.length+'⁣ฝึกอีกรอบ '+round.length+' ข้อ')}else{closeDlg();miss.length=0;pracDone();return}}
+   const it=round[k];dlg={n:it.n,i:it.i,prac:true};
+   turnUI(it.n,it.i,'Practise missed ('+(k+1)+' of '+round.length+')⁣ฝึกซ้ำข้อที่พลาด','Continue⁣ต่อไป',ok=>{if(!ok)again.push(it)},()=>{k++;step()})};
+  step()}
+ const winBtns=()=>el('div',{class:'row'},el('button',{class:'btn',type:'button',onclick:close},'Back to map⁣กลับแผนที่'),
+    el('button',{class:'btn ghost',type:'button',onclick:()=>{win.hidden=true}},'Stay here⁣อยู่ต่อ'));
+ function pracDone(){win.hidden=false;win.replaceChildren(el('div',{class:'card stack tw'},el('h2',{},'Great! You practised them all.⁣เก่งมาก! ฝึกครบแล้ว'),
+   el('p',{class:'tbig'},'\u{1F44F}'),winBtns()))}
+ function showWin(){win.hidden=false;const nm=miss.length;
+  win.replaceChildren(el('div',{class:'card stack tw'},el('h2',{},'You finished '+sc.name+'!⁣คุณทำ'+sc.th+'สำเร็จแล้ว!'),
    el('p',{class:'tbig'},Array(npcs.length).fill('★').join(' ')),el('p',{},'You talked to '+npcs.length+' people in English. Great job!⁣คุณคุยภาษาอังกฤษกับคน '+npcs.length+' คนแล้ว เก่งมาก!'),
-   el('div',{class:'row'},el('button',{class:'btn',type:'button',onclick:close},'Back to map⁣กลับแผนที่'),
-    el('button',{class:'btn ghost',type:'button',onclick:()=>{win.hidden=true}},'Stay here⁣อยู่ต่อ'))))}
+   stat.total?el('p',{class:'tscore'},nm?'Right on the first try: '+stat.first+' / '+stat.total+'⁣ตอบถูกในครั้งแรก '+stat.first+' / '+stat.total+' ข้อ':'All right on the first try! \u{1F389}⁣ตอบถูกทุกข้อในครั้งแรก!'):null,
+   nm?el('button',{class:'btn cta tprac',type:'button',onclick:startPractice},'Practise missed ('+nm+')⁣ฝึกซ้ำข้อที่พลาด ('+nm+' ข้อ)'):null,
+   winBtns()))}
  const hit=(x,z)=>{if(x<BD[0]||x>BD[1]||z<BD[2]||z>BD[3])return true;const r=.38;
   for(const o of OB)if(x>o[0]-r&&x<o[1]+r&&z>o[2]-r&&z<o[3]+r)return true;
   for(const n of npcs)if(Math.hypot(x-n.x,z-n.z)<.8)return true;return false};
