@@ -676,7 +676,7 @@ function vcKey(text,slow){const s=(slow?'s|':'n|')+String(text).replace(/\s+/g,'
   for(let i=0;i<s.length;i++){const c=s.charCodeAt(i);h1=Math.imul(h1^c,2654435761);h2=Math.imul(h2^c,1597334677)}
   h1=Math.imul(h1^(h1>>>16),2246822507)^Math.imul(h2^(h2>>>13),3266489909);h2=Math.imul(h2^(h2>>>16),2246822507)^Math.imul(h1^(h1>>>13),3266489909);
   return(4294967296*(2097151&h2)+(h1>>>0)).toString(16)}
-const BUILD='20261029zd';/* bump when voice files change: it forces browsers to fetch the new files together */
+const BUILD='20261029ze';/* bump when voice files change: it forces browsers to fetch the new files together */
 try{fetch('voice/index.json?v='+BUILD).then(r=>r.ok?r.json():null).then(j=>{if(j&&j.clips&&j.bundles)VC.idx=j}).catch(e=>{VC.err='index: '+e})}catch(e){}
 /* One shared <audio> element (works with the iPhone silent switch). It is "unlocked" by the first tap. */
 function vcEl(){try{if(!VC.el){VC.el=new Audio();VC.el.preload='auto';VC.el.setAttribute('playsinline','')}
@@ -2914,8 +2914,7 @@ function render(){
   tabBar(),
   el('section',{class:'sxpanel',style:'--l:'+lc,'aria-label':en},
    el('div',{class:'sxph'},el('h2',{},en+' line',el('small',{class:'th'},'สาย'+th)),el('p',{},ld[0],el('small',{class:'th'},ld[1]))),
-   mapView()),
-  el('p',{class:'hint foot sxfoot'},'Tap a place, then talk to everyone you meet there. Town progress stays on this phone only. Not part of the Sanor Buddy research. The voices are computer-generated (AI).⁣แตะสถานที่ แล้วไปคุยกับทุกคนที่พบ ความก้าวหน้าเก็บในเครื่องนี้เท่านั้น ไม่ใช่ส่วนหนึ่งของงานวิจัย Sanor Buddy เสียงเป็นเสียงสังเคราะห์ด้วย AI'));
+   mapView()));
  const svg=app.querySelector('.sxmap');if(svg)svg.innerHTML='<svg viewBox="0 0 200 160" preserveAspectRatio="xMaxYMid slice" width="100%" height="100%">'+SXMAP+'</svg>';
  DREW=true}
 function TAB_EN(){const t=TABS.find(x=>x[0]===TAB)||TABS[0];return [t[1],t[2]]}
