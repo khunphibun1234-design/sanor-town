@@ -3,7 +3,7 @@
 <link rel="manifest" href="manifest.webmanifest"><link rel="icon" type="image/png" sizes="192x192" href="sanor-icon-192.png"><link rel="apple-touch-icon" sizes="180x180" href="sanor-icon-180.png"><meta name="apple-mobile-web-app-title" content="Sanor Town"><meta name="application-name" content="Sanor Town">
 <meta name="description" content="Sanor Town: walk around a small town and talk to people in English. For Grade 8 (M.2) students.">
 <style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anuphan:wght@400;500;600;700&display=swap">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anuphan:wght@400;500;600;700&family=Mitr:wght@500;600;700&display=swap">
 <style>
 /* Layout: one-column exercise-book page. Graph-paper ground, white "sheets" for activities,
    red-pen stamp for completed topics. Blue ink = actions, red pen = corrections. */
@@ -412,6 +412,78 @@ body.tlock{overflow:hidden}
 .trundo{background:none;border:0;color:var(--soft);text-decoration:underline;min-height:40px}
 .trlist{display:flex;flex-direction:column;gap:10px}.trname{display:block;margin:0 0 4px}.trlock{margin:0;color:var(--soft);font-size:.9rem}
 .twin .tw{max-height:calc(100vh - 32px);overflow:auto}
+/* ===== home screen redesign: transit map of the town (Mitr display, navy hero, one colour per line) ===== */
+:root{--sx-ink:#15213B;--sx-paper:#F3F5FA;--sx-card:#FFFFFF;--sx-mute:#5B6478;--sx-rule:rgba(21,33,59,.12);--sx-gold:#FFC23D}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--sx-paper:#0E1424;--sx-card:#18203A;--sx-mute:#A7B0C6;--sx-rule:rgba(255,255,255,.12)}}
+:root[data-theme="dark"]{--sx-paper:#0E1424;--sx-card:#18203A;--sx-mute:#A7B0C6;--sx-rule:rgba(255,255,255,.12)}
+html body{background:var(--sx-paper)!important;background-image:none!important}
+.mapgrid.sxline{background:none!important;border:0!important}
+.tfoot{color:var(--sx-mute)!important}.tfoot b{color:inherit!important}
+.sxhero{position:relative;display:block;overflow:hidden;isolation:isolate;background:var(--sx-ink);color:#fff;border-radius:22px;padding:16px 18px 18px;margin:4px 0 14px}
+.sxmap{position:absolute;z-index:-1;right:-14px;top:0;height:100%;width:52%;opacity:.9}.sxmap svg{display:block}
+.sxhero::after{content:"";position:absolute;z-index:-1;inset:0;background:linear-gradient(90deg,var(--sx-ink) 52%,rgba(21,33,59,.75) 72%,rgba(21,33,59,.2))}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .sxhero{box-shadow:inset 0 0 0 1px rgba(255,255,255,.12)}}
+:root[data-theme="dark"] .sxhero{box-shadow:inset 0 0 0 1px rgba(255,255,255,.12)}
+.sxtop{display:flex;align-items:center;gap:8px;min-height:32px}
+.sxtop .tbadge{background:var(--sx-gold);color:var(--sx-ink)}
+.sxback{margin-left:auto;background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:999px;padding:4px 12px;min-height:36px;font-weight:600}
+.sxback .th{color:#D6DBEA}
+.sxhero h1{font-family:'Mitr',var(--display);font-weight:700;font-size:clamp(2.3rem,9vw,3.2rem);line-height:1;letter-spacing:-.01em;margin:10px 0 6px;color:#fff;text-shadow:0 3px 0 rgba(0,0,0,.25)}
+.sxsub{margin:0;max-width:20em;font-size:1rem;font-weight:600;color:#E8ECF7}.sxsub .th{display:block;color:#BAC3DA;font-weight:500}
+.sxstats{display:flex;align-items:center;gap:12px;margin-top:16px;flex-wrap:wrap}
+.sxring{--p:0;width:66px;height:66px;flex:none;border-radius:50%;display:grid;place-content:center;text-align:center;line-height:1;
+ background:radial-gradient(closest-side,var(--sx-ink) 76%,transparent 78% 100%),conic-gradient(var(--sx-gold) calc(var(--p)*1%),rgba(255,255,255,.18) 0)}
+.sxring b{font-family:'Mitr',var(--display);font-size:1.2rem;color:#fff}.sxring small{font-size:.66rem;color:#BAC3DA}
+.sxst{margin:0;flex:1 1 120px;font-weight:600;font-size:.92rem;color:#fff}.sxst .th{display:block;color:#BAC3DA;font-weight:500;font-size:.78rem}
+.btn.sxpass{background:var(--sx-gold);color:var(--sx-ink);border:0;border-radius:14px;box-shadow:0 3px 0 #C9900D;padding:8px 16px;min-height:52px}
+.btn.sxpass .th{color:#5A4200}
+/* line selector */
+.sxtabs{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 0 12px;margin:0}
+.sxtabs::-webkit-scrollbar{display:none}
+.sxtabs .ttab{display:flex;align-items:center;gap:10px;min-height:56px;padding:8px 14px 8px 10px;border:2px solid var(--sx-rule);border-radius:16px;background:var(--sx-card);color:var(--sx-ink);text-align:left}
+.sxsw{width:8px;align-self:stretch;border-radius:6px;background:var(--l)}
+.sxtn{font-weight:700;font-size:.95rem;line-height:1.2}.sxtn .th{display:block;font-weight:500;font-size:.75rem;color:var(--sx-mute)}
+.sxct{margin-left:auto;font-family:'Mitr',var(--display);font-size:.8rem;font-weight:600;color:var(--sx-mute);background:var(--sx-paper);border-radius:999px;padding:2px 8px}
+.sxtabs .ttab.on{border-color:var(--l);background:var(--l);color:#fff}.sxtabs .ttab.on .th{color:rgba(255,255,255,.85)}.sxtabs .ttab.on .sxsw{background:#fff}
+.sxtabs .ttab.on .sxct{background:rgba(255,255,255,.22);color:#fff}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .sxtabs .ttab{color:#fff}}
+:root[data-theme="dark"] .sxtabs .ttab{color:#fff}
+/* line panel + stations */
+.sxpanel{background:var(--sx-card);border-radius:22px;padding:16px 14px 10px;border-top:8px solid var(--l)}
+.sxph h2{font-family:'Mitr',var(--display);font-weight:600;font-size:1.35rem;margin:0;color:var(--sx-ink)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .sxph h2{color:#fff}}
+:root[data-theme="dark"] .sxph h2{color:#fff}
+.sxph h2 .th{display:inline;margin-left:8px;font-family:'Anuphan',sans-serif;font-size:.85rem;font-weight:500;color:var(--sx-mute)}
+.sxph p{margin:4px 0 6px;color:var(--sx-mute);font-size:.9rem}.sxph p .th{display:block;font-size:.8rem}
+.mapgrid.sxline{display:block;list-style:none;margin:0;padding:0;background:none;border:0;box-shadow:none;border-radius:0;position:relative}
+.mapgrid.sxline::before{content:"";position:absolute;left:21px;top:30px;bottom:30px;width:6px;border-radius:3px;background:var(--l);transform-origin:top}
+.mapgrid.sxline.timed::before{left:73px}
+.mapgrid.sxline.draw::before{animation:sxdraw .9s cubic-bezier(.2,.7,.2,1) both}
+@keyframes sxdraw{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+@media (prefers-reduced-motion:reduce){.mapgrid.sxline.draw::before{animation:none}}
+.mapgrid.sxline li{margin:0}
+.mapgrid.sxline .pl{all:unset;box-sizing:border-box;position:relative;display:flex;align-items:center;gap:12px;width:100%;min-height:68px;padding:8px 6px;border-radius:14px;cursor:pointer;color:var(--sx-ink)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .mapgrid.sxline .pl{color:#fff}}
+:root[data-theme="dark"] .mapgrid.sxline .pl{color:#fff}
+.mapgrid.sxline .pl:hover{background:var(--sx-paper)}
+.mapgrid.sxline .pl:focus-visible{outline:3px solid var(--l);outline-offset:1px}
+.sxtime{width:48px;flex:none;text-align:right;font-family:'Mitr',var(--display);font-weight:500;font-size:.9rem;color:var(--sx-mute)}
+.sxdot{width:24px;height:24px;flex:none;border-radius:50%;background:var(--sx-card);border:5px solid var(--c);box-sizing:border-box;margin-left:7px;display:grid;place-items:center;font-size:.7rem;font-weight:800;color:#fff;z-index:1}
+.pl.full .sxdot{background:var(--c);width:30px;height:30px;margin-left:4px;border-width:3px;border-color:var(--sx-card);box-shadow:0 0 0 3px var(--c);font-size:.95rem}
+.sxtx{flex:1;min-width:0;display:flex;flex-direction:column}
+.mapgrid.sxline .pl .pen{font-weight:700;font-size:1.05rem;line-height:1.25;text-shadow:none;overflow-wrap:anywhere;order:0}
+.mapgrid.sxline .pl .pth{font-size:.84rem;color:var(--sx-mute);font-weight:500;opacity:1;order:0}
+.mapgrid.sxline .pl .pst{order:0;margin:0 4px 0 0;flex:none;color:var(--sx-mute);text-shadow:none;font-size:.85rem}
+.mapgrid.sxline .pl .pst b{display:inline-block;background:var(--c);color:#fff;border-radius:999px;padding:3px 10px;font-size:.78rem}
+.sxpips{display:flex;gap:4px}.sxpips i{width:9px;height:9px;border-radius:50%;background:var(--sx-rule)}.sxpips i.on{background:var(--sx-gold)}
+.mapgrid.sxline .pl.full{box-shadow:none}
+.tsub{font-family:'Mitr',var(--display);font-weight:600;color:var(--l);margin:14px 4px 2px}
+.sxfoot{margin:16px 4px 0;font-size:.85rem;color:var(--sx-mute)}
+@media (min-width:900px){.wrap{max-width:1040px}
+ .tinline{display:grid;grid-template-columns:minmax(300px,380px) 1fr;column-gap:20px;align-items:start}
+ .tinline>.sxhero{grid-column:1;grid-row:1 / span 3;position:sticky;top:16px;min-height:420px;margin:0;display:flex;flex-direction:column}
+ .tinline>.sxhero .sxmap{width:100%;height:58%;top:auto;bottom:0;right:0} .tinline>.sxhero::after{background:linear-gradient(180deg,var(--sx-ink) 45%,rgba(21,33,59,.4) 75%,rgba(21,33,59,.1))}
+ .tinline>.sxtabs{grid-column:2;margin:0;padding-inline:0;flex-wrap:wrap}.tinline>.sxpanel{grid-column:2}.tinline>.sxfoot{grid-column:2}}
 .tmisb{background:#fff;border:0;border-radius:8px;min-height:40px;min-width:44px;font-size:1.2rem;line-height:1}
 @media (max-height:520px) and (min-width:600px){.tmc{max-width:780px;flex-direction:row;align-items:stretch;gap:14px;padding:12px 14px}.tmL,.tmR{flex:1 1 0;min-width:0}.tmR{justify-content:space-between}
  .tmc h2{font-size:1.05rem}.tmsit,.tmgoal{padding:7px 10px}.tmen{font-size:.92rem}.tmth{font-size:.8rem}.tmlist{gap:5px}.tmlist li{padding:3px 9px;gap:8px}.tmlist b{font-size:.84rem;line-height:1.25}.tmlist small{font-size:.74rem;line-height:1.25}.tmck{width:22px;height:22px}.tmwho{font-size:.68rem}.tmgo{min-height:44px;padding-block:4px}.tplist{gap:3px}.tplist li{padding:2px 8px}.tpsay{width:30px;height:30px;font-size:.95rem}.tplist b{font-size:.82rem;line-height:1.2}.tplist small{font-size:.7rem;line-height:1.2}.tprep .tmR{gap:6px}}
@@ -604,7 +676,7 @@ function vcKey(text,slow){const s=(slow?'s|':'n|')+String(text).replace(/\s+/g,'
   for(let i=0;i<s.length;i++){const c=s.charCodeAt(i);h1=Math.imul(h1^c,2654435761);h2=Math.imul(h2^c,1597334677)}
   h1=Math.imul(h1^(h1>>>16),2246822507)^Math.imul(h2^(h2>>>13),3266489909);h2=Math.imul(h2^(h2>>>16),2246822507)^Math.imul(h1^(h1>>>13),3266489909);
   return(4294967296*(2097151&h2)+(h1>>>0)).toString(16)}
-const BUILD='20261029zc';/* bump when voice files change: it forces browsers to fetch the new files together */
+const BUILD='20261029zd';/* bump when voice files change: it forces browsers to fetch the new files together */
 try{fetch('voice/index.json?v='+BUILD).then(r=>r.ok?r.json():null).then(j=>{if(j&&j.clips&&j.bundles)VC.idx=j}).catch(e=>{VC.err='index: '+e})}catch(e){}
 /* One shared <audio> element (works with the iPhone silent switch). It is "unlocked" by the first tap. */
 function vcEl(){try{if(!VC.el){VC.el=new Audio();VC.el.preload='auto';VC.el.setAttribute('playsinline','')}
@@ -2742,17 +2814,30 @@ function mapView(){
  const box=el('div',{class:'tsubs'});
  subs.forEach(([id,en,th])=>{const l=all.filter(s=>s.sub===id);if(!l.length)return;box.append(el('h3',{class:'tsub'},en+' ('+l.length+')','\u2063'+th),mapBlock(l))});
  return box}
+/* ===== home screen: a transit map of the town. Each tab is a "line", each place a "station". ===== */
+const LINEC={phibun:'#C8102E',daily:'#F07A1A',school:'#2F5BFF',places:'#0E9F8E',ubon:'#7B3FE4'};
+const LINED={phibun:['A school day at Phibun, from 7:30 until after school.','หนึ่งวันที่โรงเรียนพิบูลฯ ตั้งแต่ 7 โมงครึ่งจนเลิกเรียน'],
+ daily:['Shops, food and everyday errands.','ร้านค้า อาหาร และเรื่องในชีวิตประจำวัน'],school:['Classes and school life.','ห้องเรียนและชีวิตในโรงเรียน'],
+ places:['Getting around and asking the way.','การเดินทางและการถามทาง'],ubon:['Nature, festivals and food of Ubon.','ธรรมชาติ ประเพณี และอาหารของอุบลฯ']};
+const STIME={gate1:'07:30',flagpole:'08:00',class85:'09:00',canteen:'12:00',football:'13:30',hall14:'15:00',market2:'16:00'};
+let DREW=false;
+const shortName=s=>s.name.replace(/ · Phibun School$/,'');
 function mapBlock(list){
- const wrap=el('div',{class:'mapgrid',role:'group','aria-label':'Town map'});
+ const timed=list.some(s=>STIME[s.id]);
+ const wrap=el(timed?'ol':'ul',{class:'mapgrid sxline'+(timed?' timed':'')+(DREW?'':' draw'),'aria-label':'Places'});
  list.forEach(s=>{const d=doneCount(s.id),n=nTotal(s),locked=!!s.locked,full=d>=n;
+  const pips=el('span',{class:'sxpips','aria-hidden':'true'},Array.from({length:n},(_,k)=>el('i',{class:k<d?'on':''})));
   const b=el('button',{type:'button',class:'pl'+(locked?' lock':'')+(full?' full':''),style:'--c:'+s.color,'aria-label':s.name+', '+s.th+(locked?', coming soon':', '+d+' of '+n+' done')},
-   el('span',{class:'pth'},s.th),el('span',{class:'pen'},s.name),
-   el('span',{class:'pst'},locked?'Coming soon':(full?'★ Done':'★ '+d+' / '+n)));
+   STIME[s.id]?el('span',{class:'sxtime'},STIME[s.id]):null,
+   el('span',{class:'sxdot','aria-hidden':'true'},full?'✓':''),
+   el('span',{class:'sxtx'},el('span',{class:'pen'},shortName(s)),el('span',{class:'pth'},s.th)),
+   el('span',{class:'pst'},locked?'Soon':(full?el('b',{},'Done'):pips)));
   b.addEventListener('click',()=>{if(locked)toast(s.name+' is coming soon.');else playPlace(s,render)});
-  wrap.append(b)});
+  wrap.append(el('li',{},b))});
  return wrap}
-function tabBar(){return el('div',{class:'ttabs',role:'tablist'},TABS.map(([id,en,th])=>{const on=TAB===id,n=SCENES.filter(s=>s.group===id).length;
-  return el('button',{class:'ttab'+(on?' on':''),type:'button',role:'tab','aria-selected':on?'true':'false',onclick:()=>{TAB=id;render()}},en+(n?' ('+n+')':''),'\u2063'+th)}))}
+function tabBar(){return el('div',{class:'ttabs sxtabs',role:'tablist','aria-label':'Lines'},TABS.map(([id,en,th])=>{const on=TAB===id,l=SCENES.filter(s=>s.group===id),n=l.length,dn=l.filter(s=>doneCount(s.id)>=nTotal(s)).length;
+  return el('button',{class:'ttab'+(on?' on':''),type:'button',role:'tab','aria-selected':on?'true':'false',style:'--l:'+LINEC[id],onclick:()=>{TAB=id;render()}},
+   el('span',{class:'sxsw','aria-hidden':'true'}),el('span',{class:'sxtn'},en,el('small',{class:'th'},th)),el('span',{class:'sxct'},dn+'/'+n))}))}
 function placesSheet(pick){
  const body=el('div',{class:'sheet card stack',role:'dialog','aria-label':'Places'},
   el('div',{class:'row'},el('h2',{},'Go to\u2063ไปที่'),el('button',{class:'tx',type:'button','aria-label':'Close',onclick:()=>bg.remove()},'×')),
@@ -2814,13 +2899,34 @@ function passportSheet(){
   el('p',{class:'hint'},'Saved only on this phone. Nothing is sent to anyone.⁣บันทึกไว้ในโทรศัพท์เครื่องนี้เท่านั้น ไม่ส่งให้ใคร'));
  const sheet=el('div',{class:'sheetbg',onclick:e=>{if(e.target===sheet)sheet.remove()}},body);document.body.append(sheet)}
 function render(){
- const app=HOST;app.replaceChildren(
-  el('header',{class:'th1'},el('div',{},el('h1',{},'Sanor Town'),el('p',{class:'hint'},'Explore the town and talk in English⁣เมืองจำลองฝึกพูดภาษาอังกฤษ')),
-   el('div',{class:'hbtn'},el('span',{class:'tbadge'},'Prototype'),(HOST&&HOST.inline?null:el('button',{class:'btn ghost',type:'button',onclick:closeTown},'← Home\u2063กลับ')),el('button',{class:'btn',type:'button',onclick:passportSheet},'Passport⁣สมุดเดินทาง'))),
-  el('p',{class:'hint'},'Tap a place. Talk to everyone you meet there.⁣แตะสถานที่ แล้วไปคุยกับทุกคนที่พบในที่นั้น'),
-  tabBar(),mapView(),
-  el('p',{class:'hint foot'},'Town progress stays on this phone only. Not part of the Sanor Buddy research. The voices are computer-generated (AI).⁣ความก้าวหน้าในส่วน Town เก็บในเครื่องนี้เท่านั้น ไม่ใช่ส่วนหนึ่งของงานวิจัย Sanor Buddy เสียงเป็นเสียงสังเคราะห์ด้วย AI'));
-}
+ const app=HOST,total=SCENES.reduce((x,s)=>x+nTotal(s),0),done=SCENES.reduce((a,s)=>a+doneCount(s.id),0),pd=SCENES.filter(s=>doneCount(s.id)>=nTotal(s)).length;
+ const [en,th]=TAB_EN();const lc=LINEC[TAB]||'#2F5BFF',ld=LINED[TAB]||['',''];
+ app.replaceChildren(
+  el('header',{class:'sxhero'},
+   el('span',{class:'sxmap','aria-hidden':'true'}),
+   el('div',{class:'sxtop'},el('span',{class:'tbadge'},'Prototype'),HOST&&HOST.inline?null:el('button',{class:'sxback',type:'button',onclick:closeTown},'Home⁣กลับ')),
+   el('h1',{},'Sanor Town'),
+   el('p',{class:'sxsub'},'Explore the town and talk in English',el('small',{class:'th'},'เมืองจำลองฝึกพูดภาษาอังกฤษ')),
+   el('div',{class:'sxstats'},
+    el('div',{class:'sxring',style:'--p:'+(total?Math.round(done/total*100):0)},el('b',{},done),el('small',{},'/ '+total)),
+    el('p',{class:'sxst'},'People you talked to',el('small',{class:'th'},'คนที่คุยแล้ว · '+pd+' จาก '+SCENES.length+' ที่ครบแล้ว')),
+    el('button',{class:'btn sxpass',type:'button',onclick:passportSheet},'Passport⁣สมุดเดินทาง'))),
+  tabBar(),
+  el('section',{class:'sxpanel',style:'--l:'+lc,'aria-label':en},
+   el('div',{class:'sxph'},el('h2',{},en+' line',el('small',{class:'th'},'สาย'+th)),el('p',{},ld[0],el('small',{class:'th'},ld[1]))),
+   mapView()),
+  el('p',{class:'hint foot sxfoot'},'Tap a place, then talk to everyone you meet there. Town progress stays on this phone only. Not part of the Sanor Buddy research. The voices are computer-generated (AI).⁣แตะสถานที่ แล้วไปคุยกับทุกคนที่พบ ความก้าวหน้าเก็บในเครื่องนี้เท่านั้น ไม่ใช่ส่วนหนึ่งของงานวิจัย Sanor Buddy เสียงเป็นเสียงสังเคราะห์ด้วย AI'));
+ const svg=app.querySelector('.sxmap');if(svg)svg.innerHTML='<svg viewBox="0 0 200 160" preserveAspectRatio="xMaxYMid slice" width="100%" height="100%">'+SXMAP+'</svg>';
+ DREW=true}
+function TAB_EN(){const t=TABS.find(x=>x[0]===TAB)||TABS[0];return [t[1],t[2]]}
+/* the hero art: five transit lines (one per tab colour) crossing, with station dots */
+const SXMAP='<g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="7">'+
+ '<path d="M40 -10 V40 Q40 60 60 60 H210" stroke="#C8102E"/>'+
+ '<path d="M90 170 V100 Q90 80 110 80 H210" stroke="#F07A1A"/>'+
+ '<path d="M-10 120 H70 Q90 120 100 105 L150 30 Q160 15 180 15 H210" stroke="#2F5BFF"/>'+
+ '<path d="M140 170 V125 Q140 105 160 105 H210" stroke="#0E9F8E"/>'+
+ '<path d="M120 -10 V20 Q120 40 140 50 L210 85" stroke="#7B3FE4"/></g>'+
+ '<g fill="#fff" stroke="#15213B" stroke-width="3"><circle cx="40" cy="30" r="6"/><circle cx="100" cy="60" r="7"/><circle cx="160" cy="60" r="6"/><circle cx="90" cy="120" r="6"/><circle cx="125" cy="67" r="7"/><circle cx="160" cy="105" r="6"/><circle cx="175" cy="80" r="6"/></g>';
 
 function closeTown(){if(TOWN)TOWN.close(true);if(HOST){if(HOST.outer)HOST.outer.remove();HOST=null}document.body.classList.remove('tlock');stopSay()}
 function mount(box){if(HOST&&HOST.outer)closeTown();box.inline=true;HOST=box;render()}

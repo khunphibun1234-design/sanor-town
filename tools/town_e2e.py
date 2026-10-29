@@ -43,8 +43,8 @@ def main():
         tab = pg.locator('.ttabs [role=tab]')
         for i in range(tab.count()):  # open the tab that holds this place
             tab.nth(i).click(); pg.wait_for_timeout(150)
-            if pg.locator('button.pl', has_text=sc['name']).count(): break
-        pg.locator('button.pl', has_text=sc['name']).first.click(); pg.wait_for_timeout(800)
+            if pg.locator('button.pl[aria-label^="%s,"]' % sc['name']).count(): break
+        pg.locator('button.pl[aria-label^="%s,"]' % sc['name']).first.click(); pg.wait_for_timeout(800)
         check('C1 tapping the place on the map opens it', pg.evaluate("()=>!!(SanorTown.g&&SanorTown.g.sc)"), sc['name'])
         talked, bad_fb = 0, 0
         for k in range(sc['n']):
@@ -65,7 +65,7 @@ def main():
         check('C6 correct answers saved as phrases', len(saved['phrases']) > 0, str(len(saved['phrases'])))
         check('C7 old key still not created', pg.evaluate("k=>localStorage.getItem(k)", OLD_KEY) is None)
         pg.locator('.twin button', has_text='Back to map').click(); pg.wait_for_timeout(500)
-        check('C8 back on the map, place shows Done', pg.locator('button.pl.full', has_text=sc['name']).count() == 1)
+        check('C8 back on the map, place shows Done', pg.locator('button.pl.full[aria-label^="%s,"]' % sc['name']).count() == 1)
         # D. passport and review
         pg.locator('button', has_text='Passport').first.click(); pg.wait_for_timeout(300)
         check('D1 Passport opens', pg.locator('.sheet').count() > 0)
