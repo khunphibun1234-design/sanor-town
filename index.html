@@ -604,7 +604,7 @@ function vcKey(text,slow){const s=(slow?'s|':'n|')+String(text).replace(/\s+/g,'
   for(let i=0;i<s.length;i++){const c=s.charCodeAt(i);h1=Math.imul(h1^c,2654435761);h2=Math.imul(h2^c,1597334677)}
   h1=Math.imul(h1^(h1>>>16),2246822507)^Math.imul(h2^(h2>>>13),3266489909);h2=Math.imul(h2^(h2>>>16),2246822507)^Math.imul(h1^(h1>>>13),3266489909);
   return(4294967296*(2097151&h2)+(h1>>>0)).toString(16)}
-const BUILD='20261029zb';/* bump when voice files change: it forces browsers to fetch the new files together */
+const BUILD='20261029zc';/* bump when voice files change: it forces browsers to fetch the new files together */
 try{fetch('voice/index.json?v='+BUILD).then(r=>r.ok?r.json():null).then(j=>{if(j&&j.clips&&j.bundles)VC.idx=j}).catch(e=>{VC.err='index: '+e})}catch(e){}
 /* One shared <audio> element (works with the iPhone silent switch). It is "unlocked" by the first tap. */
 function vcEl(){try{if(!VC.el){VC.el=new Audio();VC.el.preload='auto';VC.el.setAttribute('playsinline','')}
@@ -2384,7 +2384,7 @@ SCENES.push({id:'market2',name:'Street market · Phibun School',th:'ตลาด
   TT("Would you like sweet sauce or spicy sauce?",'เอาน้ำจิ้มหวานหรือน้ำจิ้มเผ็ดจ๊ะ',"Sweet sauce, please.","Yes, I would.","Two sticks of meatballs, please.",'ถามให้เลือก A หรือ B ให้ตอบสิ่งที่เลือก ไม่ตอบ Yes','A or B? ตอบด้วยสิ่งที่เลือก เช่น Sweet sauce, please.'),
   TT("Here you are. That's twenty baht.",'นี่จ้ะ ยี่สิบบาทจ้ะ',"Here you are. Thank you!","That's twenty baht.","Ten baht a stick, please.",'แม่ค้าบอกราคารวม ให้ยื่นเงินและขอบคุณ','Here you are. = นี่ครับ/ค่ะ ใช้ตอนยื่นเงินหรือของ')]),
  NPCDEF('pork','Uncle Sombat','Grilled pork seller⁣ลุงขายหมูปิ้ง',-3.5,2.55,0,[.95,.75,.3],[.2,.2,.24],[.6,.6,.62],'cap',[
-  TT("Good morning! Would you like grilled pork?",'อรุณสวัสดิ์ เอาหมูปิ้งไหม',"Yes, please. I'd like three sticks.","Yes, please. I'd like a bag of mango.","Would you like grilled pork?",'ลุงชวนซื้อหมูปิ้ง ให้ตอบรับและบอกจำนวน',"I'd like ... = ฉันต้องการ ..., three sticks = สามไม้"),
+  TT("Good afternoon! Would you like grilled pork?",'สวัสดีจ้ะ เอาหมูปิ้งไหม',"Yes, please. I'd like three sticks.","Yes, please. I'd like a bag of mango.","Would you like grilled pork?",'ลุงชวนซื้อหมูปิ้ง ให้ตอบรับและบอกจำนวน',"I'd like ... = ฉันต้องการ ..., three sticks = สามไม้"),
   TT("Do you want sticky rice too?",'เอาข้าวเหนียวด้วยไหม',"Yes, one bag, please.","It's very hot today.","Do you want sticky rice too?",'ลุงถามว่าเอาข้าวเหนียวด้วยไหม ให้ตอบรับและบอกจำนวนห่อ','one bag = หนึ่งห่อ, too = ด้วย'),
   TT("The pork is hot. Be careful!",'หมูร้อนนะ ระวังด้วย',"OK, thanks. I'll be careful.","OK. I'll eat it all now.","The pork is hot.",'ลุงเตือนว่าร้อน ให้รับคำและบอกว่าจะระวัง','be careful = ระวัง')]),
  NPCDEF('drink','Ms. Fon','Drink seller⁣แม่ค้าน้ำหวาน',3.5,2.55,0,[.4,.75,.85],[.2,.22,.3],[.1,.07,.06],'long',[
