@@ -589,7 +589,7 @@ function vcKey(text,slow){const s=(slow?'s|':'n|')+String(text).replace(/\s+/g,'
   for(let i=0;i<s.length;i++){const c=s.charCodeAt(i);h1=Math.imul(h1^c,2654435761);h2=Math.imul(h2^c,1597334677)}
   h1=Math.imul(h1^(h1>>>16),2246822507)^Math.imul(h2^(h2>>>13),3266489909);h2=Math.imul(h2^(h2>>>16),2246822507)^Math.imul(h1^(h1>>>13),3266489909);
   return(4294967296*(2097151&h2)+(h1>>>0)).toString(16)}
-const BUILD='20261029a';/* bump when voice files change: it forces browsers to fetch the new files together */
+const BUILD='20261029b';/* bump when voice files change: it forces browsers to fetch the new files together */
 try{fetch('voice/index.json?v='+BUILD).then(r=>r.ok?r.json():null).then(j=>{if(j&&j.clips&&j.bundles)VC.idx=j}).catch(e=>{VC.err='index: '+e})}catch(e){}
 /* One shared <audio> element (works with the iPhone silent switch). It is "unlocked" by the first tap. */
 function vcEl(){try{if(!VC.el){VC.el=new Audio();VC.el.preload='auto';VC.el.setAttribute('playsinline','')}
@@ -2389,7 +2389,11 @@ const MISSIONS={
   goal:['Greet people and help visitors at Gate 1.','ทักทายผู้คนและช่วยผู้มาติดต่อที่ประตู 1'],
   tasks:{guard:['Greet the security guard','ทักทายยามหน้าประตู'],friend:['Take a photo with Mint at the school sign','ถ่ายรูปกับ Mint ที่ป้ายโรงเรียน'],
    parent:['Help a parent find the way','ช่วยบอกทางผู้ปกครอง'],teacher:['Answer the teacher on duty','ตอบคำถามครูเวร'],
-   beam:['Talk with Beam about going home','คุยกับ Beam เรื่องการกลับบ้าน']}}};
+   beam:['Talk with Beam about going home','คุยกับ Beam เรื่องการกลับบ้าน']}},
+ flagpole:{sit:["It's almost 8:00. Time to line up.",'ใกล้ 8 โมงแล้ว ถึงเวลาเข้าแถว'],
+  goal:['Join the morning assembly.','ร่วมกิจกรรมหน้าเสาธง'],
+  tasks:{homeroom:['Answer the roll call','ขานรับตอนครูเช็กชื่อ'],leader:['Follow the student leader','ทำตามหัวหน้านักเรียน'],
+   fame:['Talk about homework with Fame','คุยเรื่องการบ้านกับ Fame'],late:['Help a late student find his line','ช่วยเพื่อนที่มาสายหาแถว']}}};
 SCENES.forEach(s=>{if(MISSIONS[s.id])s.mission=MISSIONS[s.id]});
 const SUB={khongchiam:'nature',phataem:'nature',samphanbok:'nature',sirindhorn:'nature',candle:'culture',longboat:'culture',songkran:'culture',phuphrao:'culture',museum:'culture',thungsi:'culture',localfood:'food'};
 SCENES.forEach(s=>{if(SUB[s.id])s.sub=SUB[s.id]});
