@@ -379,6 +379,27 @@ body.tlock{overflow:hidden}
 .tfb{margin:0;font-size:.9rem}.tfb.good{color:#1a7a40}.tfb.bad{color:#b03020}
 .twin{position:absolute;inset:0;background:#000a;display:grid;place-items:center;padding:16px}.twin .tw{max-width:360px;text-align:center}.tbig{font-size:2rem;color:#e0a800}
 .tfail{margin:80px 16px}
+/* mission card */
+.tmis{position:absolute;inset:0;z-index:5;background:#0009;display:flex;padding:16px;overflow:auto}.tmis>.tmc{margin:auto}
+.tmc{width:100%;max-width:400px;background:var(--card,#fff);color:var(--ink);border-radius:18px;border-top:8px solid var(--c);padding:14px 16px 16px;box-shadow:0 10px 30px #0006;display:flex;flex-direction:column;gap:9px}
+.tmk{margin:0;font-size:.78rem;font-weight:800;letter-spacing:.06em;color:var(--c)}
+.tmc h2{margin:0;font-size:1.2rem;line-height:1.25}
+.tmL,.tmR{display:flex;flex-direction:column;gap:9px}
+.tmsit,.tmgoal{border-radius:12px;padding:9px 12px;background:var(--pen-bg);color:var(--ink)}
+.tmgoal{background:#FFF4CC;color:#3a2a00}
+.tml{margin:0 0 2px;font-size:.74rem;font-weight:700;opacity:.75}
+.tmen{margin:0;font-weight:700;font-size:1rem;line-height:1.35}.tmth{margin:2px 0 0;font-size:.86rem;opacity:.85}
+.tmlist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.tmlist li{display:flex;align-items:center;gap:10px;padding:7px 10px;border:1.5px solid var(--line);border-radius:10px}
+.tmlist li.on{border-color:#1a8a4a;background:#e3f6ea;color:#124d2a}
+.tmck{width:26px;height:26px;flex:none;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;font-weight:800;color:#fff}
+.tmlist li.on .tmck{background:#1a8a4a;border-color:#1a8a4a}
+.tmtx{min-width:0}.tmlist b{display:block;font-size:.93rem}.tmlist small{display:block;font-size:.8rem;opacity:.8}
+.tmwho{margin-left:auto;font-size:.74rem;opacity:.7;text-align:right;flex:none}
+.tmgo{margin-top:2px}
+.tmisb{background:#fff;border:0;border-radius:8px;min-height:40px;min-width:44px;font-size:1.2rem;line-height:1}
+@media (max-height:520px) and (min-width:600px){.tmc{max-width:780px;flex-direction:row;align-items:stretch;gap:14px;padding:12px 14px}.tmL,.tmR{flex:1 1 0;min-width:0}.tmR{justify-content:space-between}
+ .tmc h2{font-size:1.05rem}.tmsit,.tmgoal{padding:7px 10px}.tmen{font-size:.92rem}.tmth{font-size:.8rem}.tmlist{gap:5px}.tmlist li{padding:3px 9px;gap:8px}.tmlist b{font-size:.84rem;line-height:1.25}.tmlist small{font-size:.74rem;line-height:1.25}.tmck{width:22px;height:22px}.tmwho{font-size:.68rem}.tmgo{min-height:44px;padding-block:4px}}
 
 .tgame .foot{margin-top:4px;text-align:center}
 .tgame{position:fixed;inset:0;z-index:40;overflow:auto;background:var(--paper);color:var(--ink)}
@@ -568,7 +589,7 @@ function vcKey(text,slow){const s=(slow?'s|':'n|')+String(text).replace(/\s+/g,'
   for(let i=0;i<s.length;i++){const c=s.charCodeAt(i);h1=Math.imul(h1^c,2654435761);h2=Math.imul(h2^c,1597334677)}
   h1=Math.imul(h1^(h1>>>16),2246822507)^Math.imul(h2^(h2>>>13),3266489909);h2=Math.imul(h2^(h2>>>16),2246822507)^Math.imul(h1^(h1>>>13),3266489909);
   return(4294967296*(2097151&h2)+(h1>>>0)).toString(16)}
-const BUILD='20261028r';/* bump when voice files change: it forces browsers to fetch the new files together */
+const BUILD='20261029a';/* bump when voice files change: it forces browsers to fetch the new files together */
 try{fetch('voice/index.json?v='+BUILD).then(r=>r.ok?r.json():null).then(j=>{if(j&&j.clips&&j.bundles)VC.idx=j}).catch(e=>{VC.err='index: '+e})}catch(e){}
 /* One shared <audio> element (works with the iPhone silent switch). It is "unlocked" by the first tap. */
 function vcEl(){try{if(!VC.el){VC.el=new Audio();VC.el.preload='auto';VC.el.setAttribute('playsinline','')}
@@ -2362,6 +2383,14 @@ SCENES.push({id:'market2',name:'Street market · Phibun School',th:'ตลาด
 
 const GROUP={gate1:'phibun',flagpole:'phibun',class85:'phibun',canteen:'phibun',football:'phibun',hall14:'phibun',market2:'phibun',market:'daily',restaurant:'daily',seven:'daily',bigc:'daily',lotus:'daily',amazon:'daily',school:'school',bus:'places',clinic:'places',park:'places',hotel:'places',airport:'places',candle:'ubon',longboat:'ubon',songkran:'ubon',khongchiam:'ubon',phuphrao:'ubon',phataem:'ubon',train:'places',cafeteria:'school',classroom:'school',home:'daily',clothes:'daily',sports:'school',pharmacy:'daily',post:'daily',bank:'places',library:'school',police:'places',gas:'places',mall:'daily',samphanbok:'ubon',sirindhorn:'ubon',museum:'ubon',thungsi:'ubon',localfood:'ubon'};
 SCENES.forEach(s=>s.group=GROUP[s.id]);
+/* mission cards (steps 1 and 3 of the teacher's model: the situation, then the mission). One task per person in the place. */
+const MISSIONS={
+ gate1:{sit:["It's 7:30 in the morning. You arrive at school.",'7 โมงครึ่ง คุณมาถึงโรงเรียน'],
+  goal:['Greet people and help visitors at Gate 1.','ทักทายผู้คนและช่วยผู้มาติดต่อที่ประตู 1'],
+  tasks:{guard:['Greet the security guard','ทักทายยามหน้าประตู'],friend:['Take a photo with Mint at the school sign','ถ่ายรูปกับ Mint ที่ป้ายโรงเรียน'],
+   parent:['Help a parent find the way','ช่วยบอกทางผู้ปกครอง'],teacher:['Answer the teacher on duty','ตอบคำถามครูเวร'],
+   beam:['Talk with Beam about going home','คุยกับ Beam เรื่องการกลับบ้าน']}}};
+SCENES.forEach(s=>{if(MISSIONS[s.id])s.mission=MISSIONS[s.id]});
 const SUB={khongchiam:'nature',phataem:'nature',samphanbok:'nature',sirindhorn:'nature',candle:'culture',longboat:'culture',songkran:'culture',phuphrao:'culture',museum:'culture',thungsi:'culture',localfood:'food'};
 SCENES.forEach(s=>{if(SUB[s.id])s.sub=SUB[s.id]});
 /* places not built yet (shown locked on the map) */
@@ -2454,6 +2483,7 @@ function playPlace(sc,onExit,bl){
  const jv={x:0,y:0},kv={x:0,y:0},keys={};
  let dlg=null,near=null,last=performance.now(),hintT=7,won=false;
  const stars=el('span',{class:'tstars','aria-live':'polite'});
+ const misB=sc.mission?el('button',{class:'tmisb',type:'button','aria-label':'Mission','title':'Mission · ภารกิจ'},'\u{1F4CB}'):null;
  const talk=el('button',{class:'ttalk',type:'button',hidden:true,onclick:()=>openDlg(near)},'Talk');
  const knob=el('div',{class:'tknob'});
  const joy=el('div',{class:'tjoy','aria-label':'Move: drag the circle'},knob);
@@ -2477,9 +2507,25 @@ function playPlace(sc,onExit,bl){
  cv.addEventListener('pointermove',e=>{if(!pts.has(e.pointerId))return;const pv=pts.get(e.pointerId);if(ORB&&pts.size===1){const a=-(e.clientX-pv.x)*.009;YAWT+=a;YAW+=a}pts.set(e.pointerId,{x:e.clientX,y:e.clientY});if(pts.size===2&&pinch0>10)setZ(zoom0*pinch0/Math.max(10,pd()))});
  ['pointerup','pointercancel','pointerleave'].forEach(n=>cv.addEventListener(n,e=>{pts.delete(e.pointerId);if(pts.size<2)pinch0=0}));
  cv.addEventListener('wheel',e=>{e.preventDefault();setZ(ZOOM*(e.deltaY>0?1.08:1/1.08))},{passive:false});
- root.append(cv,warp,el('div',{class:'ttop'},back,el('div',{class:'ttitle'},el('b',{},'Sanor Town · '+sc.name),el('span',{class:'tbadge'},'Prototype')),stars),hint,joy,zoomBox,talk,panel,win);
+ root.append(cv,warp,el('div',{class:'ttop'},back,el('div',{class:'ttitle'},el('b',{},'Sanor Town · '+sc.name),el('span',{class:'tbadge'},'Prototype')),misB,stars),hint,joy,zoomBox,talk,panel,win);
  document.body.append(root);document.body.classList.add('tlock');
  const upStars=()=>{const n=npcs.filter(x=>x.done).length;stars.textContent='★ '+n+' / '+npcs.length};upStars();
+ /* mission card (scene.mission): the situation and the mission, shown when the place opens; each task ticks when that person is done */
+ const M=sc.mission;let mis=null;
+ const misList=()=>el('ul',{class:'tmlist'},npcs.map(n=>{const t=(M.tasks&&M.tasks[n.id])||[n.name,''];
+  return el('li',{class:n.done?'on':''},el('span',{class:'tmck','aria-hidden':'true'},n.done?'✓':''),el('span',{class:'tmtx'},el('b',{},t[0]),el('small',{},t[1])),el('span',{class:'tmwho'},n.name))}));
+ const hideMis=()=>{if(!mis)return;mis.remove();mis=null;if(!dlg&&!won){hint.hidden=false;hintT=7}};
+ const showMis=()=>{if(!M||mis||dlg)return;hint.hidden=true;const all=npcs.every(x=>x.done);
+  mis=el('div',{class:'tmis',role:'dialog','aria-label':'Mission'},el('div',{class:'tmc',style:'--c:'+sc.color},
+   el('div',{class:'tmL'},el('p',{class:'tmk'},'Mission · ภารกิจ'),el('h2',{},sc.name),
+   el('div',{class:'tmsit'},el('p',{class:'tml'},'Situation · สถานการณ์'),el('p',{class:'tmen'},M.sit[0]),el('p',{class:'tmth'},M.sit[1])),
+   el('div',{class:'tmgoal'},el('p',{class:'tml'},'Your mission · ภารกิจของคุณ'),el('p',{class:'tmen'},M.goal[0]),el('p',{class:'tmth'},M.goal[1]))),
+   el('div',{class:'tmR'},misList(),
+   el('button',{class:'btn cta tmgo',type:'button',onclick:hideMis},all?'Play again ▶⁣เล่นอีกครั้ง':'Start ▶⁣เริ่มภารกิจ'))));
+  root.append(mis);setTimeout(()=>{const b=mis&&mis.querySelector('.tmgo');if(b)b.focus()},60)};
+ if(misB)misB.addEventListener('click',showMis);
+ if(M)showMis();
+
  const jset=e=>{const r=joy.getBoundingClientRect(),R=r.width/2-6;let dx=e.clientX-(r.left+r.width/2),dy=e.clientY-(r.top+r.height/2);const l=Math.hypot(dx,dy);if(l>R){dx*=R/l;dy*=R/l}
   jv.x=dx/R;jv.y=dy/R;knob.style.transform='translate('+dx+'px,'+dy+'px)'};
  const jend=()=>{jv.x=0;jv.y=0;knob.style.transform='translate(0,0)'};
@@ -2495,7 +2541,7 @@ function playPlace(sc,onExit,bl){
  const rs=()=>{const d=Math.min(window.devicePixelRatio||1,1.75);cv.width=Math.round(window.innerWidth*d);cv.height=Math.round(window.innerHeight*d)};
  window.addEventListener('resize',rs);rs();
  function closeDlg(){dlg=null;panel.hidden=true;stopSay()}
- function openDlg(n){if(!n||dlg)return;dlg={n,i:0};talk.hidden=true;hint.hidden=true;showTurn()}
+ function openDlg(n){if(!n||dlg)return;if(mis){mis.remove();mis=null}dlg={n,i:0};talk.hidden=true;hint.hidden=true;showTurn()}
  function showTurn(){
   const n=dlg.n,tn=n.turns[dlg.i],lastT=dlg.i===n.turns.length-1;
   const opts=shuffle(tn.o.map((t,k)=>({t,ok:k===0})));
