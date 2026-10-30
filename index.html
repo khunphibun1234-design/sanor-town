@@ -842,7 +842,7 @@ function vcKey(text,slow){const s=(slow?'s|':'n|')+String(text).replace(/\s+/g,'
   for(let i=0;i<s.length;i++){const c=s.charCodeAt(i);h1=Math.imul(h1^c,2654435761);h2=Math.imul(h2^c,1597334677)}
   h1=Math.imul(h1^(h1>>>16),2246822507)^Math.imul(h2^(h2>>>13),3266489909);h2=Math.imul(h2^(h2>>>16),2246822507)^Math.imul(h1^(h1>>>13),3266489909);
   return(4294967296*(2097151&h2)+(h1>>>0)).toString(16)}
-const BUILD='20261030i';/* bump when voice files change: it forces browsers to fetch the new files together */
+const BUILD='20261030j';/* bump when voice files change: it forces browsers to fetch the new files together */
 try{fetch('voice/index.json?v='+BUILD).then(r=>r.ok?r.json():null).then(j=>{if(j&&j.clips&&j.bundles)VC.idx=j}).catch(e=>{VC.err='index: '+e})}catch(e){}
 /* One shared <audio> element (works with the iPhone silent switch). It is "unlocked" by the first tap. */
 function vcEl(){try{if(!VC.el){VC.el=new Audio();VC.el.preload='auto';VC.el.setAttribute('playsinline','')}
@@ -3333,7 +3333,7 @@ function render(){
  DREW=true}
 /* the teacher's place cards (pictures in img/places). A card opens its scene, or a whole line (tab);
    cards with no scene yet say "coming soon". */
-const PLACES=[['ourschool','Our School','โรงเรียนของเรา',{tab:'phibun'}],['hospital','Hospital','โรงพยาบาล',{}],['district','District Office','ที่ว่าการอำเภอ',{}],
+const PLACES=[['ourschool','Our School','โรงเรียนของเรา',{tab:'phibun'}],['hospital','Hospital','โรงพยาบาล',{scene:'clinic'}],['district','District Office','ที่ว่าการอำเภอ',{}],
  ['police','Police Station','สถานีตำรวจ',{scene:'police'}],['post','Post Office','ที่ทำการไปรษณีย์',{scene:'post'}],['market','Market','ตลาด',{scene:'market'}],
  ['seven','7-11','เซเว่น อีเลฟเว่น',{scene:'seven'}],['coffee','Coffee Shop','ร้านกาแฟ',{}],['amazon','Amazon','คาเฟ่ อเมซอน',{scene:'amazon'}],
  ['bigc','BigC','บิ๊กซี',{scene:'bigc'}],['lotus','Lotus','โลตัส',{scene:'lotus'}],['hometown','Our Hometown','บ้านเกิดของเรา',{tab:'ubon'}]];
