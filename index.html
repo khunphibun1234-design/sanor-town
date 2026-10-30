@@ -418,7 +418,7 @@ body.tlock{overflow:hidden}
 :root[data-theme="dark"]{--sx-paper:#0E1424;--sx-card:#18203A;--sx-mute:#A7B0C6;--sx-rule:rgba(255,255,255,.12)}
 html body{background:var(--sx-paper)!important;background-image:none!important}
 .mapgrid.sxline{background:none!important;border:0!important}
-.tfoot{color:var(--sx-mute)!important}.tfoot b{color:inherit!important}
+.tfoot{color:var(--sx-mute)!important}.tfcred b{color:inherit!important}
 .sxhero{position:relative;display:block;overflow:hidden;isolation:isolate;background:var(--sx-ink);color:#fff;border-radius:22px;padding:16px 18px 18px;margin:4px 0 14px}
 .sxmap{position:absolute;z-index:-1;right:-14px;top:0;height:100%;width:52%;opacity:.9}.sxmap svg{display:block}
 .sxhero::after{content:"";position:absolute;z-index:-1;inset:0;background:linear-gradient(90deg,var(--sx-ink) 52%,rgba(21,33,59,.75) 72%,rgba(21,33,59,.2))}
@@ -563,6 +563,88 @@ html body{background:var(--sx-paper)!important;background-image:none!important}
 :root[data-theme="dark"] .sxhero{background:linear-gradient(180deg,#1B2A4E,#15213B 70%)}:root[data-theme="dark"] .sxsub{color:#fff}:root[data-theme="dark"] .sxsub .th{color:#BAC3DA}
 @media (min-width:900px){.tinline>.sxhero{min-height:0}.tinline>.sxhero::after{background:radial-gradient(120% 70% at 15% 100%,rgba(76,175,80,.28) 0 55%,transparent 56%),radial-gradient(110% 60% at 85% 100%,rgba(56,142,60,.22) 0 55%,transparent 56%)}
  .tinline>.sxtabs{grid-template-columns:repeat(5,1fr)}}
+/* the teacher's place cards: two rows that scroll sideways on phones, six across on wide screens */
+.sxplwrap{margin:16px 0 4px}
+.sxplh{font-family:'Mitr',var(--display);font-weight:600;font-size:1.15rem;margin:0 4px 8px;color:var(--sx-ink)}.sxplh .th{display:inline;margin-left:8px;font-family:'Anuphan',sans-serif;font-size:.8rem;font-weight:500;color:var(--sx-mute)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .sxplh{color:#fff}}:root[data-theme="dark"] .sxplh{color:#fff}
+.sxplaces{display:grid;grid-template-columns:repeat(6,116px);gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;padding:4px 2px 10px;margin:0 -2px}
+.sxplaces::-webkit-scrollbar{height:6px}.sxplaces::-webkit-scrollbar-thumb{background:var(--sx-rule);border-radius:3px}
+.sxplaces>div{scroll-snap-align:start}
+.sxpc2{all:unset;box-sizing:border-box;position:relative;display:block;width:100%;cursor:pointer;border-radius:18px;transition:transform .15s,box-shadow .15s}
+.sxpc2 img{display:block;width:100%;height:auto;aspect-ratio:288/316;border-radius:18px;box-shadow:0 3px 10px rgba(21,33,59,.12)}
+.sxpc2:hover{transform:translateY(-2px)}.sxpc2:active{transform:translateY(1px)}
+.sxpc2:focus-visible{outline:3px solid var(--sx-gold);outline-offset:2px}
+.sxpb{position:absolute;right:7px;top:7px;font-family:'Mitr',var(--display);font-size:.7rem;font-weight:600;line-height:1;padding:4px 7px;border-radius:999px;background:rgba(255,255,255,.92);color:var(--sx-ink);box-shadow:0 1px 3px rgba(0,0,0,.18)}
+.sxpc2.soon .sxpb{background:rgba(21,33,59,.78);color:#fff}
+@media (min-width:760px){.sxplaces{grid-template-columns:repeat(6,1fr);overflow:visible}}
+@media (min-width:900px){.tinline>.sxplwrap{grid-column:1 / -1}}
+/* Our school line with the teacher's station pictures: each row is one white card (time, dot, picture, icon, name,
+   stars, arrow); the rainbow line runs over the cards. Phones hide the icon and keep the stars under the name. */
+.mapgrid.sxline.rich::before{z-index:2;top:34px;bottom:34px}.mapgrid.sxline.rich.timed::before{left:84px}
+.mapgrid.sxline.rich li+li{margin-top:8px}
+.mapgrid.sxline.rich .pl{background:var(--sx-card);border-radius:18px;padding:8px 8px 8px 6px;box-shadow:0 1px 0 var(--sx-rule),0 4px 12px rgba(21,33,59,.08);gap:8px}
+.mapgrid.sxline.rich .pl:hover{box-shadow:0 0 0 2px var(--c),0 4px 12px rgba(21,33,59,.10)}
+.mapgrid.sxline.rich .pl:hover .sxcard{box-shadow:none}
+.mapgrid.sxline.rich .sxdot{z-index:3;background:var(--sx-card)}
+.mapgrid.sxline.rich .pl.full .sxdot{background:var(--c)}
+.mapgrid.sxline.rich .sxcard{background:none;box-shadow:none;padding:0;gap:10px}
+.sxth{flex:none;width:96px;height:auto;aspect-ratio:256/112;object-fit:cover;border-radius:10px;box-shadow:0 1px 4px rgba(0,0,0,.18)}
+.sxic{display:none;flex:none;width:44px;height:44px;border-radius:12px;background:var(--c);color:#fff;padding:9px;box-sizing:border-box;box-shadow:0 2px 0 color-mix(in srgb,var(--c) 70%,#000)}
+.sxic svg{width:100%;height:100%;display:block}
+@media (min-width:560px){.sxth{width:150px}.sxic{display:block}
+ .mapgrid.sxline.rich .sxtx{flex-direction:row;flex-wrap:wrap;align-items:center}
+ .mapgrid.sxline.rich .sxtx .pen,.mapgrid.sxline.rich .sxtx .pth{flex:1 1 100%;order:0}
+ .mapgrid.sxline.rich .sxcard{position:relative}}
+@media (min-width:760px){.sxth{width:190px}.mapgrid.sxline.rich .sxtx{display:grid;grid-template-columns:1fr auto;column-gap:12px}
+ .mapgrid.sxline.rich .sxtx .pen{grid-column:1}.mapgrid.sxline.rich .sxtx .pth{grid-column:1}
+ .mapgrid.sxline.rich .sxtx .pst{grid-column:2;grid-row:1 / span 2;align-self:center;margin:0}
+ .mapgrid.sxline.rich .sxstars{font-size:1.05rem}}
+@media (max-width:559px){.mapgrid.sxline.rich .pl{gap:6px;padding:8px 6px 8px 5px}.mapgrid.sxline.rich .sxcard{gap:8px}
+ .mapgrid.sxline.rich .sxtime{width:48px;font-size:.8rem}.mapgrid.sxline.rich.timed::before{left:71px}
+ .mapgrid.sxline.rich .pl .pen{font-size:.95rem;overflow-wrap:normal;word-break:normal}.mapgrid.sxline.rich .sxgo{width:30px;height:30px}}
+@media (max-width:400px){.sxth{width:72px}}
+/* bottom menu: a white floating bar fixed at the bottom of the home screen (scenes cover it) */
+.sxnav{position:fixed;z-index:40;left:50%;transform:translateX(-50%);bottom:calc(8px + env(safe-area-inset-bottom,0px));width:min(560px,calc(100% - 16px));
+ display:grid;grid-template-columns:repeat(6,1fr);gap:2px;padding:6px;border-radius:22px;background:rgba(255,255,255,.94);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+ box-shadow:0 8px 24px rgba(21,33,59,.18),0 0 0 1px rgba(21,33,59,.06)}
+.sxnb{all:unset;box-sizing:border-box;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-height:54px;border-radius:16px;cursor:pointer;color:#4A5672;position:relative}
+.sxnbi{width:26px;height:26px}.sxnbi svg{display:block;width:100%;height:100%}
+.sxnbt{font-size:.68rem;font-weight:600;line-height:1}
+.sxnb.on{background:#E3EEFF;color:#2F6BFF}.sxnb.on .sxnbt{font-weight:700}
+.sxnb.on::after{content:"";position:absolute;bottom:3px;width:16px;height:3px;border-radius:2px;background:#2F6BFF}
+.sxnb:focus-visible{outline:3px solid var(--sx-gold);outline-offset:1px}.sxnb:active{transform:scale(.96)}
+body:has(.sxnav){padding-bottom:calc(84px + env(safe-area-inset-bottom,0px))}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .sxnav{background:rgba(24,32,58,.94);box-shadow:0 8px 24px rgba(0,0,0,.4),0 0 0 1px rgba(255,255,255,.08)}
+ :root:not([data-theme="light"]) .sxnb{color:#C3CBE0}:root:not([data-theme="light"]) .sxnb.on{background:#24366A;color:#8DB4FF}}
+:root[data-theme="dark"] .sxnav{background:rgba(24,32,58,.94)}:root[data-theme="dark"] .sxnb{color:#C3CBE0}:root[data-theme="dark"] .sxnb.on{background:#24366A;color:#8DB4FF}
+/* footer: the teacher's school picture fading into the page, then the tagline and the credits */
+.tfimg{display:block;width:100%;height:auto;aspect-ratio:1600/302;object-fit:cover;border-radius:22px 22px 0 0;-webkit-mask-image:linear-gradient(180deg,#000 70%,transparent);mask-image:linear-gradient(180deg,#000 70%,transparent)}
+.tftag{margin:6px 12px 0;font-size:.95rem;color:#1F2A44}.tftag b{color:#14306E;font-weight:800}
+.tftag2{margin:2px 12px 0;font-size:.8rem;color:#55617A}
+.tfsep{margin:0 .6em;color:#9AA4B8}
+.tfl{white-space:nowrap}@media (max-width:560px){.tfsep{display:none}.tfl{display:block}}
+.tfcred{margin:12px 12px 0;font-size:.74rem;color:var(--sx-mute)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .tftag{color:#E8ECF7}:root:not([data-theme="light"]) .tftag b{color:#fff}:root:not([data-theme="light"]) .tftag2{color:#A7B0C6}}
+:root[data-theme="dark"] .tftag{color:#E8ECF7}:root[data-theme="dark"] .tftag b{color:#fff}:root[data-theme="dark"] .tftag2{color:#A7B0C6}
+/* Our school line header (teacher's design) */
+.sxlh{display:grid;grid-template-columns:1fr;gap:12px;margin:0 2px 12px}
+.sxlhl{display:flex;align-items:center;gap:12px}
+.sxlhi{flex:none;width:76px;height:auto;border-radius:50%;background:#FDECEE;mix-blend-mode:multiply}
+.sxlht{min-width:0}
+.sxlh h2{font-family:'Mitr',var(--display);font-weight:700;font-size:clamp(1.55rem,6.4vw,2.3rem);line-height:1.05;margin:0;color:#14306E;letter-spacing:-.01em}
+.sxlhr{color:#E0122F}
+.sxlh h2 .th{display:block;margin:4px 0 0;font-family:'Anuphan',sans-serif;font-size:.8rem;font-weight:500;color:var(--sx-mute);letter-spacing:0}
+.sxlhs{display:block;width:min(220px,70%);height:6px;margin:6px 0 6px;border-radius:6px;background:linear-gradient(90deg,#E0122F,#F2994A 70%,rgba(255,214,120,0))}
+.sxlh p{margin:0;color:#2E3D63;font-size:.92rem;line-height:1.45}.sxlh p .th{display:block;color:var(--sx-mute);font-size:.8rem}
+.sxlhm{position:relative;border-radius:18px;overflow:hidden;box-shadow:0 4px 14px rgba(21,33,59,.14);line-height:0}
+.sxlhm img{display:block;width:100%;height:auto;aspect-ratio:640/289}
+.sxlhb{all:unset;position:absolute;cursor:pointer;border-radius:999px}
+.sxlhb:hover{box-shadow:0 0 0 3px rgba(255,255,255,.85)}.sxlhb:focus-visible{outline:3px solid var(--sx-gold);outline-offset:2px}
+.sxlhtap{left:48.5%;top:59%;width:50%;height:36%}
+.sxlhmap{left:85%;top:3%;width:13%;height:27%;border-radius:22%}
+@media (min-width:760px){.sxlh{grid-template-columns:1fr minmax(300px,44%);align-items:center}.sxlhi{width:110px}.sxlh p{font-size:1rem}}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .sxlh h2{color:#fff}:root:not([data-theme="light"]) .sxlhr{color:#FF5A6E}:root:not([data-theme="light"]) .sxlh p{color:#D6DBEA}:root:not([data-theme="light"]) .sxlhi{mix-blend-mode:normal}}
+:root[data-theme="dark"] .sxlh h2{color:#fff}:root[data-theme="dark"] .sxlhr{color:#FF5A6E}:root[data-theme="dark"] .sxlh p{color:#D6DBEA}:root[data-theme="dark"] .sxlhi{mix-blend-mode:normal}
 .tmisb{background:#fff;border:0;border-radius:8px;min-height:40px;min-width:44px;font-size:1.2rem;line-height:1}
 @media (max-height:520px) and (min-width:600px){.tmc{max-width:780px;flex-direction:row;align-items:stretch;gap:14px;padding:12px 14px}.tmL,.tmR{flex:1 1 0;min-width:0}.tmR{justify-content:space-between}
  .tmc h2{font-size:1.05rem}.tmsit,.tmgoal{padding:7px 10px}.tmen{font-size:.92rem}.tmth{font-size:.8rem}.tmlist{gap:5px}.tmlist li{padding:3px 9px;gap:8px}.tmlist b{font-size:.84rem;line-height:1.25}.tmlist small{font-size:.74rem;line-height:1.25}.tmck{width:22px;height:22px}.tmwho{font-size:.68rem}.tmgo{min-height:44px;padding-block:4px}.tplist{gap:3px}.tplist li{padding:2px 8px}.tpsay{width:30px;height:30px;font-size:.95rem}.tplist b{font-size:.82rem;line-height:1.2}.tplist small{font-size:.7rem;line-height:1.2}.tprep .tmR{gap:6px}}
@@ -722,11 +804,16 @@ input:focus,select:focus,textarea:focus{border-color:var(--pen);box-shadow:0 0 0
 </style>
 <style>
 /* this app only: small footer under the town */
-.tfoot{max-width:520px;margin:18px auto 0;padding:12px 14px 28px;text-align:center;font-size:.8rem;color:#5b6474;line-height:1.6}
+.tfoot{max-width:1040px;margin:18px auto 0;padding:0 12px 18px;text-align:center;font-size:.8rem;color:#5b6474;line-height:1.6}
 .tfoot b{color:#1f2937}
 </style>
 <div class="wrap" id="app"></div>
-<footer class="tfoot">พัฒนาโดย <b>นายเสนาะ คำเสียง</b> โรงเรียนพิบูลมังสาหาร<br>ความก้าวหน้าเก็บในเครื่องนี้เท่านั้น ไม่ส่งไปที่ใด<br>© 2026 Sanor Town · build <span id="fbuild"></span></footer>
+<footer class="tfoot">
+ <img class="tfimg" src="img/footer-1600.jpg" srcset="img/footer-900.jpg 900w, img/footer-1600.jpg 1600w" sizes="(min-width:1080px) 1040px, 100vw" width="1600" height="302" alt="" loading="lazy" decoding="async">
+ <p class="tftag"><b>Sanor Town</b><span class="tfsep" aria-hidden="true">|</span><span class="tfl">Explore the town and talk in English</span></p>
+ <p class="tftag2"><span class="tfl">เมืองจำลองฝึกพูดภาษาอังกฤษ</span><span class="tfsep" aria-hidden="true">|</span><span class="tfl">พัฒนาทักษะ สร้างโอกาส สู่อนาคตที่กว้างกว่า</span></p>
+ <p class="tfcred">พัฒนาโดย <b>นายเสนาะ คำเสียง</b> โรงเรียนพิบูลมังสาหาร<br>ความก้าวหน้าเก็บในเครื่องนี้เท่านั้น ไม่ส่งไปที่ใด<br>© 2026 Sanor Town · build <span id="fbuild"></span></p>
+</footer>
 <div id="toast" hidden></div>
 <script>
 /* Sanor Town: standalone app. Moved from Sanor English World (the Town section) without changing the content.
@@ -755,7 +842,7 @@ function vcKey(text,slow){const s=(slow?'s|':'n|')+String(text).replace(/\s+/g,'
   for(let i=0;i<s.length;i++){const c=s.charCodeAt(i);h1=Math.imul(h1^c,2654435761);h2=Math.imul(h2^c,1597334677)}
   h1=Math.imul(h1^(h1>>>16),2246822507)^Math.imul(h2^(h2>>>13),3266489909);h2=Math.imul(h2^(h2>>>16),2246822507)^Math.imul(h1^(h1>>>13),3266489909);
   return(4294967296*(2097151&h2)+(h1>>>0)).toString(16)}
-const BUILD='20261030e';/* bump when voice files change: it forces browsers to fetch the new files together */
+const BUILD='20261030i';/* bump when voice files change: it forces browsers to fetch the new files together */
 try{fetch('voice/index.json?v='+BUILD).then(r=>r.ok?r.json():null).then(j=>{if(j&&j.clips&&j.bundles)VC.idx=j}).catch(e=>{VC.err='index: '+e})}catch(e){}
 /* One shared <audio> element (works with the iPhone silent switch). It is "unlocked" by the first tap. */
 function vcEl(){try{if(!VC.el){VC.el=new Audio();VC.el.preload='auto';VC.el.setAttribute('playsinline','')}
@@ -3130,17 +3217,31 @@ const LINED={phibun:['A school day at Phibun, from 7:30 until after school.','�
 const STIME={gate1:'07:30',flagpole:'08:00',class85:'09:00',canteen:'12:00',itlib:'12:15',sbank:'12:30',football:'13:30',nurse:'14:00',hall14:'15:00',market2:'16:00'};
 let DREW=false;
 const shortName=s=>s.name.replace(/ · Phibun School$/,'');
+/* the teacher's station pictures (img/stations) and an icon for each station of the Our school line */
+const STICON={gate1:'<path d="M3 21V9l9-6 9 6v12"/><path d="M9 21v-6a3 3 0 0 1 6 0v6"/><path d="M3 21h18"/>',
+ flagpole:'<path d="M3 14a9 9 0 0 1 18 0"/><path d="M3 14h18M5 14v6M19 14v6M9 14v6M15 14v6M3 20h18M12 5V2"/>',
+ class85:'<rect x="3" y="4" width="18" height="12" rx="1"/><path d="M8 20l2-4M16 20l-2-4M7 12l3-3 2 2 4-4"/>',
+ canteen:'<path d="M7 3v7a2 2 0 0 0 2 2v9M11 3v7a2 2 0 0 1-2 2M9 3v6"/><path d="M17 21V3c-2 1-3 4-3 7h3"/>',
+ itlib:'<path d="M2 5c3-1 6-1 10 1 4-2 7-2 10-1v14c-3-1-6-1-10 1-4-2-7-2-10-1z"/><path d="M12 6v14"/>',
+ sbank:'<path d="M3 10l9-6 9 6z"/><path d="M5 10v8M9.5 10v8M14.5 10v8M19 10v8M3 20h18"/>',
+ football:'<circle cx="12" cy="12" r="9"/><path d="M12 7l4 3-1.5 5h-5L8 10z"/><path d="M12 7V3M16 10l4-1M14.5 15l2.5 4M9.5 15L7 19M8 10L4 9"/>',
+ nurse:'<path d="M9 3h6v6h6v6h-6v6H9v-6H3V9h6z"/>',
+ hall14:'<circle cx="12" cy="8" r="3"/><circle cx="5" cy="10" r="2"/><circle cx="19" cy="10" r="2"/><path d="M6 20c0-3.5 2.5-6 6-6s6 2.5 6 6M1 19c0-2.5 1.5-4.5 4-4.5M23 19c0-2.5-1.5-4.5-4-4.5"/>',
+ market2:'<path d="M3 9l2-5h14l2 5"/><path d="M3 9c0 1.7 1.3 3 3 3s3-1.3 3-3c0 1.7 1.3 3 3 3s3-1.3 3-3c0 1.7 1.3 3 3 3s3-1.3 3-3"/><path d="M5 12v9h14v-9M10 21v-5h4v5"/>'};
 function mapBlock(list){
  const timed=list.some(s=>STIME[s.id]);
  const cols=list.map(s=>s.color),grad=cols.length>1?'linear-gradient(180deg,'+cols.join(',')+')':cols[0];
- const wrap=el(timed?'ol':'ul',{class:'mapgrid sxline'+(timed?' timed':'')+(DREW?'':' draw'),'aria-label':'Places',style:'--grad:'+grad});
+ const rich=list.every(s=>STICON[s.id]);
+ const wrap=el(timed?'ol':'ul',{class:'mapgrid sxline'+(timed?' timed':'')+(rich?' rich':'')+(DREW?'':' draw'),'aria-label':'Places',style:'--grad:'+grad});
  list.forEach(s=>{const d=doneCount(s.id),n=nTotal(s),locked=!!s.locked,full=d>=n;
   const stars=el('span',{class:'sxstars','aria-hidden':'true'},Array.from({length:n},(_,k)=>el('i',{class:k<d?'on':''},'★')));
   const b=el('button',{type:'button',class:'pl'+(locked?' lock':'')+(full?' full':''),style:'--c:'+s.color,'aria-label':s.name+', '+s.th+(locked?', coming soon':', '+d+' of '+n+' done')},
    STIME[s.id]?el('span',{class:'sxtime'},STIME[s.id]):null,
    el('span',{class:'sxdot','aria-hidden':'true'},full?'✓':''),
    el('span',{class:'sxcard'},
-    el('span',{class:'sxtx'},el('span',{class:'pen'},shortName(s)),el('span',{class:'pth'},s.th),el('span',{class:'pst'},locked?'Soon':stars)),
+    rich?el('img',{class:'sxth',src:'img/stations/'+s.id+'.jpg',alt:'',width:'256',height:'112',loading:'lazy',decoding:'async'}):null,
+    rich?(()=>{const ic=el('span',{class:'sxic','aria-hidden':'true'});ic.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'+STICON[s.id]+'</svg>';return ic})():null,
+    el('span',{class:'sxtx'},el('span',{class:'pen'},shortName(s)),el('span',{class:'pth'},rich?s.th.replace(/ ?โรงเรียนพิบูลมังสาหาร$/,''):s.th),el('span',{class:'pst'},locked?'Soon':stars)),
     sxIcon('chev','sxgo')));
   b.addEventListener('click',()=>{if(locked)toast(s.name+' is coming soon.');else playPlace(s,render)});
   wrap.append(el('li',{},b))});
@@ -3223,11 +3324,65 @@ function render(){
     el('span',{class:'sxring',style:'--p:'+(total?Math.round(done/total*100):0)},el('b',{},done),el('small',{},'/ '+total)),
     el('span',{class:'sxst'},el('span',{class:'sxsth'},'People you talked to'),el('span',{class:'sxstl'},sxFaces(),el('small',{class:'th'},'คนที่คุยแล้ว · '+pd+' จาก '+SCENES.length+' ที่ครบแล้ว'))),
     sxIcon('chev','sxgo2'))),
+  placesGrid(),
   tabBar(),
   el('section',{class:'sxpanel',style:'--l:'+lc,'aria-label':en},
-   el('div',{class:'sxph'},sxIcon(TAB,'sxhi'),el('div',{},el('h2',{},en+' line',el('small',{class:'th'},'สาย'+th)),el('p',{},ld[0],el('small',{class:'th'},ld[1])))),
-   mapView()));
+   TAB==='phibun'?lineHead(en,th,ld):el('div',{class:'sxph'},sxIcon(TAB,'sxhi'),el('div',{},el('h2',{},en+' line',el('small',{class:'th'},'สาย'+th)),el('p',{},ld[0],el('small',{class:'th'},ld[1])))),
+   mapView()),
+  navBar());
  DREW=true}
+/* the teacher's place cards (pictures in img/places). A card opens its scene, or a whole line (tab);
+   cards with no scene yet say "coming soon". */
+const PLACES=[['ourschool','Our School','โรงเรียนของเรา',{tab:'phibun'}],['hospital','Hospital','โรงพยาบาล',{}],['district','District Office','ที่ว่าการอำเภอ',{}],
+ ['police','Police Station','สถานีตำรวจ',{scene:'police'}],['post','Post Office','ที่ทำการไปรษณีย์',{scene:'post'}],['market','Market','ตลาด',{scene:'market'}],
+ ['seven','7-11','เซเว่น อีเลฟเว่น',{scene:'seven'}],['coffee','Coffee Shop','ร้านกาแฟ',{}],['amazon','Amazon','คาเฟ่ อเมซอน',{scene:'amazon'}],
+ ['bigc','BigC','บิ๊กซี',{scene:'bigc'}],['lotus','Lotus','โลตัส',{scene:'lotus'}],['hometown','Our Hometown','บ้านเกิดของเรา',{tab:'ubon'}]];
+function placesGrid(){
+ const box=el('div',{class:'sxplaces',role:'list'});
+ PLACES.forEach(([img,en,th,go])=>{
+  let badge='Soon',label=en+', '+th,act=()=>toast(en+' is coming soon. · เร็ว ๆ นี้');
+  if(go.scene){const sc=SCENES.find(x=>x.id===go.scene);if(sc){const d=doneCount(sc.id),n=nTotal(sc);badge='★ '+d+'/'+n;label+=', '+d+' of '+n+' done';act=()=>playPlace(sc,render)}}
+  else if(go.tab){const l=SCENES.filter(x=>x.group===go.tab),dn=l.filter(x=>doneCount(x.id)>=nTotal(x)).length;badge=dn+'/'+l.length;label+=', '+dn+' of '+l.length+' places done';
+   act=()=>{TAB=go.tab;render();const pn=HOST&&HOST.querySelector('.sxpanel');if(pn)pn.scrollIntoView({behavior:'smooth',block:'start'})}}
+  box.append(el('div',{role:'listitem'},el('button',{type:'button',class:'sxpc2'+(badge==='Soon'?' soon':''),'aria-label':label,onclick:act},
+   el('img',{src:'img/places/'+img+'.jpg',alt:'',width:'288',height:'316',loading:'lazy',decoding:'async'}),el('span',{class:'sxpb'},badge))))});
+ return el('section',{class:'sxplwrap','aria-label':'Places in town'},el('h2',{class:'sxplh'},'Places in town',el('small',{class:'th'},'สถานที่ในเมือง')),box)}
+/* bottom menu (from the teacher's footer design). Home, Map (list of all places) and Passport work now;
+   Missions, Rewards and Profile are not built yet and say so. */
+const NAVI={
+ home:'<path d="M3 11.5L12 4l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z" fill="#2F6BFF" stroke="#2F6BFF"/>',
+ map:'<path d="M3 6l6-2 6 2 6-2v14l-6 2-6-2-6 2z"/><path d="M9 4v14M15 6v14"/><circle cx="18" cy="6.5" r="3.2" fill="#E5384F" stroke="#fff" stroke-width="1.4"/>',
+ missions:'<rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V3h6v1"/><path d="M8 10l1.5 1.5L12 9M8 15l1.5 1.5L12 14M14 10.5h3M14 15.5h3"/>',
+ passport:'<rect x="5" y="3" width="14" height="18" rx="2" fill="#2F5BFF" stroke="#1E3FBF"/><circle cx="12" cy="11" r="3.5" stroke="#fff"/><path d="M8.5 11h7M12 7.5c-1.2 1-1.2 6 0 7M12 7.5c1.2 1 1.2 6 0 7M9.5 17.5h5" stroke="#fff"/>',
+ rewards:'<path d="M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M7 6H4v1a3 3 0 0 0 3 3M17 6h3v1a3 3 0 0 1-3 3M12 14v3M8 21h8M9 21l1-4h4l1 4"/><path d="M12 5.5l.9 1.8 2 .3-1.45 1.4.35 2-1.8-.95-1.8.95.35-2L9.1 7.6l2-.3z" fill="#F5B301" stroke="#F5B301" stroke-width=".8"/>',
+ profile:'<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/>'};
+function navBar(){
+ const it=(k,en,th,act,on)=>{const b=el('button',{type:'button',class:'sxnb'+(on?' on':''),'aria-label':en+' '+th,'aria-current':on?'page':null,onclick:act});
+  const ic=el('span',{class:'sxnbi','aria-hidden':'true'});ic.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">'+NAVI[k]+'</svg>';
+  b.append(ic,el('span',{class:'sxnbt'},en));return b};
+ const soon=(en,th)=>()=>toast(en+' is coming soon. · '+th+' เร็ว ๆ นี้');
+ return el('nav',{class:'sxnav','aria-label':'Menu'},
+  it('home','Home','หน้าแรก',()=>window.scrollTo({top:0,behavior:'smooth'}),true),
+  it('map','Map','แผนที่',()=>placesSheet(s=>playPlace(s,render))),
+  it('missions','Missions','ภารกิจ',soon('Missions','ภารกิจ')),
+  it('passport','Passport','สมุดเดินทาง',passportSheet),
+  it('rewards','Rewards','รางวัล',soon('Rewards','รางวัล')),
+  it('profile','Profile','โปรไฟล์',soon('Profile','โปรไฟล์')))}
+/* the teacher's header for the Our school line: school icon, big title, text, and the school map picture
+   ("Tap a place to explore" and the map button in the picture open the list of places) */
+function lineHead(en,th,ld){
+ const pick=()=>placesSheet(s=>playPlace(s,render));
+ return el('div',{class:'sxlh'},
+  el('div',{class:'sxlhl'},
+   el('img',{class:'sxlhi',src:'img/lines/phibun-icon.jpg',alt:'',width:'192',height:'173',decoding:'async'}),
+   el('div',{class:'sxlht'},
+    el('h2',{},'Our school ',el('span',{class:'sxlhr'},'line'),el('small',{class:'th'},'สาย'+th)),
+    el('span',{class:'sxlhs','aria-hidden':'true'}),
+    el('p',{},ld[0],el('small',{class:'th'},ld[1])))),
+  el('div',{class:'sxlhm'},
+   el('img',{src:'img/lines/phibun-map.jpg',alt:'',width:'640',height:'289',loading:'lazy',decoding:'async'}),
+   el('button',{type:'button',class:'sxlhb sxlhtap',onclick:pick},el('span',{class:'vh'},'Tap a place to explore · เลือกสถานที่')),
+   el('button',{type:'button',class:'sxlhb sxlhmap',onclick:pick},el('span',{class:'vh'},'Map · แผนที่'))))}
 function TAB_EN(){const t=TABS.find(x=>x[0]===TAB)||TABS[0];return [t[1],t[2]]}
 /* the hero art: five transit lines (one per tab colour) crossing, with station dots */
 const SXMAP='<g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="7">'+
