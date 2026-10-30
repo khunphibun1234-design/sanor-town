@@ -429,6 +429,7 @@ html body{background:var(--sx-paper)!important;background-image:none!important}
 .sxback{margin-left:auto;background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:999px;padding:4px 12px;min-height:36px;font-weight:600}
 .sxback .th{color:#D6DBEA}
 .sxhero h1{font-family:'Mitr',var(--display);font-weight:700;font-size:clamp(2.3rem,9vw,3.2rem);line-height:1;letter-spacing:-.01em;margin:10px 0 6px;color:#fff;text-shadow:0 3px 0 rgba(0,0,0,.25)}
+.sxhero h1.sxlogo{margin:8px 0 10px;line-height:0;text-shadow:none}.sxlogo img{display:block;width:clamp(150px,42vw,190px);height:auto;filter:drop-shadow(0 3px 0 rgba(0,0,0,.28))}
 .sxsub{margin:0;max-width:20em;font-size:1rem;font-weight:600;color:#E8ECF7}.sxsub .th{display:block;color:#BAC3DA;font-weight:500}
 .sxstats{display:flex;align-items:center;gap:12px;margin-top:16px;flex-wrap:wrap}
 .sxring{--p:0;width:66px;height:66px;flex:none;border-radius:50%;display:grid;place-content:center;text-align:center;line-height:1;
@@ -676,7 +677,7 @@ function vcKey(text,slow){const s=(slow?'s|':'n|')+String(text).replace(/\s+/g,'
   for(let i=0;i<s.length;i++){const c=s.charCodeAt(i);h1=Math.imul(h1^c,2654435761);h2=Math.imul(h2^c,1597334677)}
   h1=Math.imul(h1^(h1>>>16),2246822507)^Math.imul(h2^(h2>>>13),3266489909);h2=Math.imul(h2^(h2>>>16),2246822507)^Math.imul(h1^(h1>>>13),3266489909);
   return(4294967296*(2097151&h2)+(h1>>>0)).toString(16)}
-const BUILD='20261030b';/* bump when voice files change: it forces browsers to fetch the new files together */
+const BUILD='20261030c';/* bump when voice files change: it forces browsers to fetch the new files together */
 try{fetch('voice/index.json?v='+BUILD).then(r=>r.ok?r.json():null).then(j=>{if(j&&j.clips&&j.bundles)VC.idx=j}).catch(e=>{VC.err='index: '+e})}catch(e){}
 /* One shared <audio> element (works with the iPhone silent switch). It is "unlocked" by the first tap. */
 function vcEl(){try{if(!VC.el){VC.el=new Audio();VC.el.preload='auto';VC.el.setAttribute('playsinline','')}
@@ -3121,7 +3122,7 @@ function render(){
   el('header',{class:'sxhero'},
    el('span',{class:'sxmap','aria-hidden':'true'}),
    el('div',{class:'sxtop'},el('span',{class:'tbadge'},'Prototype'),HOST&&HOST.inline?null:el('button',{class:'sxback',type:'button',onclick:closeTown},'Home⁣กลับ')),
-   el('h1',{},'Sanor Town'),
+   el('h1',{class:'sxlogo'},el('img',{src:'img/sanor-town-logo-light.png',alt:'Sanor Town',width:'560',height:'543',decoding:'async'})),
    el('p',{class:'sxsub'},'Explore the town and talk in English',el('small',{class:'th'},'เมืองจำลองฝึกพูดภาษาอังกฤษ')),
    el('div',{class:'sxstats'},
     el('div',{class:'sxring',style:'--p:'+(total?Math.round(done/total*100):0)},el('b',{},done),el('small',{},'/ '+total)),
