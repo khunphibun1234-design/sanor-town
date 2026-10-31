@@ -549,10 +549,6 @@ html body{background:var(--sx-paper)!important;background-image:none!important}
 .vh{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;margin:0}
 .sxproto{position:absolute;left:10px;bottom:10px;line-height:1.3;font-size:.72rem;box-shadow:0 1px 3px rgba(0,0,0,.2)}
 .sxban .sxback{position:absolute;right:8px;top:8px;line-height:1.2}
-.sxbpass{all:unset;position:absolute;left:70.6%;top:33.2%;width:28%;height:28%;border-radius:12% / 30%;cursor:pointer;transition:box-shadow .15s,background .15s}
-.sxbpass:hover{background:rgba(255,255,255,.12);box-shadow:0 0 0 3px rgba(255,255,255,.7)}
-.sxbpass:focus-visible{outline:3px solid var(--sx-gold);outline-offset:2px}
-.sxbpass:active{background:rgba(0,0,0,.08)}
 .sxhero:has(.sxban) .sxstats{margin-top:12px}
 @media (min-width:900px){.tinline>.sxhero:has(.sxban){grid-column:1 / -1;grid-row:auto;position:static;min-height:0;margin:0 0 14px}
  .tinline>.sxtabs,.tinline>.sxpanel,.tinline>.sxfoot{grid-column:1 / -1}
@@ -845,7 +841,7 @@ function vcKey(text,slow){const s=(slow?'s|':'n|')+String(text).replace(/\s+/g,'
   for(let i=0;i<s.length;i++){const c=s.charCodeAt(i);h1=Math.imul(h1^c,2654435761);h2=Math.imul(h2^c,1597334677)}
   h1=Math.imul(h1^(h1>>>16),2246822507)^Math.imul(h2^(h2>>>13),3266489909);h2=Math.imul(h2^(h2>>>16),2246822507)^Math.imul(h1^(h1>>>13),3266489909);
   return(4294967296*(2097151&h2)+(h1>>>0)).toString(16)}
-const BUILD='20261031j';/* bump when voice files change: it forces browsers to fetch the new files together */
+const BUILD='20261031k';/* bump when voice files change: it forces browsers to fetch the new files together */
 try{fetch('voice/index.json?v='+BUILD).then(r=>r.ok?r.json():null).then(j=>{if(j&&j.clips&&j.bundles)VC.idx=j}).catch(e=>{VC.err='index: '+e})}catch(e){}
 /* One shared <audio> element (works with the iPhone silent switch). It is "unlocked" by the first tap. */
 function vcEl(){try{if(!VC.el){VC.el=new Audio();VC.el.preload='auto';VC.el.setAttribute('playsinline','')}
@@ -3437,11 +3433,11 @@ function render(){
  app.replaceChildren(
   el('header',{class:'sxhero'},
    el('div',{class:'sxban'},
-    el('img',{class:'sxbimg',src:'img/banner-1600.jpg',srcset:'img/banner-900.jpg 900w, img/banner-1600.jpg 1600w',sizes:'(min-width:1080px) 1040px, 100vw',width:'1600',height:'583',alt:'Sanor Town: Explore the town and talk in English. เมืองจำลองฝึกพูดภาษาอังกฤษ',fetchpriority:'high'}),
+    el('img',{class:'sxbimg',src:'img/banner2-1600.jpg',srcset:'img/banner2-900.jpg 900w, img/banner2-1600.jpg 1600w',sizes:'(min-width:1080px) 1040px, 100vw',width:'1600',height:'582',alt:'Sanor Town: Explore the town and talk in English. เมืองจำลองฝึกพูดภาษาอังกฤษ',fetchpriority:'high'}),
     el('h1',{class:'vh'},'Sanor Town'),
     el('span',{class:'tbadge sxproto'},'Prototype'),
     HOST&&HOST.inline?null:el('button',{class:'sxback',type:'button',onclick:closeTown},'Home⁣กลับ'),
-    el('button',{class:'sxbpass',type:'button',onclick:passportSheet},el('span',{class:'vh'},'Passport สมุดเดินทาง'))),
+    /* the teacher's new banner (31 Oct) has no Passport button: Passport opens from the People bar and the bottom menu */),
    el('button',{class:'sxstats',type:'button',onclick:passportSheet,'aria-label':'People you talked to: '+done+' of '+total+'. Open passport'},
     el('span',{class:'sxring',style:'--p:'+(total?Math.round(done/total*100):0)},el('b',{},done),el('small',{},'/ '+total)),
     el('span',{class:'sxst'},el('span',{class:'sxsth'},'People you talked to'),el('span',{class:'sxstl'},sxFaces(),el('small',{class:'th'},'คนที่คุยแล้ว · '+pd+' จาก '+SCENES.length+' ที่ครบแล้ว'))),
