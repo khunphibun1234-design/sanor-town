@@ -504,14 +504,19 @@ html body{background:var(--sx-paper)!important;background-image:none!important}
 .sxpt{font-family:'Mitr',var(--display);font-weight:600;font-size:1.08rem;line-height:1.1}.sxpt .th{display:block;font-family:inherit;font-weight:400;font-size:.8rem;color:#DCD8FF;white-space:nowrap}
 .sxpc,.sxgo2{width:18px;height:18px;flex:none}
 .sxi{display:inline-grid;place-items:center}.sxi svg{width:100%;height:100%;display:block}
-.sxstats{all:unset;box-sizing:border-box;display:flex;align-items:center;gap:12px;width:100%;margin-top:14px;padding:8px 14px 8px 8px;border-radius:999px;cursor:pointer;
- background:linear-gradient(90deg,#15213B,#24365E);color:#fff;box-shadow:0 6px 14px rgba(21,33,59,.25)}
+.sxstats{all:unset;box-sizing:border-box;display:flex;align-items:center;gap:12px;width:100%;margin-top:14px;padding:8px 12px 8px 8px;border-radius:26px;cursor:pointer;
+ background:linear-gradient(90deg,#071C4F 0%,#0B2C7A 55%,#2A35C9 85%,#5B3BE6 100%);color:#fff;border:1.5px solid rgba(110,170,255,.85);
+ box-shadow:0 0 0 1px rgba(80,140,255,.25),0 0 18px rgba(60,130,255,.55),0 8px 18px rgba(10,30,90,.3)}
 .sxstats:focus-visible{outline:3px solid var(--sx-gold);outline-offset:2px}
-.sxring{width:60px;height:60px;background:radial-gradient(closest-side,#15213B 74%,transparent 76% 100%),conic-gradient(#3FA9FF calc(var(--p)*1%),rgba(255,255,255,.22) 0)}
-.sxst{flex:1;min-width:0;display:block;font-size:.95rem}.sxsth{display:block;font-weight:700}
-.sxstl{display:flex;align-items:center;gap:6px;margin-top:3px}.sxstl .th{display:inline;font-size:.74rem;color:#BAC3DA;line-height:1.25}
-.sxfaces{display:flex;flex:none}.sxfaces svg{width:22px;height:22px;border-radius:50%;box-shadow:0 0 0 2px #24365E}.sxfaces svg+svg{margin-left:-6px}
-.sxgo2{flex:none;opacity:.85}
+.sxring{width:60px;height:60px;background:radial-gradient(closest-side,#0A2462 74%,transparent 76% 100%),conic-gradient(#BFE6FF 0,#3FA9FF calc(var(--p)*1%),rgba(255,255,255,.28) 0)}
+.sxst{flex:1;min-width:0;display:block;font-size:.95rem;padding-left:12px;border-left:1px solid rgba(255,255,255,.22)}.sxsth{display:block;font-weight:700}
+.sxstl{display:flex;align-items:center;gap:8px;margin-top:4px}.sxstl .th{display:inline;font-size:.74rem;color:#D3DCF5;line-height:1.25}
+.sxfaces{display:flex;flex:none;gap:3px}.sxfaces img{width:26px;height:26px;border-radius:50%;display:block}
+.sxpp{flex:none;display:flex;align-items:center;gap:8px;padding:5px 12px 5px 6px;border-radius:999px;background:linear-gradient(90deg,#1D6BFF,#7A3CF0);
+ border:1px solid rgba(255,255,255,.4);box-shadow:inset 0 0 10px rgba(255,255,255,.18),0 0 10px rgba(110,90,255,.45)}
+.sxpp img{width:34px;height:34px;border-radius:7px;display:block}.sxpp b{display:block;font-size:.98rem;line-height:1.1}.sxpp small{display:block;font-size:.72rem;color:#E4E8FF;line-height:1.2}
+.sxgo2{flex:none;opacity:.95;padding-left:8px;border-left:1px solid rgba(255,255,255,.22);width:26px!important}
+@media (max-width:480px){.sxpp{padding:4px;gap:0}.sxpp>span{display:none}.sxpp img{width:32px;height:32px}.sxst{padding-left:10px}.sxstats{gap:9px;padding-right:8px}.sxstl{flex-wrap:wrap;row-gap:4px}.sxstl .th{flex-basis:100%}.sxgo2{border-left:0;padding-left:0;width:18px!important}}@media (max-width:380px){.sxsth{font-size:.9rem}.sxring{width:54px;height:54px}}
 /* tabs: one card per line with an icon; scroll sideways on small phones */
 .ttabs.sxtabs{display:flex;gap:8px;overflow-x:auto;scroll-snap-type:x mandatory;padding:12px 2px 14px;margin:0 -2px}
 .sxtabs .ttab{flex:0 0 auto;width:104px;min-height:122px;scroll-snap-align:start;flex-direction:column;align-items:center;justify-content:flex-start;gap:4px;padding:10px 6px 10px;text-align:center;
@@ -841,7 +846,7 @@ function vcKey(text,slow){const s=(slow?'s|':'n|')+String(text).replace(/\s+/g,'
   for(let i=0;i<s.length;i++){const c=s.charCodeAt(i);h1=Math.imul(h1^c,2654435761);h2=Math.imul(h2^c,1597334677)}
   h1=Math.imul(h1^(h1>>>16),2246822507)^Math.imul(h2^(h2>>>13),3266489909);h2=Math.imul(h2^(h2>>>16),2246822507)^Math.imul(h1^(h1>>>13),3266489909);
   return(4294967296*(2097151&h2)+(h1>>>0)).toString(16)}
-const BUILD='20261031k';/* bump when voice files change: it forces browsers to fetch the new files together */
+const BUILD='20261031l';/* bump when voice files change: it forces browsers to fetch the new files together */
 try{fetch('voice/index.json?v='+BUILD).then(r=>r.ok?r.json():null).then(j=>{if(j&&j.clips&&j.bundles)VC.idx=j}).catch(e=>{VC.err='index: '+e})}catch(e){}
 /* One shared <audio> element (works with the iPhone silent switch). It is "unlocked" by the first tap. */
 function vcEl(){try{if(!VC.el){VC.el=new Audio();VC.el.preload='auto';VC.el.setAttribute('playsinline','')}
@@ -3299,8 +3304,7 @@ const SXI={
  chev:'<path d="M9 5l7 7-7 7"/>'};
 const sxIcon=(k,cls)=>{const sp=el('span',{class:'sxi'+(cls?' '+cls:''),'aria-hidden':'true'});sp.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'+SXI[k]+'</svg>';return sp};
 /* three small faces for the "people you talked to" bar (made up, not real students) */
-const sxFaces=()=>{const sp=el('span',{class:'sxfaces','aria-hidden':'true'});sp.innerHTML=[['#F2C49B','#2B1D16','#2F5BFF'],['#E0A878','#1E1612','#0E9F8E'],['#F5CBA7','#3A2418','#C8102E']].map(([sk,h,sh])=>
- '<svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="16" fill="#fff"/><path d="M5 32c1-6 5-8 11-8s10 2 11 8z" fill="'+sh+'"/><circle cx="16" cy="15" r="7.5" fill="'+sk+'"/><path d="M8.5 14c0-5 3-8 7.5-8s7.5 3 7.5 8c-2-3-4-4-7.5-4s-5.5 1-7.5 4z" fill="'+h+'"/><circle cx="13.2" cy="16" r="1" fill="#2B1D16"/><circle cx="18.8" cy="16" r="1" fill="#2B1D16"/><path d="M13.5 19c1.5 1.3 3.5 1.3 5 0" stroke="#2B1D16" stroke-width="1.2" fill="none" stroke-linecap="round"/></svg>').join('');return sp};
+const sxFaces=()=>el('span',{class:'sxfaces','aria-hidden':'true'},[1,2,3].map(k=>el('img',{src:'img/bar/face'+k+'.png',alt:'',width:'48',height:'48',decoding:'async'})));/* the teacher's People bar design (31 Oct) */
 /* ===== home screen: a transit map of the town. Each tab is a "line", each place a "station". ===== */
 const LINEC={phibun:'#C8102E',daily:'#F07A1A',school:'#2F5BFF',places:'#0E9F8E',ubon:'#7B3FE4'};
 const LINED={phibun:['A school day at Phibun, from 7:30 until after school.','หนึ่งวันที่โรงเรียนพิบูลฯ ตั้งแต่ 7 โมงครึ่งจนเลิกเรียน'],
@@ -3441,6 +3445,7 @@ function render(){
    el('button',{class:'sxstats',type:'button',onclick:passportSheet,'aria-label':'People you talked to: '+done+' of '+total+'. Open passport'},
     el('span',{class:'sxring',style:'--p:'+(total?Math.round(done/total*100):0)},el('b',{},done),el('small',{},'/ '+total)),
     el('span',{class:'sxst'},el('span',{class:'sxsth'},'People you talked to'),el('span',{class:'sxstl'},sxFaces(),el('small',{class:'th'},'คนที่คุยแล้ว · '+pd+' จาก '+SCENES.length+' ที่ครบแล้ว'))),
+    el('span',{class:'sxpp'},el('img',{src:'img/bar/passport.png',alt:'',width:'48',height:'48',decoding:'async'}),el('span',{},el('b',{},'Passport'),el('small',{},'สมุดเดินทาง'))),
     sxIcon('chev','sxgo2'))),
   el('section',{class:'sxpanel',style:'--l:'+lc,'aria-label':en},
    TAB==='phibun'?lineHead(en,th,ld):el('div',{class:'sxph'},sxIcon(TAB,'sxhi'),el('div',{},el('h2',{},en+' line',el('small',{class:'th'},'สาย'+th)),el('p',{},ld[0],el('small',{class:'th'},ld[1])))),
