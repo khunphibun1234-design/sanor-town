@@ -340,7 +340,7 @@ input[type=checkbox]{width:22px;height:22px;flex:none;accent-color:var(--pen)}
 label.row{cursor:pointer}
 .det summary{cursor:pointer;font-weight:600;min-height:40px;display:flex;align-items:center}
 .sumpre{white-space:pre-wrap;word-break:break-word;font-family:var(--body);font-size:.88rem;background:var(--paper);border:1.5px solid var(--line);border-radius:8px;padding:10px 12px;margin:8px 0 0}
-#toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--paper);padding:10px 16px;border-radius:8px;max-width:calc(100% - 32px);z-index:10}
+#toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--paper);padding:10px 16px;border-radius:8px;max-width:calc(100% - 32px);z-index:60}
 @media (prefers-reduced-motion:no-preference){.stage>*{animation:in .18s ease-out}@keyframes in{from{opacity:.4;transform:translateY(4px)}to{opacity:1;transform:none}}}
 /* Sanor Town */
 
@@ -845,7 +845,7 @@ function vcKey(text,slow){const s=(slow?'s|':'n|')+String(text).replace(/\s+/g,'
   for(let i=0;i<s.length;i++){const c=s.charCodeAt(i);h1=Math.imul(h1^c,2654435761);h2=Math.imul(h2^c,1597334677)}
   h1=Math.imul(h1^(h1>>>16),2246822507)^Math.imul(h2^(h2>>>13),3266489909);h2=Math.imul(h2^(h2>>>16),2246822507)^Math.imul(h1^(h1>>>13),3266489909);
   return(4294967296*(2097151&h2)+(h1>>>0)).toString(16)}
-const BUILD='20261031g';/* bump when voice files change: it forces browsers to fetch the new files together */
+const BUILD='20261031h';/* bump when voice files change: it forces browsers to fetch the new files together */
 try{fetch('voice/index.json?v='+BUILD).then(r=>r.ok?r.json():null).then(j=>{if(j&&j.clips&&j.bundles)VC.idx=j}).catch(e=>{VC.err='index: '+e})}catch(e){}
 /* One shared <audio> element (works with the iPhone silent switch). It is "unlocked" by the first tap. */
 function vcEl(){try{if(!VC.el){VC.el=new Audio();VC.el.preload='auto';VC.el.setAttribute('playsinline','')}
