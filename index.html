@@ -845,7 +845,7 @@ function vcKey(text,slow){const s=(slow?'s|':'n|')+String(text).replace(/\s+/g,'
   for(let i=0;i<s.length;i++){const c=s.charCodeAt(i);h1=Math.imul(h1^c,2654435761);h2=Math.imul(h2^c,1597334677)}
   h1=Math.imul(h1^(h1>>>16),2246822507)^Math.imul(h2^(h2>>>13),3266489909);h2=Math.imul(h2^(h2>>>16),2246822507)^Math.imul(h1^(h1>>>13),3266489909);
   return(4294967296*(2097151&h2)+(h1>>>0)).toString(16)}
-const BUILD='20261031i';/* bump when voice files change: it forces browsers to fetch the new files together */
+const BUILD='20261031j';/* bump when voice files change: it forces browsers to fetch the new files together */
 try{fetch('voice/index.json?v='+BUILD).then(r=>r.ok?r.json():null).then(j=>{if(j&&j.clips&&j.bundles)VC.idx=j}).catch(e=>{VC.err='index: '+e})}catch(e){}
 /* One shared <audio> element (works with the iPhone silent switch). It is "unlocked" by the first tap. */
 function vcEl(){try{if(!VC.el){VC.el=new Audio();VC.el.preload='auto';VC.el.setAttribute('playsinline','')}
@@ -3367,7 +3367,7 @@ function mapBlock(list){
   wrap.append(el('li',{},b))});
  return wrap}
 function tabBar(){return el('div',{class:'ttabs sxtabs',role:'tablist','aria-label':'Lines'},TABS.map(([id,en,th])=>{const on=TAB===id,l=SCENES.filter(s=>s.group===id),n=l.length,dn=l.filter(s=>doneCount(s.id)>=nTotal(s)).length;
-  return el('button',{class:'ttab'+(on?' on':''),type:'button',role:'tab','aria-selected':on?'true':'false',style:'--l:'+LINEC[id],onclick:()=>{TAB=id;render()}},
+  return el('button',{class:'ttab'+(on?' on':''),type:'button',role:'tab','aria-selected':on?'true':'false',style:'--l:'+LINEC[id],onclick:()=>{TAB=id;render();const pn=HOST&&HOST.querySelector('.sxpanel');if(pn)pn.scrollIntoView({behavior:'smooth',block:'start'})}},
    sxIcon(id,'sxti'),el('span',{class:'sxtn'},en,el('small',{class:'th'},th)),el('span',{class:'sxct'},dn+'/'+n))}))}
 function placesSheet(pick){
  const body=el('div',{class:'sheet card stack',role:'dialog','aria-label':'Places'},
@@ -3446,11 +3446,11 @@ function render(){
     el('span',{class:'sxring',style:'--p:'+(total?Math.round(done/total*100):0)},el('b',{},done),el('small',{},'/ '+total)),
     el('span',{class:'sxst'},el('span',{class:'sxsth'},'People you talked to'),el('span',{class:'sxstl'},sxFaces(),el('small',{class:'th'},'คนที่คุยแล้ว · '+pd+' จาก '+SCENES.length+' ที่ครบแล้ว'))),
     sxIcon('chev','sxgo2'))),
-  tabBar(),
   el('section',{class:'sxpanel',style:'--l:'+lc,'aria-label':en},
    TAB==='phibun'?lineHead(en,th,ld):el('div',{class:'sxph'},sxIcon(TAB,'sxhi'),el('div',{},el('h2',{},en+' line',el('small',{class:'th'},'สาย'+th)),el('p',{},ld[0],el('small',{class:'th'},ld[1])))),
    mapView()),
   placesGrid(),/* the teacher put Our school first (research); other places in town go to the bottom, above the footer */
+  tabBar(),/* the teacher moved the line tabs to the bottom too, above the footer; a tap scrolls up to the line it opens */
   navBar());
  DREW=true}
 /* the teacher's place cards (pictures in img/places). A card opens its scene, or a whole line (tab);
