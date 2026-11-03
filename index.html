@@ -646,6 +646,11 @@ body:has(.sxnav){padding-bottom:calc(84px + env(safe-area-inset-bottom,0px))}
 .tfsep{margin:0 .6em;color:#9AA4B8}
 .tfl{white-space:nowrap}@media (max-width:560px){.tfsep{display:none}.tfl{display:block}}
 .tfcred{margin:12px 12px 0;font-size:.74rem;color:var(--sx-mute)}
+.tfstat{display:inline-flex;align-items:center;gap:.5em;margin:12px auto 0;padding:6px 14px;border-radius:999px;background:#EEF4FF;color:#14306E;font-size:.82rem;font-weight:600}
+.tfstat[hidden]{display:none}
+.tfstat b{font-size:1.05rem;color:#1E5BD6;font-variant-numeric:tabular-nums}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .tfstat{background:#1E2A44;color:#E8ECF7}:root:not([data-theme="light"]) .tfstat b{color:#8DB4FF}}
+:root[data-theme="dark"] .tfstat{background:#1E2A44;color:#E8ECF7}:root[data-theme="dark"] .tfstat b{color:#8DB4FF}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .tftag{color:#E8ECF7}:root:not([data-theme="light"]) .tftag b{color:#fff}:root:not([data-theme="light"]) .tftag2{color:#A7B0C6}}
 :root[data-theme="dark"] .tftag{color:#E8ECF7}:root[data-theme="dark"] .tftag b{color:#fff}:root[data-theme="dark"] .tftag2{color:#A7B0C6}
 /* Our school line header (teacher's design) */
@@ -833,7 +838,8 @@ input:focus,select:focus,textarea:focus{border-color:var(--pen);box-shadow:0 0 0
  <img class="tfimg" src="img/footer-1600.jpg" srcset="img/footer-900.jpg 900w, img/footer-1600.jpg 1600w" sizes="(min-width:1080px) 1040px, 100vw" width="1600" height="302" alt="" loading="lazy" decoding="async">
  <p class="tftag"><b>Sanor Town</b><span class="tfsep" aria-hidden="true">|</span><span class="tfl">Explore the town and talk in English</span></p>
  <p class="tftag2"><span class="tfl">เมืองจำลองฝึกพูดภาษาอังกฤษ</span><span class="tfsep" aria-hidden="true">|</span><span class="tfl">พัฒนาทักษะ สร้างโอกาส สู่อนาคตที่กว้างกว่า</span></p>
- <p class="tfcred">พัฒนาโดย <b>นายเสนาะ คำเสียง</b> โรงเรียนพิบูลมังสาหาร<br>ความก้าวหน้าเก็บในเครื่องนี้เท่านั้น ไม่ส่งไปที่ใด<br>© 2026 Sanor Town · build <span id="fbuild"></span></p>
+ <p class="tfstat" id="fstat" hidden><span aria-hidden="true">👀</span><span>Visits · ยอดเข้าชม</span><b id="fcount"></b></p>
+ <p class="tfcred">พัฒนาโดย <b>นายเสนาะ คำเสียง</b> โรงเรียนพิบูลมังสาหาร<br>ความก้าวหน้าเก็บในเครื่องนี้เท่านั้น ไม่ส่งไปที่ใด (นับเฉพาะจำนวนการเข้าชมรวม ไม่เก็บข้อมูลส่วนตัว)<br>© 2026 Sanor Town · build <span id="fbuild"></span></p>
 </footer>
 <div id="toast" hidden></div>
 <script>
@@ -863,7 +869,7 @@ function vcKey(text,slow){const s=(slow?'s|':'n|')+String(text).replace(/\s+/g,'
   for(let i=0;i<s.length;i++){const c=s.charCodeAt(i);h1=Math.imul(h1^c,2654435761);h2=Math.imul(h2^c,1597334677)}
   h1=Math.imul(h1^(h1>>>16),2246822507)^Math.imul(h2^(h2>>>13),3266489909);h2=Math.imul(h2^(h2>>>16),2246822507)^Math.imul(h1^(h1>>>13),3266489909);
   return(4294967296*(2097151&h2)+(h1>>>0)).toString(16)}
-const BUILD='20261103m';/* bump when voice files change: it forces browsers to fetch the new files together */
+const BUILD='20261103n';/* bump when voice files change: it forces browsers to fetch the new files together */
 try{fetch('voice/index.json?v='+BUILD).then(r=>r.ok?r.json():null).then(j=>{if(j&&j.clips&&j.bundles)VC.idx=j}).catch(e=>{VC.err='index: '+e})}catch(e){}
 /* One shared <audio> element (works with the iPhone silent switch). It is "unlocked" by the first tap. */
 function vcEl(){try{if(!VC.el){VC.el=new Audio();VC.el.preload='auto';VC.el.setAttribute('playsinline','')}
@@ -3991,5 +3997,14 @@ return {open,openScene,mount,unmount,close:closeTown,get g(){return TOWN},SCENES
 /* ============ START ============ */
 {const box=el('div',{class:'tinline'});$('#app').append(box);SanorTown.mount(box)}
 {const fb=document.getElementById('fbuild');if(fb)fb.textContent=BUILD}
+/* Visit counter in the footer (teacher, 3 Nov): GoatCounter, no cookies, no personal data. Only the total number of visits is counted;
+   game progress still stays on this device. Runs only on the live site (github.io), so tests and local copies are never counted.
+   GC_CODE = the teacher's GoatCounter code (<code>.goatcounter.com, setting "Allow adding visitor counts on your website" on). Empty = off. */
+const GC_CODE='';
+if(GC_CODE&&/\.github\.io$/.test(location.hostname)){try{
+ const gc=document.createElement('script');gc.async=true;gc.src='https://gc.zgo.at/count.js';gc.dataset.goatcounter='https://'+GC_CODE+'.goatcounter.com/count';document.head.append(gc);
+ const show=()=>fetch('https://'+GC_CODE+'.goatcounter.com/counter/TOTAL.json').then(r=>r.ok?r.json():null).then(j=>{const n=j&&j.count,el=document.getElementById('fcount');
+  if(n&&el){el.textContent=n;document.getElementById('fstat').hidden=false}}).catch(()=>{});
+ setTimeout(show,1500)}catch(e){}}
 </script>
 </body></html>
