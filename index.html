@@ -850,7 +850,7 @@ function vcKey(text,slow){const s=(slow?'s|':'n|')+String(text).replace(/\s+/g,'
   for(let i=0;i<s.length;i++){const c=s.charCodeAt(i);h1=Math.imul(h1^c,2654435761);h2=Math.imul(h2^c,1597334677)}
   h1=Math.imul(h1^(h1>>>16),2246822507)^Math.imul(h2^(h2>>>13),3266489909);h2=Math.imul(h2^(h2>>>16),2246822507)^Math.imul(h1^(h1>>>13),3266489909);
   return(4294967296*(2097151&h2)+(h1>>>0)).toString(16)}
-const BUILD='20261103d';/* bump when voice files change: it forces browsers to fetch the new files together */
+const BUILD='20261103e';/* bump when voice files change: it forces browsers to fetch the new files together */
 try{fetch('voice/index.json?v='+BUILD).then(r=>r.ok?r.json():null).then(j=>{if(j&&j.clips&&j.bundles)VC.idx=j}).catch(e=>{VC.err='index: '+e})}catch(e){}
 /* One shared <audio> element (works with the iPhone silent switch). It is "unlocked" by the first tap. */
 function vcEl(){try{if(!VC.el){VC.el=new Audio();VC.el.preload='auto';VC.el.setAttribute('playsinline','')}
@@ -2332,7 +2332,7 @@ SCENES.push({id:'flagpole',name:'Multipurpose dome · Phibun School',th:'โด�
   c.box(0,.03,-1,26,.06,13,CONC);c.box(0,.03,-9.85,26,.06,4.7,CONC);/* concrete yard (also behind the dome) */
   /* the dome is big: 20 m wide and 8.5 m deep, open on all sides, concrete floor */
   c.box(0,.07,-7.35,19.4,.08,8.6,[.7,.69,.66]);
-  for(let x=-9;x<=9.01;x+=3){c.box(x,3.3,-3.1,.3,6.6,.3,STEEL,true);c.box(x,3.3,-11.6,.3,6.6,.3,STEEL,true)}
+  for(let x=-9;x<=9.01;x+=3){if(Math.abs(x)>.01)c.box(x,3.3,-3.1,.3,6.6,.3,STEEL,true);c.box(x,3.3,-11.6,.3,6.6,.3,STEEL,true)}/* the front post in the middle of the aisle was taken out (it blocked the walkway, the teacher asked 3 Nov) */
   for(const z of [-6.0,-8.7]){c.box(-9,3.3,z,.3,6.6,.3,STEEL,true);c.box(9,3.3,z,.3,6.6,.3,STEEL,true)}
   c.box(0,6.55,-3.1,18.6,.35,.35,STEEL);c.box(0,6.55,-11.6,18.6,.35,.35,STEEL);
   for(const x of [-9,9])c.box(x,6.55,-7.35,.35,.35,8.5,STEEL);
