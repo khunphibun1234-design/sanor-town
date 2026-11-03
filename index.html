@@ -659,6 +659,9 @@ body:has(.sxnav){padding-bottom:calc(84px + env(safe-area-inset-bottom,0px))}
 .sxlhm img{display:block;width:100%;height:auto;aspect-ratio:941/312}
 .sxgrid{list-style:none;margin:0;padding:12px 8px 14px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;border-radius:18px;background:linear-gradient(180deg,#BFE3FF,#DDF0FF 55%,#E9F7E4)}
 .sxgrid li{min-width:0}.sxgrid li.sglast{grid-column:2}
+/* the teacher's pictures beside the last card (3 Nov): a map and compass on the left, rewards on the right */
+.sxgrid li.sgdeco{display:flex;align-items:center;justify-content:center;pointer-events:none}
+.sxgrid li.sgdeco img{display:block;width:100%;max-width:220px;height:auto;filter:drop-shadow(0 3px 5px rgba(30,70,140,.14))}
 .sgc{all:unset;box-sizing:border-box;display:flex;flex-direction:column;width:100%;height:100%;cursor:pointer;background:#fff;border-radius:14px;overflow:hidden;border:2px solid #fff;box-shadow:0 3px 8px rgba(30,70,140,.18);transition:transform .12s}
 .sgc:active{transform:scale(.97)}.sgc:focus-visible{outline:3px solid var(--sx-gold);outline-offset:2px}
 .sgimg{position:relative;display:block;line-height:0}.sgimg img{display:block;width:100%;height:auto;aspect-ratio:268/91;object-fit:cover}
@@ -869,7 +872,7 @@ function vcKey(text,slow){const s=(slow?'s|':'n|')+String(text).replace(/\s+/g,'
   for(let i=0;i<s.length;i++){const c=s.charCodeAt(i);h1=Math.imul(h1^c,2654435761);h2=Math.imul(h2^c,1597334677)}
   h1=Math.imul(h1^(h1>>>16),2246822507)^Math.imul(h2^(h2>>>13),3266489909);h2=Math.imul(h2^(h2>>>16),2246822507)^Math.imul(h1^(h1>>>13),3266489909);
   return(4294967296*(2097151&h2)+(h1>>>0)).toString(16)}
-const BUILD='20261103o';/* bump when voice files change: it forces browsers to fetch the new files together */
+const BUILD='20261103p';/* bump when voice files change: it forces browsers to fetch the new files together */
 try{fetch('voice/index.json?v='+BUILD).then(r=>r.ok?r.json():null).then(j=>{if(j&&j.clips&&j.bundles)VC.idx=j}).catch(e=>{VC.err='index: '+e})}catch(e){}
 /* One shared <audio> element (works with the iPhone silent switch). It is "unlocked" by the first tap. */
 function vcEl(){try{if(!VC.el){VC.el=new Audio();VC.el.preload='auto';VC.el.setAttribute('playsinline','')}
@@ -3819,7 +3822,10 @@ function gridBlock(list){
    el('span',{class:'sgrow'},ic,el('span',{class:'sgtx'},el('b',{},nm[0]),el('small',{},nm[1]))),
    el('span',{class:'sgst','aria-hidden':'true'},locked?el('span',{class:'sgsoon'},'Soon',el('span',{class:'th'},' · เร็ว ๆ นี้')):Array.from({length:n},(_,i)=>el('i',{class:i<d?'on':''},'★'))));
   b.addEventListener('click',()=>{if(locked)toast(nm[0]+' is coming soon. · เร็ว ๆ นี้');else playPlace(s,render)});
-  wrap.append(el('li',{class:s.id==='market2'?'sglast':''},b))});
+  const deco=(f,w,h)=>el('li',{class:'sgdeco','aria-hidden':'true'},el('img',{src:'img/grid/'+f+'.png',alt:'',width:w,height:h,loading:'lazy',decoding:'async'}));
+  if(s.id==='market2')wrap.append(deco('deco-map','299','215'));
+  wrap.append(el('li',{class:s.id==='market2'?'sglast':''},b));
+  if(s.id==='market2')wrap.append(deco('deco-reward','304','236'))});
  return wrap}
 function mapBlock(list){
  const timed=list.some(s=>STIME[s.id]);
