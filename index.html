@@ -649,10 +649,23 @@ body:has(.sxnav){padding-bottom:calc(84px + env(safe-area-inset-bottom,0px))}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .tftag{color:#E8ECF7}:root:not([data-theme="light"]) .tftag b{color:#fff}:root:not([data-theme="light"]) .tftag2{color:#A7B0C6}}
 :root[data-theme="dark"] .tftag{color:#E8ECF7}:root[data-theme="dark"] .tftag b{color:#fff}:root[data-theme="dark"] .tftag2{color:#A7B0C6}
 /* Our school line header (teacher's design) */
-.sxlh{margin:0 2px 14px}
-.sxlhm{position:relative;border-radius:20px;overflow:hidden;padding:clamp(8px,2.5vw,18px) clamp(6px,2vw,16px);line-height:0;background:radial-gradient(60% 55% at 78% 8%,rgba(255,236,160,.85),rgba(255,236,160,0) 70%),radial-gradient(28% 22% at 14% 18%,rgba(255,255,255,.95),rgba(255,255,255,0) 72%),radial-gradient(34% 24% at 50% 6%,rgba(255,255,255,.8),rgba(255,255,255,0) 70%),radial-gradient(70% 45% at 50% 108%,rgba(140,214,120,.55),rgba(140,214,120,0) 70%),linear-gradient(180deg,#8FD0FF 0%,#C9E9FF 45%,#F1F9FF 78%,#FFF8E6 100%);box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.7),0 6px 16px rgba(21,33,59,.14)}
-.sxlhm img{display:block;width:100%;height:auto;aspect-ratio:1400/676;filter:drop-shadow(0 4px 8px rgba(20,48,110,.18))}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .sxlhm{filter:brightness(.92)}}
+.sxlh{margin:0 0 10px}
+.sxlhm{border-radius:18px;overflow:hidden;line-height:0;box-shadow:0 4px 14px rgba(21,33,59,.16)}
+.sxlhm img{display:block;width:100%;height:auto;aspect-ratio:941/312}
+.sxgrid{list-style:none;margin:0;padding:12px 8px 14px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;border-radius:18px;background:linear-gradient(180deg,#BFE3FF,#DDF0FF 55%,#E9F7E4)}
+.sxgrid li{min-width:0}.sxgrid li.sglast{grid-column:2}
+.sgc{all:unset;box-sizing:border-box;display:flex;flex-direction:column;width:100%;height:100%;cursor:pointer;background:#fff;border-radius:14px;overflow:hidden;border:2px solid #fff;box-shadow:0 3px 8px rgba(30,70,140,.18);transition:transform .12s}
+.sgc:active{transform:scale(.97)}.sgc:focus-visible{outline:3px solid var(--sx-gold);outline-offset:2px}
+.sgimg{position:relative;display:block;line-height:0}.sgimg img{display:block;width:100%;height:auto;aspect-ratio:268/91;object-fit:cover}
+.sgok{position:absolute;right:5px;top:5px;width:20px;height:20px;border-radius:50%;background:#16A34A;color:#fff;font:700 12px/20px sans-serif;text-align:center;box-shadow:0 0 0 2px #fff}
+.sgrow{display:flex;align-items:center;gap:5px;padding:5px 5px 0}
+.sgic{flex:none;width:22px;height:22px;border-radius:50%;background:var(--c);color:#fff;padding:4px;box-sizing:border-box}.sgic svg{width:100%;height:100%;display:block}
+.sgtx{min-width:0;display:block;line-height:1.12}.sgtx b{display:block;font:700 .7rem/1.12 'Mitr',var(--display);color:#14306E}.sgtx small{display:block;font-size:.6rem;color:#4A587C;margin-top:1px}
+.sgst{display:flex;gap:1px;padding:3px 6px 6px;margin-top:auto;font-size:.62rem;line-height:1;color:color-mix(in srgb,var(--sx-mute) 35%,transparent)}.sgst i{font-style:normal}.sgst i.on{color:var(--sx-gold)}
+.sgsoon{font-size:.58rem;font-weight:700;color:var(--c)}.sgsoon .th{display:inline;font-weight:500}
+.sgc.lock .sgimg img{filter:saturate(.75)}
+@media (max-width:599px){.sgic{display:none}.sgrow{padding:5px 6px 0}.sgtx b{overflow-wrap:anywhere;hyphens:auto}.sgsoon .th{display:none}}
+@media (min-width:600px){.sxgrid{gap:14px;padding:16px}.sgrow{gap:8px;padding:8px 8px 0}.sgic{width:32px;height:32px;padding:6px}.sgtx b{font-size:.98rem}.sgtx small{font-size:.8rem}.sgst{font-size:.85rem;padding:5px 10px 9px}.sgsoon{font-size:.78rem}}
 .tmisb{background:#fff;border:0;border-radius:8px;min-height:40px;min-width:44px;font-size:1.2rem;line-height:1}
 @media (max-height:520px) and (min-width:600px){.tmc{max-width:780px;flex-direction:row;align-items:stretch;gap:14px;padding:12px 14px}.tmL,.tmR{flex:1 1 0;min-width:0}.tmR{justify-content:space-between}
  .tmc h2{font-size:1.05rem}.tmsit,.tmgoal{padding:7px 10px}.tmen{font-size:.92rem}.tmth{font-size:.8rem}.tmlist{gap:5px}.tmlist li{padding:3px 9px;gap:8px}.tmlist b{font-size:.84rem;line-height:1.25}.tmlist small{font-size:.74rem;line-height:1.25}.tmck{width:22px;height:22px}.tmwho{font-size:.68rem}.tmgo{min-height:44px;padding-block:4px}.tplist{gap:3px}.tplist li{padding:2px 8px}.tpsay{width:30px;height:30px;font-size:.95rem}.tplist b{font-size:.82rem;line-height:1.2}.tplist small{font-size:.7rem;line-height:1.2}.tprep .tmR{gap:6px}}
@@ -850,7 +863,7 @@ function vcKey(text,slow){const s=(slow?'s|':'n|')+String(text).replace(/\s+/g,'
   for(let i=0;i<s.length;i++){const c=s.charCodeAt(i);h1=Math.imul(h1^c,2654435761);h2=Math.imul(h2^c,1597334677)}
   h1=Math.imul(h1^(h1>>>16),2246822507)^Math.imul(h2^(h2>>>13),3266489909);h2=Math.imul(h2^(h2>>>16),2246822507)^Math.imul(h1^(h1>>>13),3266489909);
   return(4294967296*(2097151&h2)+(h1>>>0)).toString(16)}
-const BUILD='20261103e';/* bump when voice files change: it forces browsers to fetch the new files together */
+const BUILD='20261103f';/* bump when voice files change: it forces browsers to fetch the new files together */
 try{fetch('voice/index.json?v='+BUILD).then(r=>r.ok?r.json():null).then(j=>{if(j&&j.clips&&j.bundles)VC.idx=j}).catch(e=>{VC.err='index: '+e})}catch(e){}
 /* One shared <audio> element (works with the iPhone silent switch). It is "unlocked" by the first tap. */
 function vcEl(){try{if(!VC.el){VC.el=new Audio();VC.el.preload='auto';VC.el.setAttribute('playsinline','')}
@@ -2400,7 +2413,7 @@ waySign(3.1,5.6+.03,0,'School front','กลับหน้าโรงเรี
    Reached from the flagpole yard by the path to building 6 (west side); the door at the back right leads out again.
    The side and back walls are low (cut away) so the 360-degree camera can always see inside; the front wall with
    the whiteboard is higher (2.3 m). The lesson is made up for the game; NPC names are made up. */
-SCENES.push({id:'class85',name:'Classroom · Phibun School',th:'ห้องเรียน อาคาร 6',color:'#0F766E',orbit:true,spawn:[4.5,1.8,Math.PI],bounds:[-5.8,5.8,-4.5,5.2],
+SCENES.push({id:'class85',name:'Classroom · Phibun School',th:'ห้องเรียน อาคาร 3',color:'#0F766E',orbit:true,spawn:[4.5,1.8,Math.PI],bounds:[-5.8,5.8,-4.5,5.2],
  exits:[{x0:3.7,x1:5.3,z0:4.4,z1:5.2,to:'flagpole',at:[-10.8,.4,Math.PI/2]}],/* the classroom door leads back to the flagpole yard */
  build(){const c=mk();
   const WALL=[.93,.9,.82],CAP=[.62,.5,.36],DESK=[.86,.72,.5],LEG=[.42,.44,.48],CHAIR=[.25,.45,.7];
@@ -2999,7 +3012,8 @@ const LOCKED=[/* Our school stations from the teacher's line picture (3 Nov): co
  {id:'pmstudio',name:'PM Studio',th:'ห้องสตูดิโอสื่อสร้างสรรค์',group:'phibun'},
  {id:'garden',name:'School Garden',th:'สวนพฤกษศาสตร์โรงเรียน',group:'phibun'},
  {id:'gym',name:'School Gym',th:'โรงยิม',group:'phibun'},
- {id:'lostfound',name:'Lost and Found',th:'จุดรับแจ้งของหาย',group:'phibun'}];
+ {id:'lostfound',name:'Lost and Found',th:'จุดรับแจ้งของหาย',group:'phibun'},
+ {id:'pool',name:'School Swimming Pool',th:'สระว่ายน้ำโรงเรียน',group:'phibun'}];
 
 /* progress: stored ONLY on this phone (localStorage). Nothing is sent anywhere. */
 /* own key for this app. The first time, progress is copied from the Town inside Sanor English World
@@ -3304,6 +3318,7 @@ const SUBS={ubon:[['nature','Nature','ธรรมชาติ'],['culture','Cul
 function mapView(){
  const all=[...SCENES.filter(s=>s.group===TAB),...LOCKED.filter(s=>s.group===TAB).map(s=>Object.assign({locked:true,color:'#8a94a6'},s))];
  if(all.some(s=>STIME[s.id]))all.sort((x,y)=>(STIME[x.id]||'99').localeCompare(STIME[y.id]||'99'));
+ if(TAB==='phibun')return gridBlock(all);
  const subs=SUBS[TAB];
  if(!subs)return mapBlock(all);
  const box=el('div',{class:'tsubs'});
@@ -3353,7 +3368,7 @@ const RLOG={
  download(){const b=new Blob(['﻿'+RLOG.csv()],{type:'text/csv'}),a=document.createElement('a');a.href=URL.createObjectURL(b);
   a.download='sanor-town-research-'+(RS.pc||'none')+'.csv';document.body.append(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},500)}};
 const shortName=s=>s.name.replace(/ · Phibun School$/,'');
-const LCOL={"gate1": "#1E7BFF", "flagpole": "#F0365A", "council": "#8B3CF0", "class85": "#14A86B", "englab": "#F5B400", "scilab": "#FF6A1A", "music": "#1E7BFF", "art": "#14A86B", "canteen": "#FF6A1A", "itlib": "#1E7BFF", "sbank": "#F5B400", "coop": "#8B3CF0", "football": "#14A86B", "nurse": "#F0365A", "guidance": "#8B3CF0", "hall14": "#8B3CF0", "pmstudio": "#1E7BFF", "garden": "#FF6A1A", "gym": "#1E7BFF", "lostfound": "#14A86B", "market2": "#FF6A1A"};/* station colours on the Our school line, from the teacher's picture */
+const LCOL={"gate1": "#1E7BFF", "flagpole": "#F0365A", "council": "#8B3CF0", "class85": "#14A86B", "englab": "#F5B400", "scilab": "#FF6A1A", "music": "#1E7BFF", "art": "#14A86B", "canteen": "#FF6A1A", "itlib": "#1E7BFF", "sbank": "#F5B400", "coop": "#8B3CF0", "football": "#14A86B", "nurse": "#F0365A", "guidance": "#8B3CF0", "hall14": "#8B3CF0", "pmstudio": "#1E7BFF", "garden": "#FF6A1A", "gym": "#1E7BFF", "lostfound": "#14A86B", "market2": "#FF6A1A", "pool": "#12B5C9"};/* station colours on the Our school line, from the teacher's picture */
 /* the teacher's station pictures (img/stations) and an icon for each station of the Our school line */
 const STICON={gate1:'<path d="M3 21V9l9-6 9 6v12"/><path d="M9 21v-6a3 3 0 0 1 6 0v6"/><path d="M3 21h18"/>',
  flagpole:'<path d="M3 14a9 9 0 0 1 18 0"/><path d="M3 14h18M5 14v6M19 14v6M9 14v6M15 14v6M3 20h18M12 5V2"/>',
@@ -3375,7 +3390,27 @@ const STICON={gate1:'<path d="M3 21V9l9-6 9 6v12"/><path d="M9 21v-6a3 3 0 0 1 6
  pmstudio:'<rect x="2" y="6" width="14" height="12" rx="2"/><path d="M16 10l6-3v10l-6-3z"/>',
  garden:'<path d="M5 21c0-9 6-15 15-16-1 9-7 15-15 16z"/><path d="M5 21l8-8"/>',
  gym:'<path d="M6 7v10M3 9v6M18 7v10M21 9v6M6 12h12"/>',
- lostfound:'<rect x="3" y="8" width="18" height="13" rx="2"/><path d="M8 8V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v3"/><path d="M10 13a2 2 0 1 1 3 1.7c-.6.4-1 .8-1 1.5M12 18.5v.1"/>'};
+ lostfound:'<rect x="3" y="8" width="18" height="13" rx="2"/><path d="M8 8V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v3"/><path d="M10 13a2 2 0 1 1 3 1.7c-.6.4-1 .8-1 1.5M12 18.5v.1"/>',
+ pool:'<path d="M2 18c2 0 2-1.5 4-1.5S8 18 10 18s2-1.5 4-1.5 2 1.5 4 1.5 2-1.5 4-1.5"/><path d="M8 15V5a2 2 0 0 1 4 0M16 15V5a2 2 0 0 0-4 0M8 9h8M8 12.5h8"/>'};
+/* Our school line as the teacher's 22-card grid (3 Nov): order and names from the picture, no times */
+const GORDER=['gate1','flagpole','council','class85','englab','scilab','music','art','canteen','itlib','sbank','coop','football','nurse','guidance','hall14','pmstudio','garden','pool','gym','lostfound','market2'];
+const GNAME={gate1:['School Gate 1','ประตู 1 โรงเรียนพิบูลมังสาหาร'],flagpole:['Multipurpose Dome','โดมอเนกประสงค์'],council:['Student Council Room','ห้องสภานักเรียน'],class85:['Classroom (Building 3)','ห้องเรียน อาคาร 3'],
+ englab:['English Language Lab','ห้องปฏิบัติการภาษาอังกฤษ'],scilab:['Science Lab','ห้องปฏิบัติการวิทยาศาสตร์'],music:['Music Room','ห้องดนตรี'],art:['Art Room','ห้องศิลปะ'],canteen:['School Canteen','โรงอาหาร 60 ปี'],
+ itlib:['IT Library','ห้องสมุด IT'],sbank:['School Bank','ธนาคารโรงเรียน'],coop:['School Cooperative Shop','ร้านสหกรณ์โรงเรียน'],football:['Football Field','สนามฟุตบอล'],nurse:["School Nurse's Office",'ห้องพยาบาล'],
+ guidance:['Guidance Room','ห้องแนะแนว'],hall14:['Ratrangsan Hall','หอประชุมราษฎร์รังสรรค์'],pmstudio:['PM Studio','ห้องสตูดิโอสื่อสร้างสรรค์'],garden:['School Botanical Garden','สวนพฤกษศาสตร์โรงเรียน'],
+ pool:['School Swimming Pool','สระว่ายน้ำโรงเรียน'],gym:['School Gym','โรงยิม'],lostfound:['Lost and Found','จุดรับแจ้งของหาย'],market2:['Street Market','ตลาดหน้าโรงเรียน (หลังเลิกเรียน)']};
+function gridBlock(list){
+ const by=id=>list.find(s=>s.id===id),ord=GORDER.map(by).filter(Boolean).concat(list.filter(s=>!GORDER.includes(s.id)));
+ const wrap=el('ol',{class:'sxgrid','aria-label':'Places'});
+ ord.forEach((s,k)=>{const d=doneCount(s.id),n=nTotal(s),locked=!!s.locked,full=!locked&&d>=n,nm=GNAME[s.id]||[shortName(s),s.th],c=LCOL[s.id]||s.color;
+  const ic=el('span',{class:'sgic','aria-hidden':'true'});ic.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'+(STICON[s.id]||SXI.phibun)+'</svg>';
+  const b=el('button',{type:'button','data-scene':s.id,class:'sgc'+(locked?' lock':'')+(full?' full':''),style:'--c:'+c,'aria-label':(k+1)+'. '+nm[0]+', '+nm[1]+(locked?', coming soon':', '+d+' of '+n+' done')},
+   el('span',{class:'sgimg'},el('img',{src:'img/stations3/'+s.id+'.jpg',alt:'',width:'268',height:'91',loading:'lazy',decoding:'async'}),full?el('span',{class:'sgok','aria-hidden':'true'},'✓'):null),
+   el('span',{class:'sgrow'},ic,el('span',{class:'sgtx'},el('b',{},nm[0]),el('small',{},nm[1]))),
+   el('span',{class:'sgst','aria-hidden':'true'},locked?el('span',{class:'sgsoon'},'Soon',el('span',{class:'th'},' · เร็ว ๆ นี้')):Array.from({length:n},(_,i)=>el('i',{class:i<d?'on':''},'★'))));
+  b.addEventListener('click',()=>{if(locked)toast(nm[0]+' is coming soon. · เร็ว ๆ นี้');else playPlace(s,render)});
+  wrap.append(el('li',{class:s.id==='market2'?'sglast':''},b))});
+ return wrap}
 function mapBlock(list){
  const timed=list.some(s=>STIME[s.id]);
  const cols=list.map(s=>LCOL[s.id]||s.color),grad=cols.length>1?'linear-gradient(180deg,'+cols.join(',')+')':cols[0];
@@ -3383,11 +3418,11 @@ function mapBlock(list){
  const wrap=el(timed?'ol':'ul',{class:'mapgrid sxline'+(timed?' timed':'')+(rich?' rich':'')+(DREW?'':' draw'),'aria-label':'Places',style:'--grad:'+grad});
  list.forEach(s=>{const d=doneCount(s.id),n=nTotal(s),locked=!!s.locked,full=d>=n;
   const stars=el('span',{class:'sxstars','aria-hidden':'true'},Array.from({length:n},(_,k)=>el('i',{class:k<d?'on':''},'★')));
-  const b=el('button',{type:'button',class:'pl'+(locked?' lock':'')+(full?' full':''),style:'--c:'+(LCOL[s.id]||s.color),'aria-label':s.name+', '+s.th+(locked?', coming soon':', '+d+' of '+n+' done')},
+  const b=el('button',{type:'button','data-scene':s.id,class:'pl'+(locked?' lock':'')+(full?' full':''),style:'--c:'+(LCOL[s.id]||s.color),'aria-label':s.name+', '+s.th+(locked?', coming soon':', '+d+' of '+n+' done')},
    STIME[s.id]?el('span',{class:'sxtime'},STIME[s.id]):null,
    el('span',{class:'sxdot','aria-hidden':'true'},full?'✓':''),
    el('span',{class:'sxcard'},
-    rich?el('img',{class:'sxth',src:'img/stations2/'+s.id+'.jpg',alt:'',width:'172',height:'70',loading:'lazy',decoding:'async'}):null,
+    rich?el('img',{class:'sxth',src:'img/stations3/'+s.id+'.jpg',alt:'',width:'268',height:'91',loading:'lazy',decoding:'async'}):null,
     rich?(()=>{const ic=el('span',{class:'sxic','aria-hidden':'true'});ic.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'+STICON[s.id]+'</svg>';return ic})():null,
     el('span',{class:'sxtx'},el('span',{class:'pen'},shortName(s)),el('span',{class:'pth'},rich?s.th.replace(/ ?โรงเรียนพิบูลมังสาหาร$/,''):s.th),el('span',{class:'pst'},locked?'Soon':stars)),
     sxIcon('chev','sxgo')));
@@ -3521,10 +3556,9 @@ function navBar(){
   it('profile','Profile','โปรไฟล์',soon('Profile','โปรไฟล์')))}
 /* the teacher's header for the Our school line: school icon, big title, text, and the school map picture
    ("Tap a place to explore" and the map button in the picture open the list of places) */
-function lineHead(en,th,ld){/* the teacher's Our School / Our Learning Journey picture (3 Nov) on a sky card */
- return el('div',{class:'sxlh'},
-  el('h2',{class:'vh'},'Our school line · สาย'+th),
-  el('div',{class:'sxlhm'},el('img',{src:'img/lines/phibun-journey-1400.webp',srcset:'img/lines/phibun-journey-800.webp 800w, img/lines/phibun-journey-1400.webp 1400w',sizes:'(min-width:1080px) 960px, 92vw',alt:'Our School: a brighter place to learn, grow and belong. Our Learning Journey: complete missions at each stop, explore important places around our school, gain knowledge, and earn rewards together! A school day at Phibun, from 7:30 until after school.',width:'1400',height:'676',decoding:'async'})))}
+function lineHead(en,th,ld){/* the teacher's Sanor Town · Our School picture (3 Nov, top of the 22-card design) */
+ return el('div',{class:'sxlh'},el('h2',{class:'vh'},'Our school line · สาย'+th),
+  el('div',{class:'sxlhm'},el('img',{src:'img/lines/ourschool-head.jpg',alt:'Sanor Town Our School: Explore your school, speak English, complete your quest',width:'941',height:'312',decoding:'async'})))}
 function TAB_EN(){const t=TABS.find(x=>x[0]===TAB)||TABS[0];return [t[1],t[2]]}
 /* the hero art: five transit lines (one per tab colour) crossing, with station dots */
 const SXMAP='<g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="7">'+
