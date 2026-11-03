@@ -863,7 +863,7 @@ function vcKey(text,slow){const s=(slow?'s|':'n|')+String(text).replace(/\s+/g,'
   for(let i=0;i<s.length;i++){const c=s.charCodeAt(i);h1=Math.imul(h1^c,2654435761);h2=Math.imul(h2^c,1597334677)}
   h1=Math.imul(h1^(h1>>>16),2246822507)^Math.imul(h2^(h2>>>13),3266489909);h2=Math.imul(h2^(h2>>>16),2246822507)^Math.imul(h1^(h1>>>13),3266489909);
   return(4294967296*(2097151&h2)+(h1>>>0)).toString(16)}
-const BUILD='20261103f';/* bump when voice files change: it forces browsers to fetch the new files together */
+const BUILD='20261103g';/* bump when voice files change: it forces browsers to fetch the new files together */
 try{fetch('voice/index.json?v='+BUILD).then(r=>r.ok?r.json():null).then(j=>{if(j&&j.clips&&j.bundles)VC.idx=j}).catch(e=>{VC.err='index: '+e})}catch(e){}
 /* One shared <audio> element (works with the iPhone silent switch). It is "unlocked" by the first tap. */
 function vcEl(){try{if(!VC.el){VC.el=new Audio();VC.el.preload='auto';VC.el.setAttribute('playsinline','')}
@@ -2230,7 +2230,7 @@ SCENES.push({id:'localfood',name:'Ubon Local Food',th:'อาหารอุบ�
    Seen from the road, the sign is on the RIGHT and Gate 1 on the LEFT, as at the real school (teacher's correction, 28 Oct 2569).
    The build code below is written the other way round and then flipped with mirrorWorld();
    the decals and NPCs below already use the final (flipped) x values. */
-SCENES.push({id:'gate1',name:'Gate 1 · Phibun School',th:'ประตู 1 โรงเรียนพิบูลมังสาหาร',color:'#23407A',orbit:true,
+SCENES.push({id:'gate1',name:'School Gate 1 · Phibun School',th:'ประตู 1 โรงเรียนพิบูลมังสาหาร',color:'#23407A',orbit:true,
  exits:[{x0:-10,x1:-4,z0:-9.2,z1:-8.25,to:'flagpole',at:[0,6.6,Math.PI]},/* walk to the back of the school yard to reach the dome: arrive on the front walkway, facing the flagpole */
   {x0:-7.7,x1:-4.3,z0:10.6,z1:11.2,to:'market2',at:[0,1.4,0]}],/* cross on the zebra crossing to reach the street market */
 spawn:[1,4.6,Math.PI],bounds:[-12.4,12.4,-9,11.2],
@@ -2302,7 +2302,7 @@ spawn:[1,4.6,Math.PI],bounds:[-12.4,12.4,-9,11.2],
    {x:sx,y:2.05,z:sz+.375,w:4.7,h:1.9,cw:1024,ch:414,draw:board},
    {x:sx,y:4.42,z:sz+.33,w:1.45,h:1.45,src:'img/phibun-emblem.png'},
    {x:sx-3.5,y:1.45,z:sz+.30,w:.75,h:1.4,cw:240,ch:448,draw:plaque('ปรัชญาของโรงเรียน',['การศึกษาเป็นการ','พัฒนาชีวิต','และสังคม'])},
-   waySign(-10,-7.2+.03,0,'Dome','โดมอเนกประสงค์','\u2191'),waySign(-9.4,5.2+.03,0,'Street market','ไปตลาดหน้าโรงเรียน','↓'),
+   waySign(-10,-7.2+.03,0,'Multipurpose Dome','โดมอเนกประสงค์','\u2191'),waySign(-9.4,5.2+.03,0,'Street Market','ตลาดหน้าโรงเรียน','↓'),
    {x:sx+3.5,y:1.45,z:sz+.30,w:.75,h:1.4,cw:240,ch:448,draw:plaque('',['อัตตานัง ทมยันติ','สุพพตา','ผู้ประพฤติดี','ย่อมฝึกตน'])}]})(),
  npcs:[
  NPCDEF('guard','Mr. Somsak','Security guard⁣ยามรักษาความปลอดภัย',-8.4,-2.4,-Math.PI/2,[.17,.22,.36],[.12,.12,.16],[.1,.08,.07],'cap',[
@@ -2332,7 +2332,7 @@ spawn:[1,4.6,Math.PI],bounds:[-12.4,12.4,-9,11.2],
    building 6 (3 floors, brown hip roof, corridors facing the dome) runs alongside it.
    Here the camera looks north: the flagpole is in front, the dome and the lines of students behind it.
    Walk out on the east path to go back to Gate 1. NPC names are made up. */
-SCENES.push({id:'flagpole',name:'Multipurpose dome · Phibun School',th:'โดมอเนกประสงค์ โรงเรียนพิบูลมังสาหาร',color:'#B91C1C',orbit:true,spawn:[0,6.6,Math.PI],bounds:[-12.4,12.4,-12,9],
+SCENES.push({id:'flagpole',name:'Multipurpose Dome · Phibun School',th:'โดมอเนกประสงค์',color:'#B91C1C',orbit:true,spawn:[0,6.6,Math.PI],bounds:[-12.4,12.4,-12,9],
  exits:[{x0:-1.6,x1:1.6,z0:8.3,z1:9.2,to:'gate1',at:[-7,-7.4,0]},
   {x0:-12.4,x1:-11.6,z0:-.5,z1:1.3,to:'class85',at:[4.5,1.8,Math.PI]},
   {x0:-2.7,x1:-.3,z0:-12,z1:-11.75,to:'canteen',at:[7.8,3.2,-Math.PI/2]},/* back of the dome (between two posts): to the canteen */
@@ -2389,8 +2389,8 @@ SCENES.push({id:'flagpole',name:'Multipurpose dome · Phibun School',th:'โด�
   c.box(10.4,.05,-1.4,4,.08,1.4,CONC);wayPost(c,10.6,-2.75);wayMarks(c,8.6,-1.4,1,0,2);
   return{a:new Float32Array(A),ob:c.ob}},
  decals:[{x:-4.5,y:5.75,z:-2.92,w:6.2,h:.95,ry:0,cw:1100,ch:168,draw:(g,W,H)=>{g.fillStyle='#b91c1c';g.fillRect(0,0,W,H);g.strokeStyle='#fde68a';g.lineWidth=8;g.strokeRect(6,6,W-12,H-12);
-   g.fillStyle='#fff';g.textAlign='center';g.textBaseline='middle';g.font="700 62px Anuphan, 'Noto Sans Thai', sans-serif";g.fillText('Multipurpose dome · โดมอเนกประสงค์',W/2,H/2+3)}},
-waySign(3.1,5.6+.03,0,'School front','กลับหน้าโรงเรียน','↓'),waySign(-9.6,-.9+.03,0,'Classroom','ห้องเรียน','←'),waySign(-4.6,-11.95+.03,0,'Canteen','โรงอาหาร','↑'),waySign(9,1.7+.03,0,'Football field','สนามฟุตบอล','→'),waySign(10.6,-11.95+.03,0,'Hall','หอประชุม','→'),waySign(10.6,-2.75+.03,0,'School bank','ธนาคารโรงเรียน','→')],
+   g.fillStyle='#fff';g.textAlign='center';g.textBaseline='middle';{let f=62,t='Multipurpose Dome · โดมอเนกประสงค์';g.font="700 "+f+"px Anuphan, 'Noto Sans Thai', sans-serif";while(g.measureText(t).width>W*.94&&f>24){f-=2;g.font="700 "+f+"px Anuphan, 'Noto Sans Thai', sans-serif"}g.fillText(t,W/2,H/2+3)}}},
+waySign(3.1,5.6+.03,0,'School Gate 1','ประตู 1 โรงเรียนพิบูลมังสาหาร','↓'),waySign(-9.6,-.9+.03,0,'Classroom','ห้องเรียน อาคาร 3','←'),waySign(-4.6,-11.95+.03,0,'School Canteen','โรงอาหาร 60 ปี','↑'),waySign(9,1.7+.03,0,'Football Field','สนามฟุตบอล','→'),waySign(10.6,-11.95+.03,0,'Ratrangsan Hall','หอประชุมราษฎร์รังสรรค์','→'),waySign(10.6,-2.75+.03,0,'School Bank','ธนาคารโรงเรียน','→')],
  npcs:[
  NPCDEF('homeroom','Ms. Suda','Homeroom teacher⁣ครูประจำชั้น',-2.8,-2.2,Math.PI,[.85,.35,.45],[.2,.2,.26],[.08,.06,.07],'bun',[
   TT("Good morning, class! Please stand in your line.",'สวัสดีตอนเช้า นักเรียน ยืนเข้าแถวของตัวเองนะ',"Good morning, teacher. OK!","Good night, teacher. OK!","Please stand in your line.",'ครูทักตอนเช้าและบอกให้เข้าแถว ให้ทักทายกลับและรับคำ','Good morning = สวัสดีตอนเช้า (Good night ใช้ตอนลาไปนอน)'),
@@ -2454,7 +2454,7 @@ SCENES.push({id:'class85',name:'Classroom · Phibun School',th:'ห้องเ�
    g.fillStyle='#1d4ed8';g.font="700 38px Anuphan, 'Noto Sans Thai', sans-serif";g.fillText('English class  ·  คาบภาษาอังกฤษ',30,36);
    g.fillStyle='#b91c1c';g.font="700 34px Anuphan, sans-serif";g.fillText('Classroom English',30,88);
    g.fillStyle='#111827';g.font="600 30px Anuphan, 'Noto Sans Thai', sans-serif";g.fillText('Open your book to page 25.  เปิดหนังสือหน้า 25',30,140)}},
-  Object.assign(waySign(4.5,4.98-.08,Math.PI,'Dome','โดมอเนกประสงค์','↑'),{y:2.75,w:1.8,h:.79})],
+  Object.assign(waySign(4.5,4.98-.08,Math.PI,'Multipurpose Dome','โดมอเนกประสงค์','↑'),{y:2.75,w:1.8,h:.79})],
  npcs:[
  NPCDEF('teacher','Mr. Krit','English teacher⁣ครูภาษาอังกฤษ',1,-3.7,0,[.35,.55,.8],[.2,.2,.26],[.1,.08,.07],'',[
   TT("Good morning, everyone. How are you today?","สวัสดีตอนเช้าทุกคน วันนี้เป็นอย่างไรบ้าง","I'm fine, thank you. And you?","I'm twelve years old.","I'm ready for English class.","ครูถามความรู้สึกวันนี้ ไม่ได้ถามอายุหรือความพร้อมเรียน","Useful English: “How are you?” — “I’m fine, thank you. And you?” | ภาษาไทย: ใช้ตอบคำถามเกี่ยวกับความเป็นอยู่และถามกลับอย่างสุภาพ"),
@@ -2477,7 +2477,7 @@ SCENES.push({id:'class85',name:'Classroom · Phibun School',th:'ห้องเ�
    Ground floor only: an open hall on posts, food stalls along the back wall, long tables with benches.
    No roof slab is drawn (only the beams), so the 360-degree camera can always see inside. Stalls, menu and prices are
    made up for the game; NPC names are made up. The east entrance leads back to the flagpole yard. */
-SCENES.push({id:'canteen',name:'Canteen · Phibun School',th:'โรงอาหาร 60 ปี',color:'#C2410C',orbit:true,
+SCENES.push({id:'canteen',name:'School Canteen · Phibun School',th:'โรงอาหาร 60 ปี',color:'#C2410C',orbit:true,
  /* ST-CNT-004 V1.2 choice-based lunch: pick ONE food seller (rice OR noodle), then water, then Bow = 3/3.
     budget/prices are game prices from the teacher; money left is worked out from what was bought (never stored). */
  choice:{group:['rice','noodle'],budget:50,price:{rice:20,noodle:20,drinks:5},need:{drinks:['meal'],bow:['meal','drinks']},
@@ -2527,7 +2527,7 @@ SCENES.push({id:'canteen',name:'Canteen · Phibun School',th:'โรงอาห
   ...[['-6','Rice and curry — 20 baht','ข้าวราดแกง 20 บาท'],['-.6','Noodle soup — 20 baht','ก๋วยเตี๋ยวน้ำ 20 บาท'],['4.8','Bottled water — 5 baht','น้ำเปล่า 5 บาท']].map(([x,en,th])=>({x:+x,y:3.85,z:-6.86,w:3.3,h:.66,ry:0,cw:600,ch:120,draw:(g,W,H)=>{
    g.fillStyle='#fffbeb';g.fillRect(0,0,W,H);g.strokeStyle='#92400e';g.lineWidth=5;g.strokeRect(3,3,W-6,H-6);g.fillStyle='#1f2937';g.textAlign='center';g.textBaseline='middle';
    g.font="700 42px Anuphan, sans-serif";g.fillText(en,W/2,H*.33);g.font="600 36px Anuphan, 'Noto Sans Thai', sans-serif";g.fillText(th,W/2,H*.74)}})),
-  Object.assign(waySign(8.84-.06,.6,-Math.PI/2,'Dome','โดมอเนกประสงค์','↑'),{x:8.78})],
+  Object.assign(waySign(8.84-.06,.6,-Math.PI/2,'Multipurpose Dome','โดมอเนกประสงค์','↑'),{x:8.78})],
  npcs:[
  NPCDEF('rice','Auntie Pen','Rice and curry seller⁣แม่ค้าข้าวราดแกง',-6,-6.5,0,[.95,.6,.3],[.25,.22,.28],[.08,.06,.07],'bun',[
   TT("Hello! What would you like for lunch?","สวัสดีจ้ะ กลางวันนี้จะรับอะไรดี","I'd like rice and curry, please.","I'd like a bowl of noodle soup, please.","I'd like a bottle of water, please.","คุณเลือกร้านข้าวราดแกง ให้สั่งข้าวอย่างสุภาพ","“I’d like …, please” is a polite way to order food. | ใช้สั่งอาหารอย่างสุภาพ"),
@@ -2594,7 +2594,7 @@ SCENES.push({id:'itlib',name:'IT Library · Phibun School',th:'ห้องส�
    g.font="500 30px Anuphan, 'Noto Sans Thai', sans-serif";g.fillText('กรุณาเงียบ',W/2,102)}},
   ...['A','B','C'].map((t,k)=>({x:-4.6+k*1.6,y:2.18,z:-4.28,w:.42,h:.34,ry:0,cw:84,ch:68,draw:(g,W,H)=>{g.fillStyle='#0c4a6e';g.fillRect(0,0,W,H);g.fillStyle='#fff';g.textAlign='center';g.textBaseline='middle';g.font="700 50px sans-serif";g.fillText(t,W/2,H/2+3)}})),
   {x:5.03,y:1.5,z:-.2,w:.4,h:.3,ry:-Math.PI/2,cw:80,ch:60,draw:(g,W,H)=>{g.fillStyle='#facc15';g.fillRect(0,0,W,H);g.fillStyle='#111';g.textAlign='center';g.textBaseline='middle';g.font="700 46px sans-serif";g.fillText('5',W/2,H/2+3)}},
-  Object.assign(waySign(4.5,4.98-.08,Math.PI,'Hall','กลับหอประชุม','↑'),{y:2.75,w:1.8,h:.79})],
+  Object.assign(waySign(4.5,4.98-.08,Math.PI,'Ratrangsan Hall','หอประชุมราษฎร์รังสรรค์','↑'),{y:2.75,w:1.8,h:.79})],
  npcs:[
  NPCDEF('nim','Mrs. Nim','Librarian⁣ครูบรรณารักษ์',-4.3,-1.95,0,[.6,.75,.55],[.2,.2,.26],[.08,.06,.07],'bun',[
   TT("Hello. Can I help you?",'สวัสดีจ้ะ มีอะไรให้ช่วยไหม',"I want to return this book, please.","I want to buy this book, please.","Can I help you?",'ครูบรรณารักษ์ถามว่าให้ช่วยอะไร ให้บอกว่าจะคืนหนังสือ','return = คืน, borrow = ยืม'),
@@ -2615,7 +2615,7 @@ SCENES.push({id:'itlib',name:'IT Library · Phibun School',th:'ห้องส�
 
 /* ===== Our school: the school bank (the teacher said it is near the flagpole yard and the dome; students work at the counter
    and a teacher advises them; students go at lunch break 12:30). Names, amounts and the layout are made up. ===== */
-SCENES.push({id:'sbank',name:'School bank · Phibun School',th:'ธนาคารโรงเรียน',color:'#CA8A04',orbit:true,spawn:[0,3.6,Math.PI],bounds:[-5.8,5.8,-4.5,5.2],
+SCENES.push({id:'sbank',name:'School Bank · Phibun School',th:'ธนาคารโรงเรียน',color:'#CA8A04',orbit:true,spawn:[0,3.6,Math.PI],bounds:[-5.8,5.8,-4.5,5.2],
  exits:[{x0:3.7,x1:5.3,z0:4.4,z1:5.2,to:'flagpole',at:[10.2,-1.4,-Math.PI/2]}],/* the door leads back to the flagpole yard */
  build(){const c=mk();
   const WALL=[.97,.95,.9],CAP=[.62,.55,.42],WOOD=[.6,.42,.26],TOP=[.86,.8,.68];
@@ -2648,13 +2648,13 @@ SCENES.push({id:'sbank',name:'School bank · Phibun School',th:'ธนาคา�
   return{a:new Float32Array(c.a),ob:c.ob}},
  decals:[
   {x:-1.6,y:1.95,z:-4.83,w:3.6,h:.62,ry:0,cw:720,ch:124,draw:(g,W,H)=>{g.fillStyle='#a16207';g.fillRect(0,0,W,H);g.fillStyle='#fff';g.textAlign='center';g.textBaseline='middle';
-   g.font="700 46px Anuphan, 'Noto Sans Thai', sans-serif";g.fillText('School bank · ธนาคารโรงเรียน',W/2,H/2+2)}},
+   g.font="700 46px Anuphan, 'Noto Sans Thai', sans-serif";g.fillText('School Bank · ธนาคารโรงเรียน',W/2,H/2+2)}},
   {x:3.6,y:1.6,z:-4.83,w:1.6,h:1,ry:0,cw:320,ch:200,draw:(g,W,H)=>{g.fillStyle='#fef3c7';g.fillRect(0,0,W,H);g.strokeStyle='#a16207';g.lineWidth=8;g.strokeRect(4,4,W-8,H-8);
    g.fillStyle='#713f12';g.textAlign='center';g.textBaseline='middle';g.font="700 40px Anuphan, 'Noto Sans Thai', sans-serif";g.fillText('Save a little',W/2,62);g.fillText('every day',W/2,110);
    g.font="500 26px Anuphan, 'Noto Sans Thai', sans-serif";g.fillText('ออมทีละนิดทุกวัน',W/2,158)}},
   {x:-3.1,y:1.6,z:-2.75,w:.48,h:.38,ry:0,cw:96,ch:76,draw:(g,W,H)=>{g.fillStyle='#14532d';g.fillRect(0,0,W,H);g.fillStyle='#fff';g.textAlign='center';g.textBaseline='middle';g.font="700 56px sans-serif";g.fillText('1',W/2,H/2+3)}},
   {x:-.1,y:1.6,z:-2.75,w:.48,h:.38,ry:0,cw:96,ch:76,draw:(g,W,H)=>{g.fillStyle='#14532d';g.fillRect(0,0,W,H);g.fillStyle='#fff';g.textAlign='center';g.textBaseline='middle';g.font="700 56px sans-serif";g.fillText('2',W/2,H/2+3)}},
-  Object.assign(waySign(4.5,4.98-.08,Math.PI,'Dome','โดมอเนกประสงค์','↑'),{y:2.75,w:1.8,h:.79})],
+  Object.assign(waySign(4.5,4.98-.08,Math.PI,'Multipurpose Dome','โดมอเนกประสงค์','↑'),{y:2.75,w:1.8,h:.79})],
  npcs:[
  NPCDEF('ploy2','Ploy','Student bank clerk⁣นักเรียนพนักงานธนาคาร',-3.1,-3.0,0,[.98,.98,.98],[.14,.2,.42],[.08,.06,.07],'long',[
   TT("Hi! Do you want to deposit or withdraw?",'สวัสดี จะฝากหรือถอนเงิน',"I want to deposit 50 baht, please.","I want to buy a new book.","Deposit or withdraw?",'พนักงานถามว่าจะฝากหรือถอน ให้บอกว่าจะฝาก 50 บาท','deposit = ฝากเงิน, withdraw = ถอนเงิน'),
@@ -2676,7 +2676,7 @@ SCENES.push({id:'sbank',name:'School bank · Phibun School',th:'ธนาคา�
    "ศาลาสนามฟุตบอล" = long shelter with a green roof on the west side of the field) =====
    Shortened to fit a phone: pitch with goals and lines, a red track around it, the green-roof shelter with steps.
    Enter from the flagpole yard at the south-west corner. NPC names are made up. */
-SCENES.push({id:'football',name:'Football field · Phibun School',th:'สนามฟุตบอล',color:'#15803D',orbit:true,spawn:[-15.4,7.5,Math.PI/2],bounds:[-17,13.4,-9.4,9.4],
+SCENES.push({id:'football',name:'Football Field · Phibun School',th:'สนามฟุตบอล',color:'#15803D',orbit:true,spawn:[-15.4,7.5,Math.PI/2],bounds:[-17,13.4,-9.4,9.4],
  exits:[{x0:-17,x1:-16.4,z0:6.5,z1:8.5,to:'flagpole',at:[9.4,3.3,-Math.PI/2]},
   {x0:12.8,x1:13.4,z0:6.6,z1:8.4,to:'nurse',at:[0,3.6,Math.PI]}],/* south-east path: to the nurse's room *//* south-west corner path leads back to the flagpole yard */
  build(){const c=mk();
@@ -2714,7 +2714,7 @@ SCENES.push({id:'football',name:'Football field · Phibun School',th:'สนา�
   /* south-east path to the nurse's room */
   c.box(12,.05,7.5,3,.08,1.8,[.76,.75,.71]);wayMarks(c,11.2,7.5,1,0,1);wayPost(c,11.6,5.9);
   return{a:new Float32Array(c.a),ob:c.ob}},
- decals:[waySign(-15.4,5.9+.03,0,'Dome','โดมอเนกประสงค์','←'),waySign(11.6,5.9+.03,0,"Nurse's room",'ห้องพยาบาล','→')],
+ decals:[waySign(-15.4,5.9+.03,0,'Multipurpose Dome','โดมอเนกประสงค์','←'),waySign(11.6,5.9+.03,0,"School Nurse's Office",'ห้องพยาบาล','→')],
  npcs:[
  NPCDEF('pe','Mr. Tee','PE teacher⁣ครูพลศึกษา',-9,8.2,Math.PI,[.95,.95,.95],[.15,.2,.45],[.08,.06,.07],'cap',[
   TT("Everyone, line up! First, we warm up for five minutes.","ทุกคนเข้าแถว! ก่อนอื่นเราอบอุ่นร่างกายเป็นเวลา 5 นาที","OK, teacher. I'm ready.","OK, teacher. I'm going home now.","Can we skip the warm-up?","ครูให้นักเรียนเข้าแถวและอบอุ่นร่างกาย ควรตอบรับเพื่อแสดงความพร้อม","Great! You are ready for PE class. | เยี่ยมมาก! เธอพร้อมสำหรับคาบพลศึกษาแล้ว"),
@@ -2737,7 +2737,7 @@ SCENES.push({id:'football',name:'Football field · Phibun School',th:'สนา�
    Follows the football field story: Jo hurt his ankle, the player brings him here. Reached from the football field
    (south-east path); the door at the back leads back there. Low side/back walls so the 360-degree camera can see in.
    NPC names are made up (Jo and Mr. Tee come from the football field scene). */
-SCENES.push({id:'nurse',name:"Nurse's room · Phibun School",th:'ห้องพยาบาล',color:'#DB2777',orbit:true,spawn:[0,3.6,Math.PI],bounds:[-5.8,5.8,-4.5,5.2],
+SCENES.push({id:'nurse',name:"School Nurse's Office · Phibun School",th:'ห้องพยาบาล',color:'#DB2777',orbit:true,spawn:[0,3.6,Math.PI],bounds:[-5.8,5.8,-4.5,5.2],
  exits:[{x0:3.7,x1:5.3,z0:4.4,z1:5.2,to:'football',at:[11.4,7.5,-Math.PI/2]}],/* the door leads back to the football field */
  build(){const c=mk();
   const WALL=[.95,.95,.96],CAP=[.62,.66,.72],BED=[.96,.96,.98],FRAME=[.62,.66,.72],CURT=[.62,.82,.88];
@@ -2770,8 +2770,8 @@ SCENES.push({id:'nurse',name:"Nurse's room · Phibun School",th:'ห้องพ
   return{a:new Float32Array(c.a),ob:c.ob}},
  decals:[
   {x:2.6,y:1.95,z:-4.83,w:3.2,h:.62,ry:0,cw:640,ch:124,draw:(g,W,H)=>{g.fillStyle='#be185d';g.fillRect(0,0,W,H);g.fillStyle='#fff';g.textAlign='center';g.textBaseline='middle';
-   g.font="700 46px Anuphan, 'Noto Sans Thai', sans-serif";g.fillText("Nurse's room · ห้องพยาบาล",W/2,H/2+2)}},
-  Object.assign(waySign(4.5,4.98-.08,Math.PI,'Football field','กลับสนามฟุตบอล','↑'),{y:2.75,w:1.8,h:.79})],
+   {let f=46,t="School Nurse's Office · ห้องพยาบาล";g.font="700 "+f+"px Anuphan, 'Noto Sans Thai', sans-serif";while(g.measureText(t).width>W*.92&&f>24){f-=2;g.font="700 "+f+"px Anuphan, 'Noto Sans Thai', sans-serif"}g.fillText(t,W/2,H/2+2)}}},
+  Object.assign(waySign(4.5,4.98-.08,Math.PI,'Football Field','สนามฟุตบอล','↑'),{y:2.75,w:1.8,h:.79})],
  npcs:[
  NPCDEF('rin','Ms. Rin','School nurse⁣ครูพยาบาล',-3.4,-2.3,0,[.98,.98,.98],[.3,.4,.6],[.08,.06,.07],'bun',[
   TT("Hello. What happened?",'สวัสดีจ้ะ เกิดอะไรขึ้น',"My friend hurt his ankle in PE class.","My friend is in Grade 8.","What happened?",'ครูพยาบาลถามว่าเกิดอะไรขึ้น ให้เล่าว่าเพื่อนเจ็บข้อเท้าในคาบพละ','hurt = ทำให้เจ็บ (อดีตก็ใช้ hurt), ankle = ข้อเท้า'),
@@ -2836,7 +2836,7 @@ SCENES.push({id:'hall14',name:'Ratrangsan Hall · Phibun School',th:'หอป�
   {x:0,y:3.0,z:-8.78,w:7,h:1.3,ry:0,cw:900,ch:170,draw:(g,W,H)=>{g.fillStyle='#1e3a8a';g.fillRect(0,0,W,H);g.strokeStyle='#fde68a';g.lineWidth=8;g.strokeRect(8,8,W-16,H-16);
    g.fillStyle='#fde68a';g.textAlign='center';g.textBaseline='middle';g.font="700 64px Anuphan, sans-serif";g.fillText('English Day',W/2,H*.38);
    g.fillStyle='#ffffff';g.font="600 40px Anuphan, 'Noto Sans Thai', sans-serif";g.fillText('วันภาษาอังกฤษ',W/2,H*.76)}},
-  Object.assign(waySign(0,8.42-.08,Math.PI,'Dome','โดมอเนกประสงค์','↑'),{y:3.05,w:2.2,h:.75}),
+  Object.assign(waySign(0,8.42-.08,Math.PI,'Multipurpose Dome','โดมอเนกประสงค์','↑'),{y:3.05,w:2.2,h:.75}),
   Object.assign(waySign(10.05,1.7,-Math.PI/2,'IT Library','ห้องสมุด IT','→'),{y:2.75,w:1.8,h:.79})],
  npcs:[
  NPCDEF('malee','Mrs. Malee','Teacher⁣ครูผู้จัดงาน',-3.4,-3.7,0,[.55,.35,.75],[.2,.2,.26],[.08,.06,.07],'bun',[
@@ -2860,7 +2860,7 @@ SCENES.push({id:'hall14',name:'Ratrangsan Hall · Phibun School',th:'หอป�
    Moved out of the Gate 1 scene: the same four stalls and sellers (same dialogue), now on their own.
    The road and the school fence are at the back (north); cross on the zebra crossing to go back to Gate 1.
    Stalls, menu and prices are made up for the game; NPC names are made up. */
-SCENES.push({id:'market2',name:'Street market · Phibun School',th:'ตลาดหน้าโรงเรียน (หลังเลิกเรียน)',color:'#EA580C',orbit:true,spawn:[0,1.4,0],bounds:[-12.4,12.4,-1.4,8.6],
+SCENES.push({id:'market2',name:'Street Market · Phibun School',th:'ตลาดหน้าโรงเรียน (หลังเลิกเรียน)',color:'#EA580C',orbit:true,spawn:[0,1.4,0],bounds:[-12.4,12.4,-1.4,8.6],
  exits:[{x0:-1.6,x1:1.6,z0:-1.4,z1:-.8,to:'gate1',at:[-6,4.4,Math.PI]}],/* the zebra crossing leads back to Gate 1 */
  build(){const c=mk();
   const CREAM=[.94,.9,.82],CAP=[.18,.37,.66],Z=1.6;
@@ -2905,7 +2905,7 @@ SCENES.push({id:'market2',name:'Street market · Phibun School',th:'ตลาด
   return{a:new Float32Array(c.a),ob:c.ob}},
  decals:[{x:0,y:3.35,z:1.27,w:3.4,h:.8,ry:0,cw:560,ch:132,draw:(g,W,H)=>{g.fillStyle='#1f6f43';g.fillRect(0,0,W,H);g.strokeStyle='#f4f1e6';g.lineWidth=6;g.strokeRect(6,6,W-12,H-12);
    g.fillStyle='#fff';g.textAlign='center';g.textBaseline='middle';g.font="700 60px Anuphan, sans-serif";g.fillText('↑',W*.1,H*.52);
-   g.font="700 44px Anuphan, 'Noto Sans Thai', sans-serif";g.fillText('กลับหน้าโรงเรียน',W*.56,H*.38);g.font="600 32px Anuphan, sans-serif";g.fillText('Gate 1 · School',W*.56,H*.76)}},
+   {let f=40,t='ประตู 1 โรงเรียนพิบูลมังสาหาร';g.font="700 "+f+"px Anuphan, 'Noto Sans Thai', sans-serif";while(g.measureText(t).width>W*.76&&f>20){f-=2;g.font="700 "+f+"px Anuphan, 'Noto Sans Thai', sans-serif"}g.fillText(t,W*.56,H*.38)}g.font="600 32px Anuphan, sans-serif";g.fillText('School Gate 1',W*.56,H*.76)}},
   {x:0,y:2.4,z:8.27,w:3.4,h:.8,ry:0,cw:560,ch:132,draw:(g,W,H)=>{g.fillStyle='#ea580c';g.fillRect(0,0,W,H);g.strokeStyle='#fff7e6';g.lineWidth=6;g.strokeRect(6,6,W-12,H-12);
    g.fillStyle='#fff';g.textAlign='center';g.textBaseline='middle';g.font="700 46px Anuphan, 'Noto Sans Thai', sans-serif";g.fillText('ตลาดหน้าโรงเรียน',W/2,H*.38);
    g.font="600 34px Anuphan, sans-serif";g.fillText('Street Market',W/2,H*.76)}}],
@@ -3004,13 +3004,13 @@ SCENES.forEach(s=>{if(SUB[s.id])s.sub=SUB[s.id]});
 const LOCKED=[/* Our school stations from the teacher's line picture (3 Nov): coming soon until GPT writes the content and the teacher approves */
  {id:'council',name:'Student Council Room',th:'ห้องสภานักเรียน',group:'phibun'},
  {id:'englab',name:'English Language Lab',th:'ห้องปฏิบัติการภาษาอังกฤษ',group:'phibun'},
- {id:'scilab',name:'Science Laboratory',th:'ห้องปฏิบัติการวิทยาศาสตร์',group:'phibun'},
+ {id:'scilab',name:'Science Lab',th:'ห้องปฏิบัติการวิทยาศาสตร์',group:'phibun'},
  {id:'music',name:'Music Room',th:'ห้องดนตรี',group:'phibun'},
  {id:'art',name:'Art Room',th:'ห้องศิลปะ',group:'phibun'},
- {id:'coop',name:'School cooperative shop',th:'ร้านสหกรณ์โรงเรียน',group:'phibun'},
+ {id:'coop',name:'School Cooperative Shop',th:'ร้านสหกรณ์โรงเรียน',group:'phibun'},
  {id:'guidance',name:'Guidance Room',th:'ห้องแนะแนว',group:'phibun'},
  {id:'pmstudio',name:'PM Studio',th:'ห้องสตูดิโอสื่อสร้างสรรค์',group:'phibun'},
- {id:'garden',name:'School Garden',th:'สวนพฤกษศาสตร์โรงเรียน',group:'phibun'},
+ {id:'garden',name:'School Botanical Garden',th:'สวนพฤกษศาสตร์โรงเรียน',group:'phibun'},
  {id:'gym',name:'School Gym',th:'โรงยิม',group:'phibun'},
  {id:'lostfound',name:'Lost and Found',th:'จุดรับแจ้งของหาย',group:'phibun'},
  {id:'pool',name:'School Swimming Pool',th:'สระว่ายน้ำโรงเรียน',group:'phibun'}];
@@ -3394,7 +3394,7 @@ const STICON={gate1:'<path d="M3 21V9l9-6 9 6v12"/><path d="M9 21v-6a3 3 0 0 1 6
  pool:'<path d="M2 18c2 0 2-1.5 4-1.5S8 18 10 18s2-1.5 4-1.5 2 1.5 4 1.5 2-1.5 4-1.5"/><path d="M8 15V5a2 2 0 0 1 4 0M16 15V5a2 2 0 0 0-4 0M8 9h8M8 12.5h8"/>'};
 /* Our school line as the teacher's 22-card grid (3 Nov): order and names from the picture, no times */
 const GORDER=['gate1','flagpole','council','class85','englab','scilab','music','art','canteen','itlib','sbank','coop','football','nurse','guidance','hall14','pmstudio','garden','pool','gym','lostfound','market2'];
-const GNAME={gate1:['School Gate 1','ประตู 1 โรงเรียนพิบูลมังสาหาร'],flagpole:['Multipurpose Dome','โดมอเนกประสงค์'],council:['Student Council Room','ห้องสภานักเรียน'],class85:['Classroom (Building 3)','ห้องเรียน อาคาร 3'],
+const GNAME={gate1:['School Gate 1','ประตู 1 โรงเรียนพิบูลมังสาหาร'],flagpole:['Multipurpose Dome','โดมอเนกประสงค์'],council:['Student Council Room','ห้องสภานักเรียน'],class85:['Classroom','ห้องเรียน อาคาร 3'],
  englab:['English Language Lab','ห้องปฏิบัติการภาษาอังกฤษ'],scilab:['Science Lab','ห้องปฏิบัติการวิทยาศาสตร์'],music:['Music Room','ห้องดนตรี'],art:['Art Room','ห้องศิลปะ'],canteen:['School Canteen','โรงอาหาร 60 ปี'],
  itlib:['IT Library','ห้องสมุด IT'],sbank:['School Bank','ธนาคารโรงเรียน'],coop:['School Cooperative Shop','ร้านสหกรณ์โรงเรียน'],football:['Football Field','สนามฟุตบอล'],nurse:["School Nurse's Office",'ห้องพยาบาล'],
  guidance:['Guidance Room','ห้องแนะแนว'],hall14:['Ratrangsan Hall','หอประชุมราษฎร์รังสรรค์'],pmstudio:['PM Studio','ห้องสตูดิโอสื่อสร้างสรรค์'],garden:['School Botanical Garden','สวนพฤกษศาสตร์โรงเรียน'],
