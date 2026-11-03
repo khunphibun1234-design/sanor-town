@@ -863,7 +863,7 @@ function vcKey(text,slow){const s=(slow?'s|':'n|')+String(text).replace(/\s+/g,'
   for(let i=0;i<s.length;i++){const c=s.charCodeAt(i);h1=Math.imul(h1^c,2654435761);h2=Math.imul(h2^c,1597334677)}
   h1=Math.imul(h1^(h1>>>16),2246822507)^Math.imul(h2^(h2>>>13),3266489909);h2=Math.imul(h2^(h2>>>16),2246822507)^Math.imul(h1^(h1>>>13),3266489909);
   return(4294967296*(2097151&h2)+(h1>>>0)).toString(16)}
-const BUILD='20261103g';/* bump when voice files change: it forces browsers to fetch the new files together */
+const BUILD='20261103h';/* bump when voice files change: it forces browsers to fetch the new files together */
 try{fetch('voice/index.json?v='+BUILD).then(r=>r.ok?r.json():null).then(j=>{if(j&&j.clips&&j.bundles)VC.idx=j}).catch(e=>{VC.err='index: '+e})}catch(e){}
 /* One shared <audio> element (works with the iPhone silent switch). It is "unlocked" by the first tap. */
 function vcEl(){try{if(!VC.el){VC.el=new Audio();VC.el.preload='auto';VC.el.setAttribute('playsinline','')}
@@ -2334,7 +2334,7 @@ spawn:[1,4.6,Math.PI],bounds:[-12.4,12.4,-9,11.2],
    Walk out on the east path to go back to Gate 1. NPC names are made up. */
 SCENES.push({id:'flagpole',name:'Multipurpose Dome · Phibun School',th:'โดมอเนกประสงค์',color:'#B91C1C',orbit:true,spawn:[0,6.6,Math.PI],bounds:[-12.4,12.4,-12,9],
  exits:[{x0:-1.6,x1:1.6,z0:8.3,z1:9.2,to:'gate1',at:[-7,-7.4,0]},
-  {x0:-12.4,x1:-11.6,z0:-.5,z1:1.3,to:'class85',at:[4.5,1.8,Math.PI]},
+  {x0:-12.4,x1:-11.6,z0:-.5,z1:1.3,to:'b3hall',at:[-11.4,0,Math.PI/2]},
   {x0:-2.7,x1:-.3,z0:-12,z1:-11.75,to:'canteen',at:[7.8,3.2,-Math.PI/2]},/* back of the dome (between two posts): to the canteen */
   {x0:11.6,x1:12.4,z0:2.6,z1:4,to:'football',at:[-15.4,7.5,Math.PI/2]},
   {x0:11.6,x1:12.4,z0:-11.4,z1:-9.8,to:'hall14',at:[0,4.2,Math.PI]},/* back-east corner of the yard: to the assembly hall (the teacher moved it here) */
@@ -2390,7 +2390,7 @@ SCENES.push({id:'flagpole',name:'Multipurpose Dome · Phibun School',th:'โด�
   return{a:new Float32Array(A),ob:c.ob}},
  decals:[{x:-4.5,y:5.75,z:-2.92,w:6.2,h:.95,ry:0,cw:1100,ch:168,draw:(g,W,H)=>{g.fillStyle='#b91c1c';g.fillRect(0,0,W,H);g.strokeStyle='#fde68a';g.lineWidth=8;g.strokeRect(6,6,W-12,H-12);
    g.fillStyle='#fff';g.textAlign='center';g.textBaseline='middle';{let f=62,t='Multipurpose Dome · โดมอเนกประสงค์';g.font="700 "+f+"px Anuphan, 'Noto Sans Thai', sans-serif";while(g.measureText(t).width>W*.94&&f>24){f-=2;g.font="700 "+f+"px Anuphan, 'Noto Sans Thai', sans-serif"}g.fillText(t,W/2,H/2+3)}}},
-waySign(3.1,5.6+.03,0,'School Gate 1','ประตู 1 โรงเรียนพิบูลมังสาหาร','↓'),waySign(-9.6,-.9+.03,0,'Classroom','ห้องเรียน อาคาร 3','←'),waySign(-4.6,-11.95+.03,0,'School Canteen','โรงอาหาร 60 ปี','↑'),waySign(9,1.7+.03,0,'Football Field','สนามฟุตบอล','→'),waySign(10.6,-11.95+.03,0,'Ratrangsan Hall','หอประชุมราษฎร์รังสรรค์','→'),waySign(10.6,-2.75+.03,0,'School Bank','ธนาคารโรงเรียน','→')],
+waySign(3.1,5.6+.03,0,'School Gate 1','ประตู 1 โรงเรียนพิบูลมังสาหาร','↓'),waySign(-9.6,-.9+.03,0,'Building 3','อาคาร 3 · ห้องเรียน','←'),waySign(-4.6,-11.95+.03,0,'School Canteen','โรงอาหาร 60 ปี','↑'),waySign(9,1.7+.03,0,'Football Field','สนามฟุตบอล','→'),waySign(10.6,-11.95+.03,0,'Ratrangsan Hall','หอประชุมราษฎร์รังสรรค์','→'),waySign(10.6,-2.75+.03,0,'School Bank','ธนาคารโรงเรียน','→')],
  npcs:[
  NPCDEF('homeroom','Ms. Suda','Homeroom teacher⁣ครูประจำชั้น',-2.8,-2.2,Math.PI,[.85,.35,.45],[.2,.2,.26],[.08,.06,.07],'bun',[
   TT("Good morning, class! Please stand in your line.",'สวัสดีตอนเช้า นักเรียน ยืนเข้าแถวของตัวเองนะ',"Good morning, teacher. OK!","Good night, teacher. OK!","Please stand in your line.",'ครูทักตอนเช้าและบอกให้เข้าแถว ให้ทักทายกลับและรับคำ','Good morning = สวัสดีตอนเช้า (Good night ใช้ตอนลาไปนอน)'),
@@ -2409,12 +2409,60 @@ waySign(3.1,5.6+.03,0,'School Gate 1','ประตู 1 โรงเรีย�
   TT("Excuse me. Where should I line up?","ขอโทษนะ ฉันควรเข้าแถวตรงไหน","Please ask the homeroom teacher over there.","It's eight o'clock.","I'm in Grade 8.","หากไม่แน่ใจตำแหน่งแถว ให้แนะนำให้ถามครูประจำชั้น","homeroom teacher = ครูประจำชั้น; over there = ตรงนั้น"),
   TT("I'll walk over and ask the teacher.","ฉันจะเดินไปถามครู","Good idea. Be careful.","Run quickly!","Good night!","เพื่อนจะเดินไปถามครู ให้สนับสนุนและเตือนให้ระวัง","Good idea. = เป็นความคิดที่ดี; Be careful. = ระวังนะ")])]});
 
+/* ===== Our school: Building 3 corridor (hub, 3 Nov, the teacher chose D2): no people, no mission, not a station.
+   Doors to the classroom and the indoor stations; rooms without a scene yet have a closed door and a Coming soon plate.
+   West end leads back to the dome. When a room gets its scene, its door opens (DOORS[k].to). ===== */
+const B3DOORS=[
+ {x:-9,side:-1,en:'Classroom',th:'ห้องเรียน อาคาร 3',to:'class85'},
+ {x:-4,side:-1,en:'English Language Lab',th:'ห้องปฏิบัติการภาษาอังกฤษ'},
+ {x:1,side:-1,en:'Science Lab',th:'ห้องปฏิบัติการวิทยาศาสตร์'},
+ {x:6,side:-1,en:'Music Room',th:'ห้องดนตรี'},
+ {x:11,side:-1,en:'Art Room',th:'ห้องศิลปะ'},
+ {x:-6.5,side:1,en:'Student Council Room',th:'ห้องสภานักเรียน'},
+ {x:-1.5,side:1,en:'Guidance Room',th:'ห้องแนะแนว'},
+ {x:3.5,side:1,en:'PM Studio',th:'ห้องสตูดิโอสื่อสร้างสรรค์'},
+ {x:8.5,side:1,en:'Lost and Found',th:'จุดรับแจ้งของหาย'}];
+function doorPlate(d,back){const soon=!d.to,z=d.side*3.05-d.side*.13+(back?d.side*.05:0);
+ return {x:d.x,y:2.64,z,w:2.3,h:.5,ry:(d.side<0)!==!!back?0:Math.PI,cw:520,ch:113,draw:(g,W,H)=>{
+  g.fillStyle=soon?'#64748b':'#1f6f43';g.fillRect(0,0,W,H);g.strokeStyle='#f4f1e6';g.lineWidth=6;g.strokeRect(6,6,W-12,H-12);
+  g.fillStyle='#fff';g.textAlign='center';g.textBaseline='middle';
+  let f=soon?34:40;g.font="700 "+f+"px Anuphan, sans-serif";while(g.measureText(d.en).width>W*.88&&f>20){f-=2;g.font="700 "+f+"px Anuphan, sans-serif"}g.fillText(d.en,W/2,H*(soon?.27:.34));
+  f=soon?26:30;g.font="600 "+f+"px Anuphan, 'Noto Sans Thai', sans-serif";while(g.measureText(d.th).width>W*.88&&f>16){f-=2;g.font="600 "+f+"px Anuphan, 'Noto Sans Thai', sans-serif"}g.fillStyle='#e9f5ec';g.fillText(d.th,W/2,H*(soon?.56:.7));
+  if(soon){g.fillStyle='#FFD23F';g.font="700 20px Anuphan, 'Noto Sans Thai', sans-serif";g.fillText('Coming soon · เร็ว ๆ นี้',W/2,H*.84)}}}}
+SCENES.push({id:'b3hall',hub:true,name:'Building 3 Corridor · Phibun School',th:'ทางเดินอาคาร 3',color:'#475569',orbit:true,spawn:[-11.4,0,Math.PI/2],bounds:[-12.6,12.6,-2.5,2.5],
+ exits:[{x0:-12.6,x1:-12.2,z0:-1.6,z1:1.6,to:'flagpole',at:[-10.8,.4,Math.PI/2]},
+  ...B3DOORS.filter(d=>d.to).map(d=>({x0:d.x-.7,x1:d.x+.7,z0:d.side<0?-2.5:2.2,z1:d.side<0?-2.2:2.5,to:d.to,at:[4.5,3.4,Math.PI]}))],
+ build(){const c=mk();
+  const WALL=[.96,.92,.84],CAP=[.62,.5,.36],FLOOR1=[.86,.82,.74],FLOOR2=[.8,.76,.68],DOOR=[.55,.36,.2],FRAME=[.4,.28,.16];
+  c.box(0,-.06,0,80,.12,80,[.47,.68,.36]);
+  for(let i=0;i<22;i++)for(let j=0;j<5;j++)c.box(-12.6+i*1.2+.6,.04,-2.4+j*1.2,1.2,.04,1.2,(i+j)%2?FLOOR1:FLOOR2);
+  /* north wall (tall) and south wall (low, so the camera can look in), with door frames */
+  c.box(0,1.4,-3.1,26,2.8,.2,WALL,true);c.box(0,2.83,-3.1,26.1,.06,.3,CAP);
+  c.box(0,.6,3.1,26,1.2,.2,WALL,true);c.box(0,1.23,3.1,26.1,.06,.3,CAP);
+  c.box(12.8,.6,0,.2,1.2,6.4,WALL,true);c.box(12.8,1.23,0,.3,.06,6.4,CAP);/* east end, low */
+  /* west end: open to the dome, posts each side */
+  for(const z of [-2.6,2.6])c.box(-12.8,1.2,z,.3,2.4,.3,CAP,true);
+  for(const d of B3DOORS){const zw=d.side*3.1,zi=zw-d.side*.12;
+   c.box(d.x-.78,1.15,zi,.14,2.3,.14,FRAME);c.box(d.x+.78,1.15,zi,.14,2.3,.14,FRAME);c.box(d.x,2.3,zi,1.7,.14,.14,FRAME);
+   if(d.to){c.box(d.x,1.1,zw,1.4,2.2,.24,[.12,.1,.08]);wayMarks(c,d.x,0,0,d.side,1)}
+   else{c.box(d.x,1.1,zi,1.4,2.1,.06,DOOR);c.box(d.x+.5,1.1,zi-d.side*.05,.08,.08,.08,[.85,.75,.3])}}
+  /* notice board and a water fountain between doors */
+  c.box(-11.2,1.5,-2.97,1.2,.9,.06,[.62,.45,.25]);c.box(-11.2,1.5,-2.93,1.05,.75,.02,[.95,.92,.82]);
+  c.box(12.2,.5,-2.5,.6,1,.5,[.8,.82,.85],true);
+  /* yellow arrows back to the dome */
+  wayMarks(c,-9.8,1.4,-1,0,1);
+  return{a:new Float32Array(c.a),ob:c.ob}},
+ decals:[...B3DOORS.map(d=>doorPlate(d)),...B3DOORS.filter(d=>d.side>0).map(d=>doorPlate(d,true)),/* low south wall: the plate reads from both sides (the camera looks over it) */
+  waySign(-11.3,3.1-.25,Math.PI,'Multipurpose Dome','โดมอเนกประสงค์','→'),waySign(-11.3,3.1-.2,0,'Multipurpose Dome','โดมอเนกประสงค์','←'),
+  {x:-6.5,y:1.9,z:-2.98,w:2.4,h:.4,ry:0,cw:640,ch:107,draw:(g,W,H)=>{g.fillStyle='#14306E';g.fillRect(0,0,W,H);g.fillStyle='#fff';g.textAlign='center';g.textBaseline='middle';
+   g.font="700 44px Anuphan, 'Noto Sans Thai', sans-serif";g.fillText('Building 3 · อาคาร 3',W/2,H/2+2)}}],
+ npcs:[]});
 /* ===== Our school: a classroom (no room number on purpose: the teacher teaches several classes) on the ground floor of building 6 (English lesson, prototype) =====
    Reached from the flagpole yard by the path to building 6 (west side); the door at the back right leads out again.
    The side and back walls are low (cut away) so the 360-degree camera can always see inside; the front wall with
    the whiteboard is higher (2.3 m). The lesson is made up for the game; NPC names are made up. */
 SCENES.push({id:'class85',name:'Classroom · Phibun School',th:'ห้องเรียน อาคาร 3',color:'#0F766E',orbit:true,spawn:[4.5,1.8,Math.PI],bounds:[-5.8,5.8,-4.5,5.2],
- exits:[{x0:3.7,x1:5.3,z0:4.4,z1:5.2,to:'flagpole',at:[-10.8,.4,Math.PI/2]}],/* the classroom door leads back to the flagpole yard */
+ exits:[{x0:3.7,x1:5.3,z0:4.4,z1:5.2,to:'b3hall',at:[-9,-1.6,0]}],/* the classroom door leads back to the Building 3 corridor (3 Nov) */
  build(){const c=mk();
   const WALL=[.93,.9,.82],CAP=[.62,.5,.36],DESK=[.86,.72,.5],LEG=[.42,.44,.48],CHAIR=[.25,.45,.7];
   c.box(0,-.06,0,80,.12,80,[.47,.68,.36]);
@@ -3114,12 +3162,12 @@ function playPlace(sc,onExit,bl){
   const left=CH.budget-spent;wal.textContent='\u{1F4B0} '+left+' ฿';wal.setAttribute('aria-label','Money left: '+left+' baht · เหลือ '+left+' บาท')};
  const gate=n=>{if(!CH)return null;if(inG(n)&&runPick&&n.id!==runPick)return CH.msg.other;
   const need=CH.need[n.id];if(need&&need.some(k=>k==='meal'?!runPick:!npcs.some(x=>x.id===k&&x.done)))return CH.msg[n.id];return null};
- const stars=el('span',{class:'tstars','aria-live':'polite'});
+ const stars=el('span',{class:'tstars','aria-live':'polite',hidden:!!sc.hub});
  const misB=sc.mission?el('button',{class:'tmisb',type:'button','aria-label':'Mission','title':'Mission · ภารกิจ'},'\u{1F4CB}'):null;
  const talk=el('button',{class:'ttalk',type:'button',hidden:true,onclick:()=>openDlg(near)},'Talk');
  const knob=el('div',{class:'tknob'});
  const joy=el('div',{class:'tjoy','aria-label':'Move: drag the circle'},knob);
- const hint=el('div',{class:'thint'},'Walk to a person with a yellow !⁣เดินไปหาคนที่มีเครื่องหมาย ! สีเหลือง',sc.orbit?el('div',{},'Drag the screen to look around. \u{1F440} = eye-level view⁣ลากนิ้วบนจอเพื่อหมุนมองรอบตัว กดปุ่ม \u{1F440} เพื่อมองระดับสายตา'):null);
+ const hint=el('div',{class:'thint'},sc.hub?'Walk to a green sign to enter a room.⁣เดินไปที่ป้ายสีเขียวเพื่อเข้าห้อง':'Walk to a person with a yellow !⁣เดินไปหาคนที่มีเครื่องหมาย ! สีเหลือง',sc.orbit?el('div',{},'Drag the screen to look around. \u{1F440} = eye-level view⁣ลากนิ้วบนจอเพื่อหมุนมองรอบตัว กดปุ่ม \u{1F440} เพื่อมองระดับสายตา'):null);
  const panel=el('div',{class:'tpanel',hidden:true,role:'region','aria-label':'Conversation'});
  const win=el('div',{class:'twin',hidden:true});
  const warp=el('button',{class:'tplaces',type:'button',onclick:()=>placesSheet(s=>{if(s.id===sc.id)return;close(true);playPlace(s,onExit,bl)})},'Go to another place\u2063ไปสถานที่อื่น');
@@ -3435,7 +3483,7 @@ function tabBar(){return el('div',{class:'ttabs sxtabs',role:'tablist','aria-lab
 function placesSheet(pick){
  const body=el('div',{class:'sheet card stack',role:'dialog','aria-label':'Places'},
   el('div',{class:'row'},el('h2',{},'Go to\u2063ไปที่'),el('button',{class:'tx',type:'button','aria-label':'Close',onclick:()=>bg.remove()},'×')),
-  SCENES.map(s=>el('button',{class:'tplace',type:'button',style:'--c:'+s.color,onclick:()=>{bg.remove();pick(s)}},el('b',{},s.name),el('span',{},s.th),el('span',{class:'tpn'},'★ '+doneCount(s.id)+' / '+nTotal(s)))));
+  PLAYS().map(s=>el('button',{class:'tplace',type:'button',style:'--c:'+s.color,onclick:()=>{bg.remove();pick(s)}},el('b',{},s.name),el('span',{},s.th),el('span',{class:'tpn'},'★ '+doneCount(s.id)+' / '+nTotal(s)))));
  const bg=el('div',{class:'sheetbg',onclick:e=>{if(e.target===bg)bg.remove()}},body);document.body.append(bg)}
 /* ---------- review phrases (uses only what is saved on this phone; nothing is sent) ---------- */
 function reviewRounds(){
@@ -3477,12 +3525,13 @@ function reviewSheet(){
    :[el('p',{class:'hint'},'Choose the best reply.⁣เลือกคำตอบที่เหมาะสม'),el('div',{class:'tline'},el('p',{class:'ten'},r.t.npc),el('p',{class:'tth'},r.t.th),el('button',{class:'tsay',type:'button',onclick:()=>say(r.t.npc,.9)},'Listen⁣ฟัง'))];
   body.replaceChildren(head(),el('p',{class:'hint'},'Question '+(i+1)+' of '+rounds.length+'⁣ข้อที่ '+(i+1)+' จาก '+rounds.length),...prompt,el('div',{class:'topts'},btns),fb,next)}
  show();document.body.append(bg)}
+const PLAYS=()=>SCENES.filter(s=>!s.hub);/* hub scenes (corridors) are not stations */
 function passportSheet(){
- const total=SCENES.reduce((x,s)=>x+nTotal(s),0),done=SCENES.reduce((a,s)=>a+doneCount(s.id),0);
+ const total=PLAYS().reduce((x,s)=>x+nTotal(s),0),done=PLAYS().reduce((a,s)=>a+doneCount(s.id),0);
  const body=el('div',{class:'sheet card stack',role:'dialog','aria-label':'Passport'},
   el('div',{class:'row'},el('h2',{},'My Passport⁣สมุดเดินทางของฉัน'),el('button',{class:'tx',type:'button','aria-label':'Close',onclick:()=>sheet.remove()},'×')),
   el('p',{class:'hint'},'People you talked to: '+done+' of '+total+'⁣คนที่คุยแล้ว'),
-  el('div',{class:'tstamps'},SCENES.map(s=>{const d=doneCount(s.id);return el('div',{class:'tstamp'+(d>=nTotal(s)?' on':''),style:'--c:'+s.color},el('b',{},s.name),el('span',{},s.th),el('span',{},d+' / '+nTotal(s)))})),
+  el('div',{class:'tstamps'},PLAYS().map(s=>{const d=doneCount(s.id);return el('div',{class:'tstamp'+(d>=nTotal(s)?' on':''),style:'--c:'+s.color},el('b',{},s.name),el('span',{},s.th),el('span',{},d+' / '+nTotal(s)))})),
   SCENES.some(s=>s.real)?el('h3',{},'Real-life missions⁣ภารกิจในชีวิตจริง'):null,
   SCENES.some(s=>s.real)?el('div',{class:'trlist'},SCENES.filter(s=>s.real).map(s=>doneCount(s.id)>=nTotal(s)?el('div',{},el('b',{class:'trname'},s.name),realBox(s))
    :el('p',{class:'trlock'},'\u{1F512} '+s.name+' \u2014 finish this place first\u2063\u0e40\u0e25\u0e48\u0e19\u0e09\u0e32\u0e01\u0e19\u0e35\u0e49\u0e43\u0e2b\u0e49\u0e08\u0e1a\u0e01\u0e48\u0e2d\u0e19'))):null,
@@ -3495,7 +3544,7 @@ function passportSheet(){
   el('p',{class:'hint'},'Saved only on this phone. Nothing is sent to anyone.⁣บันทึกไว้ในโทรศัพท์เครื่องนี้เท่านั้น ไม่ส่งให้ใคร'));
  const sheet=el('div',{class:'sheetbg',onclick:e=>{if(e.target===sheet)sheet.remove()}},body);document.body.append(sheet)}
 function render(){
- const app=HOST,total=SCENES.reduce((x,s)=>x+nTotal(s),0),done=SCENES.reduce((a,s)=>a+doneCount(s.id),0),pd=SCENES.filter(s=>doneCount(s.id)>=nTotal(s)).length;
+ const app=HOST,total=PLAYS().reduce((x,s)=>x+nTotal(s),0),done=PLAYS().reduce((a,s)=>a+doneCount(s.id),0),pd=PLAYS().filter(s=>doneCount(s.id)>=nTotal(s)).length;
  const [en,th]=TAB_EN();const lc=LINEC[TAB]||'#2F5BFF',ld=LINED[TAB]||['',''];
  app.replaceChildren(
   el('header',{class:'sxhero'},
@@ -3507,7 +3556,7 @@ function render(){
     /* the teacher's new banner (31 Oct) has no Passport button: Passport opens from the People bar and the bottom menu */),
    el('button',{class:'sxstats',type:'button',onclick:passportSheet,'aria-label':'People you talked to: '+done+' of '+total+'. Open passport'},
     el('span',{class:'sxring',style:'--p:'+(total?Math.round(done/total*100):0)},el('b',{},done),el('small',{},'/ '+total)),
-    el('span',{class:'sxst'},el('span',{class:'sxsth'},'People you talked to'),el('span',{class:'sxstl'},sxFaces(),el('small',{class:'th'},'คนที่คุยแล้ว · '+pd+' จาก '+SCENES.length+' ที่ครบแล้ว'))),
+    el('span',{class:'sxst'},el('span',{class:'sxsth'},'People you talked to'),el('span',{class:'sxstl'},sxFaces(),el('small',{class:'th'},'คนที่คุยแล้ว · '+pd+' จาก '+PLAYS().length+' ที่ครบแล้ว'))),
     el('span',{class:'sxpp'},el('img',{src:'img/bar/passport.png',alt:'',width:'48',height:'48',decoding:'async'}),el('span',{},el('b',{},'Passport'),el('small',{},'สมุดเดินทาง'))),
     sxIcon('chev','sxgo2'))),
   el('section',{class:'sxpanel',style:'--l:'+lc,'aria-label':en},

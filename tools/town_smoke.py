@@ -26,7 +26,7 @@ def main():
         n = pg.evaluate("SanorTown.SCENES.length")
         check('2 scene count', n == want, '%d (want %d)' % (n, want))
         bad = pg.evaluate("""()=>{const out=[];for(const s of SanorTown.SCENES){
-          if(!s.npcs||!s.npcs.length){out.push(s.id+': no NPCs');continue}
+          if(s.hub)continue;if(!s.npcs||!s.npcs.length){out.push(s.id+': no NPCs');continue}
           for(const nn of s.npcs){const t=nn.turns||[];if(!t.length)out.push(s.id+'/'+nn.id+': no turns');
             t.forEach((x,i)=>{if(!x.o||x.o.length!==3||x.o.some(v=>!v))out.push(s.id+'/'+nn.id+' turn '+(i+1)+': bad options');
               if(!x.npc||!x.hint)out.push(s.id+'/'+nn.id+' turn '+(i+1)+': missing text');
