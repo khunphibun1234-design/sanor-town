@@ -846,7 +846,7 @@ function vcKey(text,slow){const s=(slow?'s|':'n|')+String(text).replace(/\s+/g,'
   for(let i=0;i<s.length;i++){const c=s.charCodeAt(i);h1=Math.imul(h1^c,2654435761);h2=Math.imul(h2^c,1597334677)}
   h1=Math.imul(h1^(h1>>>16),2246822507)^Math.imul(h2^(h2>>>13),3266489909);h2=Math.imul(h2^(h2>>>16),2246822507)^Math.imul(h1^(h1>>>13),3266489909);
   return(4294967296*(2097151&h2)+(h1>>>0)).toString(16)}
-const BUILD='20261031l';/* bump when voice files change: it forces browsers to fetch the new files together */
+const BUILD='20261103a';/* bump when voice files change: it forces browsers to fetch the new files together */
 try{fetch('voice/index.json?v='+BUILD).then(r=>r.ok?r.json():null).then(j=>{if(j&&j.clips&&j.bundles)VC.idx=j}).catch(e=>{VC.err='index: '+e})}catch(e){}
 /* One shared <audio> element (works with the iPhone silent switch). It is "unlocked" by the first tap. */
 function vcEl(){try{if(!VC.el){VC.el=new Audio();VC.el.preload='auto';VC.el.setAttribute('playsinline','')}
@@ -3437,7 +3437,7 @@ function render(){
  app.replaceChildren(
   el('header',{class:'sxhero'},
    el('div',{class:'sxban'},
-    el('img',{class:'sxbimg',src:'img/banner2-1600.jpg',srcset:'img/banner2-900.jpg 900w, img/banner2-1600.jpg 1600w',sizes:'(min-width:1080px) 1040px, 100vw',width:'1600',height:'582',alt:'Sanor Town: Explore the town and talk in English. เมืองจำลองฝึกพูดภาษาอังกฤษ',fetchpriority:'high'}),
+    el('img',{class:'sxbimg',src:'img/banner3-1600.jpg',srcset:'img/banner3-900.jpg 900w, img/banner3-1600.jpg 1600w',sizes:'(min-width:1080px) 1040px, 100vw',width:'1600',height:'583',alt:'Sanor Town: Explore the town and talk in English. เมืองจำลองฝึกพูดภาษาอังกฤษ',fetchpriority:'high'}),
     el('h1',{class:'vh'},'Sanor Town'),
     el('span',{class:'tbadge sxproto'},'Prototype'),
     HOST&&HOST.inline?null:el('button',{class:'sxback',type:'button',onclick:closeTown},'Home⁣กลับ'),
