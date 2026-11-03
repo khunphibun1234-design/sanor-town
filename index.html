@@ -648,6 +648,36 @@ body:has(.sxnav){padding-bottom:calc(84px + env(safe-area-inset-bottom,0px))}
 .tfcred{margin:12px 12px 0;font-size:.74rem;color:var(--sx-mute)}
 .tfstat{display:inline-flex;align-items:center;gap:.5em;margin:12px auto 0;padding:6px 14px;border-radius:999px;background:#EEF4FF;color:#14306E;font-size:.82rem;font-weight:600}
 .tfstat[hidden]{display:none}
+
+/* ===== ST-SYS-001 MVP: Missions and Rewards sheets (3 Nov) ===== */
+.mrs h2{margin:0}.mrs h3{margin:14px 0 6px;font-size:1rem}
+.mrs .mrlead{margin:2px 0 0;color:var(--sx-mute);font-size:.88rem}
+.mrcard{border:2px solid #DCE7FF;background:#F4F8FF;border-radius:16px;padding:12px 14px;display:grid;gap:8px}
+.mrtop{display:flex;align-items:center;gap:10px}.mrtop b{font-size:1.02rem;color:#14306E;display:block}.mrtop small{color:var(--sx-mute)}
+.mrtag{margin-left:auto;flex:none;font:700 .72rem/1 sans-serif;padding:6px 9px;border-radius:999px;background:#E3ECFF;color:#1E40AF}
+.mrtag.ok{background:#DCFCE7;color:#166534}.mrtag.old{background:#FEF3C7;color:#92400E}
+.mrbar{height:10px;border-radius:999px;background:#DCE7FF;overflow:hidden}.mrbar i{display:block;height:100%;background:linear-gradient(90deg,#2F6BFF,#14A86B);border-radius:999px}
+.mrsteps{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.mrsteps li{display:flex;align-items:center;gap:10px;min-height:44px;padding:6px 10px;border-radius:12px;background:#fff;border:1px solid #E2E8F5}
+.mrsteps li .mrck{flex:none;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font:700 .85rem/1 sans-serif;background:#EEF2F9;color:#64748B}
+.mrsteps li.on .mrck{background:#16A34A;color:#fff}
+.mrsteps li span.mrtx b{display:block;font-size:.92rem;color:#1F2937}.mrsteps li span.mrtx small{color:var(--sx-mute)}
+.mrrew{display:flex;align-items:center;gap:8px;font-size:.86rem;color:#14306E}.mrrew .mrbmini{width:30px;height:30px;flex:none}
+.mrgo{min-height:48px}
+.mrfut{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.mrfut li{display:flex;align-items:center;gap:10px;min-height:44px;padding:8px 12px;border-radius:12px;border:1px dashed #CBD5E1;color:#64748B;background:#F8FAFC}
+.mrfut li b{color:#475569;font-size:.9rem;display:block}.mrfut li small{font-size:.78rem}.mrfut li .mrtag{background:#EEF2F7;color:#64748B}
+.mrxp{display:flex;align-items:center;gap:12px;padding:14px;border-radius:16px;background:linear-gradient(135deg,#EEF4FF,#F0FDF4);border:2px solid #DCE7FF}
+.mrxp b{font:800 2rem/1 'Mitr',var(--display);color:#1E40AF;font-variant-numeric:tabular-nums}.mrxp span{color:#14306E;font-weight:600}
+.mrbadges{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px}
+.mrbadges li{display:grid;justify-items:center;text-align:center;gap:4px;padding:12px 8px;border-radius:16px;background:#fff;border:2px solid #E2E8F5}
+.mrbadges li.on{border-color:#F5C542;background:#FFFBEB}
+.mrbadges li svg{width:84px;height:84px}.mrbadges li:not(.on) svg{filter:grayscale(1);opacity:.45}
+.mrbadges li b{font-size:.92rem;color:#1F2937}.mrbadges li small{font-size:.76rem;color:var(--sx-mute)}
+.mrnote{font-size:.8rem;color:var(--sx-mute);margin:8px 0 0}
+.mrs :focus-visible{outline:3px solid var(--sx-gold);outline-offset:2px}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .mrcard,:root:not([data-theme="light"]) .mrxp{background:#1E2A44;border-color:#2B3B60}:root:not([data-theme="light"]) .mrtop b,:root:not([data-theme="light"]) .mrrew,:root:not([data-theme="light"]) .mrxp span{color:#E8ECF7}:root:not([data-theme="light"]) .mrxp b{color:#8DB4FF}:root:not([data-theme="light"]) .mrsteps li,:root:not([data-theme="light"]) .mrbadges li{background:#16203A;border-color:#2B3B60}:root:not([data-theme="light"]) .mrsteps li span.mrtx b,:root:not([data-theme="light"]) .mrbadges li b{color:#E8ECF7}:root:not([data-theme="light"]) .mrfut li{background:#16203A;border-color:#3A4A6E}:root:not([data-theme="light"]) .mrfut li b{color:#C3CBE0}:root:not([data-theme="light"]) .mrbadges li.on{background:#2A2410;border-color:#B8902A}}
+:root[data-theme="dark"] .mrcard,:root[data-theme="dark"] .mrxp{background:#1E2A44;border-color:#2B3B60}:root[data-theme="dark"] .mrtop b,:root[data-theme="dark"] .mrrew,:root[data-theme="dark"] .mrxp span{color:#E8ECF7}:root[data-theme="dark"] .mrxp b{color:#8DB4FF}:root[data-theme="dark"] .mrsteps li,:root[data-theme="dark"] .mrbadges li{background:#16203A;border-color:#2B3B60}:root[data-theme="dark"] .mrsteps li span.mrtx b,:root[data-theme="dark"] .mrbadges li b{color:#E8ECF7}:root[data-theme="dark"] .mrfut li{background:#16203A;border-color:#3A4A6E}:root[data-theme="dark"] .mrfut li b{color:#C3CBE0}:root[data-theme="dark"] .mrbadges li.on{background:#2A2410;border-color:#B8902A}
 .tfstat b{font-size:1.05rem;color:#1E5BD6;font-variant-numeric:tabular-nums}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .tfstat{background:#1E2A44;color:#E8ECF7}:root:not([data-theme="light"]) .tfstat b{color:#8DB4FF}}
 :root[data-theme="dark"] .tfstat{background:#1E2A44;color:#E8ECF7}:root[data-theme="dark"] .tfstat b{color:#8DB4FF}
@@ -872,7 +902,7 @@ function vcKey(text,slow){const s=(slow?'s|':'n|')+String(text).replace(/\s+/g,'
   for(let i=0;i<s.length;i++){const c=s.charCodeAt(i);h1=Math.imul(h1^c,2654435761);h2=Math.imul(h2^c,1597334677)}
   h1=Math.imul(h1^(h1>>>16),2246822507)^Math.imul(h2^(h2>>>13),3266489909);h2=Math.imul(h2^(h2>>>16),2246822507)^Math.imul(h1^(h1>>>13),3266489909);
   return(4294967296*(2097151&h2)+(h1>>>0)).toString(16)}
-const BUILD='20261103p';/* bump when voice files change: it forces browsers to fetch the new files together */
+const BUILD='20261103q';/* bump when voice files change: it forces browsers to fetch the new files together */
 try{fetch('voice/index.json?v='+BUILD).then(r=>r.ok?r.json():null).then(j=>{if(j&&j.clips&&j.bundles)VC.idx=j}).catch(e=>{VC.err='index: '+e})}catch(e){}
 /* One shared <audio> element (works with the iPhone silent switch). It is "unlocked" by the first tap. */
 function vcEl(){try{if(!VC.el){VC.el=new Audio();VC.el.preload='auto';VC.el.setAttribute('playsinline','')}
@@ -3445,6 +3475,81 @@ const doneCount=id=>{const d=SAVE.done[id]||{},s=SCENES.find(x=>x.id===id),c=s&&
  if(!c)return Object.keys(d).length;return (c.group.some(k=>d[k])?1:0)+Object.keys(d).filter(k=>!c.group.includes(k)).length};
 const nTotal=s=>s.npcs?s.npcs.length-(s.choice?s.choice.group.length-1:0):4;
 
+/* ===== ST-SYS-001 MVP (3 Nov, owner decisions): Missions + Rewards, School Canteen only, XP + Badges only.
+   Rewards live in their OWN key and only READ the game save: SAVE (sanor-town-app-v1), the old key and the
+   research key are never written here. One entitlement = one grant key, so replay / refresh / back / a second tab
+   cannot add XP twice. Total XP is the sum of the grants (no separate balance). A grant is written only by a live
+   Canteen completion (the win in this run), never from old saves: players who finished before see "Completed earlier"
+   and get no XP backwards (owner decision 3). No coins, levels, shop or leaderboard. Not a test score. ===== */
+const RWKEY='sanor-town-rewards-v1',RW_RULE='v1';
+const RW_GRANTS={'story.canteen.firstCompletion.v1':{xp:40,scene:'canteen',badge:'badge.canteen.lunch_master.v1'}};
+const RW_BADGES=[{id:'badge.canteen.lunch_master.v1',en:'Lunch Master',th:'เหรียญภารกิจโรงอาหาร',
+ need:['Finish all 3 steps at the School Canteen.','ทำภารกิจโรงอาหารให้ครบ 3 ขั้น']}];
+const rwRead=()=>{try{const r=JSON.parse(localStorage.getItem(RWKEY)||'null');
+ if(r&&r.schemaVersion===1&&r.grants&&typeof r.grants==='object'&&r.badges&&typeof r.badges==='object')return r}catch(e){}
+ return {schemaVersion:1,grants:{},badges:{}}};
+const rwXP=r=>Object.values(r.grants).reduce((a,g)=>a+(Number.isFinite(g&&g.xp)?g.xp:0),0);
+/* grant once: read fresh, stop if the key is already there, write grant + badge in ONE setItem. true only if saved. */
+function rwGrant(gid){const G=RW_GRANTS[gid];if(!G)return 'none';const r=rwRead();if(r.grants[gid])return 'had';
+ const at=new Date().toISOString();r.grants[gid]={xp:G.xp,at,build:BUILD,rule:RW_RULE};if(G.badge&&!r.badges[G.badge])r.badges[G.badge]={at};
+ try{localStorage.setItem(RWKEY,JSON.stringify(r));const c=rwRead();return c.grants[gid]?'new':'fail'}catch(e){return 'fail'}}
+/* called from the Canteen win (live run only) */
+function rwWin(sc){if(!sc||sc.id!=='canteen')return;const res=rwGrant('story.canteen.firstCompletion.v1');
+ if(res==='new')setTimeout(()=>toast('+40 XP · Lunch Master badge! · ได้รับ 40 XP และเหรียญ Lunch Master'),900);
+ else if(res==='fail')setTimeout(()=>toast('Reward could not be saved on this phone. · บันทึกรางวัลในเครื่องนี้ไม่ได้'),900)}
+/* Canteen mission state from the game save (the engine stays the source of truth): meal, water, Bow */
+function canteenMission(){const d=SAVE.done.canteen||{},meal=!!(d.rice||d.noodle),water=!!d.drinks,bow=!!d.bow,n=doneCount('canteen'),
+ r=rwRead(),got=!!r.grants['story.canteen.firstCompletion.v1'];
+ const state=n>=3?(got?'done':'earlier'):n>0?'progress':'new';return {steps:[meal,water,bow],n:Math.min(n,3),state,got}}
+const RW_ART='<svg viewBox="0 0 96 96" aria-hidden="true"><path d="M30 6h14l8 26H38z" fill="#2F6BFF"/><path d="M66 6H52l-8 26h14z" fill="#E5384F"/>'+
+ '<circle cx="48" cy="58" r="32" fill="#F5B301"/><circle cx="48" cy="58" r="26" fill="#FFD84D" stroke="#E0A100" stroke-width="2.5"/>'+
+ '<path d="M30 58h36a18 13 0 0 1-36 0z" fill="#fff" stroke="#14306E" stroke-width="2.5" stroke-linejoin="round"/>'+
+ '<path d="M33 58c3-5 8-7 15-7s12 2 15 7" fill="#16A34A"/><circle cx="42" cy="54" r="2.6" fill="#E5384F"/><circle cx="53" cy="53" r="2.2" fill="#F97316"/>'+
+ '<path d="M58 34l-6 18M64 36l-8 17" stroke="#8B5A2B" stroke-width="2.6" stroke-linecap="round"/>'+
+ '<path d="M40 44c-2-3 2-5 0-8M48 43c-2-3 2-5 0-8" stroke="#94A3B8" stroke-width="2" stroke-linecap="round" fill="none"/>'+'</svg>';
+/* sheets for the new screens: modal, focus moves in, Esc closes, focus goes back to the menu button */
+function mrSheet(label,kids){const opener=document.activeElement;
+ const close=()=>{sheet.remove();document.removeEventListener('keydown',onk);if(opener&&opener.focus)opener.focus()};
+ const onk=e=>{if(e.key==='Escape')close();else if(e.key==='Tab'){const f=[...body.querySelectorAll('button:not([disabled]),[href]')];if(!f.length)return;
+  if(e.shiftKey&&document.activeElement===f[0]){e.preventDefault();f[f.length-1].focus()}else if(!e.shiftKey&&document.activeElement===f[f.length-1]){e.preventDefault();f[0].focus()}}};
+ const x=el('button',{class:'tx',type:'button','aria-label':'Close',onclick:()=>close()},'×');
+ const body=el('div',{class:'sheet card stack mrs',role:'dialog','aria-modal':'true','aria-label':label},kids(x,close));
+ const sheet=el('div',{class:'sheetbg',onclick:e=>{if(e.target===sheet)close()}},body);document.body.append(sheet);document.addEventListener('keydown',onk);x.focus();return close}
+const RW_FUTURE=[['Daily missions','ภารกิจประจำวัน'],['Skill missions','ภารกิจฝึกทักษะ'],['Improvement missions','ภารกิจแก้จุดที่ผิด'],['Real-life missions','ภารกิจในชีวิตจริง']];
+function missionsSheet(){const m=canteenMission(),sc=SCENES.find(x=>x.id==='canteen');
+ const tag={new:['Not started','ยังไม่เริ่ม',''],progress:['In progress','กำลังทำ',''],done:['Completed','จบแล้ว','ok'],earlier:['Completed earlier','จบแล้ว','old']}[m.state];
+ const steps=[['Buy one meal','เลือกซื้ออาหารหลัก 1 อย่าง (ข้าวราดแกง หรือ ก๋วยเตี๋ยว)'],['Buy a bottle of water','ซื้อน้ำเปล่า 1 ขวด'],['Talk to Bow at the table','ไปคุยกับโบว์ที่โต๊ะ']];
+ const rewardLine=m.got?'Reward earned: 40 XP and the Lunch Master badge.⁣ได้รับรางวัลแล้ว 40 XP และเหรียญ Lunch Master'
+  :m.state==='earlier'?'You finished this before rewards started. Earlier plays do not get XP.⁣เธอเล่นจบก่อนมีระบบรางวัล การเล่นก่อนหน้านี้จึงไม่ได้ XP ย้อนหลัง'
+  :'Reward when you finish: 40 XP and the Lunch Master badge (once only).⁣รางวัลเมื่อทำครบ: 40 XP และเหรียญ Lunch Master (ได้ครั้งเดียว)';
+ mrSheet('Missions',(x,close)=>[
+  el('div',{class:'row'},el('h2',{},'Missions⁣ภารกิจ'),x),
+  el('p',{class:'mrlead'},'Do a story mission at a place in our school.⁣ทำภารกิจเรื่องราวในสถานที่ของโรงเรียน'),
+  el('h3',{},'Story mission⁣ภารกิจเรื่องราว'),
+  el('section',{class:'mrcard','aria-label':'School Canteen mission, '+m.n+' of 3 steps, '+tag[0]},
+   el('div',{class:'mrtop'},el('div',{},el('b',{},'Lunch at the School Canteen'),el('small',{},'มื้อกลางวันที่โรงอาหาร 60 ปี · 12:00')),el('span',{class:'mrtag '+tag[2]},tag[0]+' · '+tag[1])),
+   el('div',{class:'mrbar',role:'progressbar','aria-valuemin':'0','aria-valuemax':'3','aria-valuenow':String(m.n),'aria-label':'Steps done'},el('i',{style:'width:'+(m.n/3*100)+'%'})),
+   el('p',{class:'mrlead','aria-live':'polite'},m.n+' / 3 steps · ทำแล้ว '+m.n+' จาก 3 ขั้น'),
+   el('ol',{class:'mrsteps'},steps.map((t,i)=>el('li',{class:m.steps[i]?'on':''},el('span',{class:'mrck','aria-hidden':'true'},m.steps[i]?'✓':String(i+1)),
+    el('span',{class:'mrtx'},el('b',{},t[0]),el('small',{},t[1])),el('span',{class:'vh'},m.steps[i]?' done':' not done yet')))),
+   (()=>{const r=el('p',{class:'mrrew'});const ic=el('span',{class:'mrbmini','aria-hidden':'true'});ic.innerHTML=RW_ART;r.append(ic,el('span',{},rewardLine));return r})(),
+   m.state==='done'?el('p',{class:'mrnote'},'Playing again is fine, but it does not add more XP.⁣เล่นซ้ำได้ แต่จะไม่ได้ XP เพิ่ม'):null,
+   sc?el('button',{class:'btn cta mrgo',type:'button',onclick:()=>{close();playPlace(sc,render)}},m.state==='new'?'Go to the Canteen⁣ไปโรงอาหาร':'Open the Canteen⁣เปิดโรงอาหาร'):null),
+  el('h3',{},'More missions⁣ภารกิจอื่น'),
+  el('ul',{class:'mrfut'},RW_FUTURE.map(([e,t])=>el('li',{},el('span',{},el('b',{},e),el('small',{},t)),el('span',{class:'mrtag'},'Future · เร็ว ๆ นี้')))),
+  el('p',{class:'mrnote'},'Only the Canteen mission is open now. Other missions are not available yet.⁣ตอนนี้เปิดเฉพาะภารกิจโรงอาหาร ภารกิจอื่นยังไม่เปิดใช้')])}
+function rewardsSheet(){const r=rwRead(),xp=rwXP(r);
+ mrSheet('Rewards',(x)=>[
+  el('div',{class:'row'},el('h2',{},'Rewards⁣รางวัล'),x),
+  el('div',{class:'mrxp','aria-label':'Total XP: '+xp},el('b',{},String(xp)),el('span',{},'XP',el('br'),el('small',{},'คะแนนประสบการณ์'))),
+  el('p',{class:'mrnote'},'XP shows the activities you finished. It is not a test score or a speaking grade.⁣XP บอกว่าทำกิจกรรมจบไปแล้วเท่าไร ไม่ใช่คะแนนสอบ และไม่ใช่การวัดทักษะการพูด'),
+  el('h3',{},'Badges⁣เหรียญรางวัล'),
+  el('ul',{class:'mrbadges'},RW_BADGES.map(b=>{const on=!!r.badges[b.id],li=el('li',{class:on?'on':'','aria-label':b.en+(on?', earned':', locked. '+b.need[0])});
+   const art=el('span',{'aria-hidden':'true'});art.innerHTML=RW_ART;li.append(art,el('b',{},b.en),el('small',{},b.th),el('small',{},on?'Earned · ได้รับแล้ว':'🔒 '+b.need[0]+' · '+b.need[1]));return li})),
+  el('h3',{},'Coming later⁣เร็ว ๆ นี้'),
+  el('ul',{class:'mrfut'},[['Levels','เลเวล'],['Coins','เหรียญสะสม'],['Leaderboard','ตารางอันดับ']].map(([e,t])=>el('li',{},el('span',{},el('b',{},e),el('small',{},t)),el('span',{class:'mrtag'},'Not available · ยังไม่เปิด')))),
+  el('p',{class:'mrnote'},'Saved only on this phone. Clearing the browser data also removes rewards.⁣บันทึกไว้ในโทรศัพท์เครื่องนี้เท่านั้น ถ้าล้างข้อมูลเบราว์เซอร์ รางวัลจะหายไปด้วย')])}
+
 /* ---------- the 3D place ---------- */
 let TOWN=null;
 /* camera zoom: 1 = normal view, smaller = closer, bigger = farther. Kept while the app is open. */
@@ -3635,7 +3740,7 @@ function playPlace(sc,onExit,bl){
   const n=dlg.n,i=dlg.i,lastT=i===n.turns.length-1;
   turnUI(n,i,'Choose your answer ('+(i+1)+' of '+n.turns.length+')⁣เลือกคำตอบของคุณ',lastT?'Finish⁣เสร็จสิ้น':'Continue⁣ต่อไป',
    ok=>{stat.total++;if(ok)stat.first++;else if(!miss.some(m=>m.n===n&&m.i===i))miss.push({n,i})},
-   ()=>{if(lastT){if(inG(n)&&!runPick){runPick=n.id;if(!replaying)(SAVE.pick=SAVE.pick||{})[sc.id]=n.id}n.done=true;(SAVE.done[sc.id]=SAVE.done[sc.id]||{})[n.id]=1;persist();upStars();closeDlg();if(!won&&runDone()>=reqN){won=true;if(replaying){(SAVE.pick=SAVE.pick||{})[sc.id]=runPick;persist();replaying=false}showWin()}}
+   ()=>{if(lastT){if(inG(n)&&!runPick){runPick=n.id;if(!replaying)(SAVE.pick=SAVE.pick||{})[sc.id]=n.id}n.done=true;(SAVE.done[sc.id]=SAVE.done[sc.id]||{})[n.id]=1;persist();upStars();closeDlg();if(!won&&runDone()>=reqN){won=true;if(replaying){(SAVE.pick=SAVE.pick||{})[sc.id]=runPick;persist();replaying=false}showWin();rwWin(sc)}}
     else{dlg.i++;showTurn()}})}
  /* practise only the missed turns; a turn missed again comes back in the next round */
  function startPractice(){
@@ -3951,7 +4056,7 @@ function placesGrid(){
    el('img',{src:'img/places/'+img+'.jpg',alt:'',width:'288',height:'316',loading:'lazy',decoding:'async'}),el('span',{class:'sxpb'},badge))))});
  return el('section',{class:'sxplwrap','aria-label':'Places in town'},el('h2',{class:'sxplh'},'Places in town',el('small',{class:'th'},'สถานที่ในเมือง')),box)}
 /* bottom menu (from the teacher's footer design). Home, Map (list of all places) and Passport work now;
-   Missions, Rewards and Profile are not built yet and say so. */
+   Missions and Rewards open the ST-SYS-001 MVP sheets (3 Nov); Profile is not built yet and says so. */
 const NAVI={
  home:'<path d="M3 11.5L12 4l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z" fill="#2F6BFF" stroke="#2F6BFF"/>',
  map:'<path d="M3 6l6-2 6 2 6-2v14l-6 2-6-2-6 2z"/><path d="M9 4v14M15 6v14"/><circle cx="18" cy="6.5" r="3.2" fill="#E5384F" stroke="#fff" stroke-width="1.4"/>',
@@ -3967,9 +4072,9 @@ function navBar(){
  return el('nav',{class:'sxnav','aria-label':'Menu'},
   it('home','Home','หน้าแรก',()=>window.scrollTo({top:0,behavior:'smooth'}),true),
   it('map','Map','แผนที่',()=>placesSheet(s=>playPlace(s,render))),
-  it('missions','Missions','ภารกิจ',soon('Missions','ภารกิจ')),
+  it('missions','Missions','ภารกิจ',missionsSheet),
   it('passport','Passport','สมุดเดินทาง',passportSheet),
-  it('rewards','Rewards','รางวัล',soon('Rewards','รางวัล')),
+  it('rewards','Rewards','รางวัล',rewardsSheet),
   it('profile','Profile','โปรไฟล์',soon('Profile','โปรไฟล์')))}
 /* the teacher's header for the Our school line: school icon, big title, text, and the school map picture
    ("Tap a place to explore" and the map button in the picture open the list of places) */
@@ -3997,7 +4102,7 @@ function openScene(id,bl){
  playPlace(sc,closeTown,bl);
  if(!TOWN){closeTown();return false}
  return true}
-return {open,openScene,mount,unmount,close:closeTown,get g(){return TOWN},SCENES,LOCKED};
+return {open,openScene,mount,unmount,close:closeTown,get g(){return TOWN},SCENES,LOCKED,rw:{read:rwRead,xp:rwXP,grant:rwGrant,canteen:canteenMission}};
 })();
 
 /* ============ START ============ */
