@@ -582,6 +582,10 @@ html body{background:var(--sx-paper)!important;background-image:none!important}
 .pfpick img{height:190px;width:auto;max-width:100%;object-fit:contain}.pfpick b{font-size:1rem;margin-top:4px}.pfpick small{color:#55607A}
 .pfpick .pfon{visibility:hidden;font-size:.78rem;font-weight:700;color:#2F5BFF}.pfpick button[aria-pressed="true"] .pfon{visibility:visible}
 .twav{height:150px;width:auto;display:block;margin:0 auto -6px}
+.sxme.fig small{display:inline;font-size:.72rem;margin-left:4px}
+.sxme.fig{min-height:0;background:none;box-shadow:none;padding:0;right:6px;bottom:2px;flex-direction:column;gap:0;align-items:center}
+.sxme.fig img{width:auto;height:94px;border-radius:0;background:none;filter:drop-shadow(0 3px 4px rgba(0,0,0,.35))}
+.sxme.fig>span{margin-top:-8px;font-size:.8rem;background:rgba(255,255,255,.95);border-radius:999px;padding:1px 9px;box-shadow:0 1px 4px rgba(0,0,0,.25);text-align:center;position:relative}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .pfpick button{background:#1E2A44;border-color:#2B3B60;color:#E8ECF7}:root:not([data-theme="light"]) .pfpick button[aria-pressed="true"]{border-color:#8DB4FF;background:#24365C}:root:not([data-theme="light"]) .pfpick small{color:#B8C2D9}:root:not([data-theme="light"]) .pfpick .pfon{color:#8DB4FF}}
 :root[data-theme="dark"] .pfpick button{background:#1E2A44;border-color:#2B3B60;color:#E8ECF7}:root[data-theme="dark"] .pfpick button[aria-pressed="true"]{border-color:#8DB4FF;background:#24365C}:root[data-theme="dark"] .pfpick small{color:#B8C2D9}:root[data-theme="dark"] .pfpick .pfon{color:#8DB4FF}
 .sxhero:has(.sxban) .sxstats{margin-top:12px}
@@ -912,7 +916,7 @@ function vcKey(text,slow){const s=(slow?'s|':'n|')+String(text).replace(/\s+/g,'
   for(let i=0;i<s.length;i++){const c=s.charCodeAt(i);h1=Math.imul(h1^c,2654435761);h2=Math.imul(h2^c,1597334677)}
   h1=Math.imul(h1^(h1>>>16),2246822507)^Math.imul(h2^(h2>>>13),3266489909);h2=Math.imul(h2^(h2>>>16),2246822507)^Math.imul(h1^(h1>>>13),3266489909);
   return(4294967296*(2097151&h2)+(h1>>>0)).toString(16)}
-const BUILD='20261105c';/* bump when voice files change: it forces browsers to fetch the new files together */
+const BUILD='20261105d';/* bump when voice files change: it forces browsers to fetch the new files together */
 try{fetch('voice/index.json?v='+BUILD).then(r=>r.ok?r.json():null).then(j=>{if(j&&j.clips&&j.bundles)VC.idx=j}).catch(e=>{VC.err='index: '+e})}catch(e){}
 /* One shared <audio> element (works with the iPhone silent switch). It is "unlocked" by the first tap. */
 function vcEl(){try{if(!VC.el){VC.el=new Audio();VC.el.preload='auto';VC.el.setAttribute('playsinline','')}
@@ -4285,14 +4289,18 @@ function missionsSheet(){const m=canteenMission(),sc=SCENES.find(x=>x.id==='cant
 const AVKEY='sanor-town-avatar-v1',AVS={boy:['Boy','นักเรียนชาย'],girl:['Girl','นักเรียนหญิง']};
 const avGet=()=>{try{const v=localStorage.getItem(AVKEY);return AVS[v]?v:''}catch(e){return ''}};
 const avSet=v=>{try{localStorage.setItem(AVKEY,v)}catch(e){}};
+/* moving pictures from the teacher's rigged Meshy models (5 Nov): wave on the home banner and in Profile, cheer on the win screen;
+   a still picture when the device asks for reduced motion */
+const avStill=()=>{try{return matchMedia('(prefers-reduced-motion: reduce)').matches}catch(e){return false}};
+const avPic=(k,clip)=>'img/avatar/'+k+(avStill()||!clip?'.png':'-'+clip+'.webp');
 function profileSheet(){
  mrSheet('Profile',(x)=>{const btns=[];
-  const pick=v=>{avSet(v);btns.forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.av===v)));if(DREW)render()};
+  const pick=v=>{avSet(v);btns.forEach(b=>{const on=b.dataset.av===v;b.setAttribute('aria-pressed',String(on));b.querySelector('img').src=avPic(b.dataset.av,on?'wave':'')});if(DREW)render()};
   const cur=avGet();
   return [el('div',{class:'row'},el('h2',{},'Profile⁣โปรไฟล์'),x),
    el('h3',{},'Choose your character⁣เลือกตัวละครของคุณ'),
    el('ul',{class:'pfpick'},Object.keys(AVS).map(k=>{const b=el('button',{type:'button','data-av':k,'aria-pressed':String(cur===k),onclick:()=>pick(k)},
-     el('img',{src:'img/avatar/'+k+'.png',alt:'',width:'136',height:'384',decoding:'async'}),el('b',{},AVS[k][0]),el('small',{},AVS[k][1]),el('span',{class:'pfon'},'✓ Selected · เลือกแล้ว'));
+     el('img',{src:avPic(k,cur===k?'wave':''),alt:'',width:'136',height:'384',decoding:'async'}),el('b',{},AVS[k][0]),el('small',{},AVS[k][1]),el('span',{class:'pfon'},'✓ Selected · เลือกแล้ว'));
     btns.push(b);return el('li',{},b)})),
    el('p',{class:'mrnote'},'Your character shows on the home page and when you finish a place. It is saved on this device only.⁣ตัวละครจะแสดงที่หน้าแรกและตอนทำสถานที่สำเร็จ บันทึกไว้ในเครื่องนี้เท่านั้น')]})}
 function rewardsSheet(){const r=rwRead(),xp=rwXP(r);
@@ -4509,12 +4517,12 @@ function playPlace(sc,onExit,bl){
   step()}
  const winBtns=()=>el('div',{class:'row'},el('button',{class:'btn',type:'button',onclick:close},'Back to map⁣กลับแผนที่'),
     el('button',{class:'btn ghost',type:'button',onclick:()=>{win.hidden=true}},'Stay here⁣อยู่ต่อ'));
- function pracDone(){win.hidden=false;win.replaceChildren(el('div',{class:'card stack tw'},avGet()?el('img',{class:'twav',src:'img/avatar/'+avGet()+'.png',alt:'',width:'53',height:'150'}):null,el('h2',{},'Great! You practised them all.⁣เก่งมาก! ฝึกครบแล้ว'),
+ function pracDone(){win.hidden=false;win.replaceChildren(el('div',{class:'card stack tw'},avGet()?el('img',{class:'twav',src:avPic(avGet(),'cheer'),alt:'',width:'70',height:'150'}):null,el('h2',{},'Great! You practised them all.⁣เก่งมาก! ฝึกครบแล้ว'),
    el('p',{class:'tbig'},'\u{1F44F}'),winBtns()))}
  function showWin(){win.hidden=false;const nm=miss.length;
   RLOG.add(RSES,sc,{source:'main_dialogue',event:'scene_complete',firstCorrect:stat.first,firstTotal:stat.total});
   const av=avGet();
-  win.replaceChildren(el('div',{class:'card stack tw'},av?el('img',{class:'twav',src:'img/avatar/'+av+'.png',alt:'',width:'53',height:'150'}):null,el('h2',{},'You finished '+sc.name+'!⁣คุณทำ'+sc.th+'สำเร็จแล้ว!'),
+  win.replaceChildren(el('div',{class:'card stack tw'},av?el('img',{class:'twav',src:avPic(av,'cheer'),alt:'',width:'70',height:'150'}):null,el('h2',{},'You finished '+sc.name+'!⁣คุณทำ'+sc.th+'สำเร็จแล้ว!'),
    el('p',{class:'tbig'},Array(reqN).fill('★').join(' ')),el('p',{},'You talked to '+reqN+' people in English. Great job!⁣คุณคุยภาษาอังกฤษกับคน '+reqN+' คนแล้ว เก่งมาก!'),
    CH?el('p',{class:'tscore'},CH.msg.done[0]+'\u2063'+CH.msg.done[1]):null,
    stat.total?el('p',{class:'tscore'},nm?'Right on the first try: '+stat.first+' / '+stat.total+'⁣ตอบถูกในครั้งแรก '+stat.first+' / '+stat.total+' ข้อ':'All right on the first try! \u{1F389}⁣ตอบถูกทุกข้อในครั้งแรก!'):null,
@@ -4785,8 +4793,8 @@ function render(){
     el('h1',{class:'vh'},'Sanor Town'),
     el('span',{class:'tbadge sxproto'},'Prototype'),
     (()=>{const av=avGet();const ic=el('span',{class:'sxmei','aria-hidden':'true'});ic.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="#2F5BFF" stroke-width="2" stroke-linecap="round">'+NAVI.profile+'</svg>';
-     return el('button',{class:'sxme',type:'button',onclick:profileSheet,'aria-label':av?'My character: '+AVS[av][0]+'. Change in Profile':'Choose your character in Profile'},
-      av?el('img',{src:'img/avatar/'+av+'-head.png',alt:'',width:'40',height:'40',decoding:'async'}):ic,
+     return el('button',{class:'sxme'+(av?' fig':''),type:'button',onclick:profileSheet,'aria-label':av?'My character: '+AVS[av][0]+'. Change in Profile':'Choose your character in Profile'},
+      av?el('img',{src:avPic(av,'wave'),alt:'',width:'48',height:'112',decoding:'async'}):ic,
       el('span',{},av?'Me':'Choose me',el('small',{},av?'ฉัน':'เลือกตัวละคร')))})(),
     HOST&&HOST.inline?null:el('button',{class:'sxback',type:'button',onclick:closeTown},'Home⁣กลับ'),
     /* the teacher's new banner (31 Oct) has no Passport button: Passport opens from the People bar and the bottom menu */),
