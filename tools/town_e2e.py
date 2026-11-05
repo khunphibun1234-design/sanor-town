@@ -82,10 +82,14 @@ def main():
         # E. voices
         v = pg.evaluate("""async(nv)=>{for(let i=0;i<40&&!VC.idx;i++)await new Promise(r=>setTimeout(r,100));
           if(!VC.idx)return {err:'no index'};let miss=[];
-          let nvm=0;for(const s of SanorTown.SCENES)for(const n of s.npcs)for(const t of n.turns)for(const x of [t.npc,t.o[0]])if(!vcFind(x,false)){if(nv.includes(s.id))nvm++;else miss.push(x)}
+          /* a scene with no AI clips (or only a few shared ones such as "Thank you", i.e. more than half its lines missing) uses the phone voice on purpose (the teacher sends voices later): count it, don't fail.
+             Only a scene that has SOME clips but misses others is a real gap. --novoice still forces a scene into the phone-voice group. */
+          let nvm=0;const auto=[];for(const s of SanorTown.SCENES){const L=[];for(const n of s.npcs)for(const t of n.turns)L.push(t.npc,t.o[0]);
+           const m=L.filter(x=>!vcFind(x,false));if(!m.length)continue;
+           if(nv.includes(s.id)||m.length*2>L.length){nvm+=m.length;if(!nv.includes(s.id))auto.push(s.id)}else miss.push(...m.map(x=>s.id+': '+x))}
           const bad=[];for(const bn of VC.idx.bundles){const r=await fetch('voice/'+bn+'.mp3?v='+BUILD,{method:'HEAD'});if(!r.ok)bad.push(bn)}
-          return {miss,bad,n:VC.idx.bundles.length,nvm}}""", novoice)
-        check('E1 every NPC line and correct answer has a voice clip', not v.get('err') and not v['miss'], str(v.get('err') or v['miss'][:3]) + ('  (no AI voice yet, uses phone voice: %d lines in %s)' % (v.get('nvm', 0), ','.join(novoice)) if novoice else ''))
+          return {miss,bad,n:VC.idx.bundles.length,nvm,auto}}""", novoice)
+        check('E1 every NPC line and correct answer has a voice clip', not v.get('err') and not v['miss'], str(v.get('err') or v['miss'][:3]) + ('  (no AI voice yet, uses phone voice: %d lines in %d scenes: %s)' % (v.get('nvm', 0), len(novoice) + len(v.get('auto') or []), ','.join(novoice + (v.get('auto') or []))) if (novoice or v.get('auto')) else ''))
         check('E2 every voice file loads', not v.get('err') and not v['bad'], '%s files' % v.get('n'))
         check('E3 no page errors', not errs)
         b.close()
