@@ -403,6 +403,11 @@ body.tlock{overflow:hidden}
 .tfail{margin:80px 16px}
 /* mission card */
 .tmis{position:absolute;inset:0;z-index:5;background:#0009;display:flex;padding:16px;overflow:auto}.tmis>.tmc{margin:auto}
+/* the first person of the place waves a welcome on the mission card (5 Nov, the teacher's Meshy models) */
+.tmwel{display:flex;align-items:flex-end;gap:10px;margin:-2px 0 -4px}.tmwel img{height:104px;width:auto;flex:none;filter:drop-shadow(0 3px 3px rgba(0,0,0,.2))}
+.tmwel img.still{height:64px;width:64px;border-radius:50%;background:#DCE7FF;object-fit:cover;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.25);filter:none}
+.tmbub{position:relative;background:#EEF4FF;color:#15213B;border-radius:14px 14px 14px 4px;padding:6px 12px;margin-bottom:26px;font-weight:700;line-height:1.25}.tmbub small{display:block;font-weight:600;color:#55607A;font-size:.78rem}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .tmbub{background:#24365C;color:#E8ECF7}:root:not([data-theme="light"]) .tmbub small{color:#B8C2D9}}:root[data-theme="dark"] .tmbub{background:#24365C;color:#E8ECF7}:root[data-theme="dark"] .tmbub small{color:#B8C2D9}
 .tmc{width:100%;max-width:400px;background:var(--card,#fff);color:var(--ink);border-radius:18px;border-top:8px solid var(--c);padding:14px 16px 16px;box-shadow:0 10px 30px #0006;display:flex;flex-direction:column;gap:9px}
 .tmk{margin:0;font-size:.78rem;font-weight:800;letter-spacing:.06em;color:var(--c)}
 .tmc h2{margin:0;font-size:1.2rem;line-height:1.25}
@@ -917,7 +922,7 @@ function vcKey(text,slow){const s=(slow?'s|':'n|')+String(text).replace(/\s+/g,'
   for(let i=0;i<s.length;i++){const c=s.charCodeAt(i);h1=Math.imul(h1^c,2654435761);h2=Math.imul(h2^c,1597334677)}
   h1=Math.imul(h1^(h1>>>16),2246822507)^Math.imul(h2^(h2>>>13),3266489909);h2=Math.imul(h2^(h2>>>16),2246822507)^Math.imul(h1^(h1>>>13),3266489909);
   return(4294967296*(2097151&h2)+(h1>>>0)).toString(16)}
-const BUILD='20261105e';/* bump when voice files change: it forces browsers to fetch the new files together */
+const BUILD='20261105f';/* bump when voice files change: it forces browsers to fetch the new files together */
 try{fetch('voice/index.json?v='+BUILD).then(r=>r.ok?r.json():null).then(j=>{if(j&&j.clips&&j.bundles)VC.idx=j}).catch(e=>{VC.err='index: '+e})}catch(e){}
 /* One shared <audio> element (works with the iPhone silent switch). It is "unlocked" by the first tap. */
 function vcEl(){try{if(!VC.el){VC.el=new Audio();VC.el.preload='auto';VC.el.setAttribute('playsinline','')}
@@ -4449,15 +4454,20 @@ function playPlace(sc,onExit,bl){
    g=inG(n),dn=g?!!runPick:n.done,who=g?npcs.filter(inG).map(x=>x.name).join(' / '):n.name;
   return el('li',{class:dn?'on':''},el('span',{class:'tmck','aria-hidden':'true'},dn?'✓':''),el('span',{class:'tmtx'},el('b',{},t[0]),el('small',{},t[1])),el('span',{class:'tmwho'},who))}));
  const hideMis=()=>{if(!mis)return;mis.remove();mis=null;if(!dlg&&!won){hint.hidden=false;hintT=7}if(CH&&!runPick&&!won)toast(CH.msg.start[0]+' · '+CH.msg.start[1])};
+ /* the first person with a picture greets the player (still head picture when the device asks for reduced motion) */
+ const welcomer=()=>{const n=npcs.find(x=>/^npc\//.test(npcPic(x)))||npcs.find(x=>npcPic(x));if(!n)return null;const p=npcPic(n),k=p.split('/')[1].replace('-head','');
+  const src=avStill()?'img/'+p+'.png':(p.startsWith('npc/')?'img/npc/'+k+'-wave.webp':'img/avatar/'+k+'-wave.webp');
+  return el('div',{class:'tmwel'},el('img',{class:avStill()?'still':'',src,alt:'',width:'44',height:'104',decoding:'async'}),
+   el('p',{class:'tmbub'},'Welcome! · ยินดีต้อนรับ',el('small',{},n.name)))};
  const showMis=()=>{if(!M||mis||dlg)return;hint.hidden=true;const all=runDone()>=reqN;
   mis=el('div',{class:'tmis',role:'dialog','aria-label':'Mission'},el('div',{class:'tmc',style:'--c:'+sc.color},
-   el('div',{class:'tmL'},el('p',{class:'tmk'},'Mission · ภารกิจ'),el('h2',{},sc.name),
+   el('div',{class:'tmL'},welcomer(),el('p',{class:'tmk'},'Mission · ภารกิจ'),el('h2',{},sc.name),
    el('div',{class:'tmsit'},el('p',{class:'tml'},'Situation · สถานการณ์'),el('p',{class:'tmen'},M.sit[0]),el('p',{class:'tmth'},M.sit[1])),
    el('div',{class:'tmgoal'},el('p',{class:'tml'},'Your mission · ภารกิจของคุณ'),el('p',{class:'tmen'},M.goal[0]),el('p',{class:'tmth'},M.goal[1]))),
    el('div',{class:'tmR'},misList(),
    el('div',{class:'tmbtns'},sc.prep?el('button',{class:'btn cta tmgo',type:'button',onclick:showPrep},'Practise phrases first ▶⁣ฝึกประโยคก่อน'):null,
    el('button',{class:sc.prep?'btn ghost tmskip':'btn cta tmgo',type:'button',onclick:hideMis},sc.prep?'Skip ▶⁣ข้ามไปเริ่มเลย':(all?'Play again ▶⁣เล่นอีกครั้ง':'Start ▶⁣เริ่มภารกิจ'))))));
-  root.append(mis);setTimeout(()=>{const b=mis&&mis.querySelector('.tmgo');if(b)b.focus()},60)};
+  root.append(mis);setTimeout(()=>{const b=mis&&mis.querySelector('.tmgo');if(b)b.focus({preventScroll:true});if(mis)mis.scrollTop=0},60)};/* open at the top: the welcome and the situation are read first */
  /* step 2 Prepare & Practice (scene.prep = [[English, Thai], ...] from the right answers): listen and say, then a quick 4-question match. No score, no stars. */
  const prepCard=(...kids)=>{if(!mis)return;mis.replaceChildren(el('div',{class:'tmc tprep',style:'--c:'+sc.color},...kids));setTimeout(()=>{const b=mis&&mis.querySelector('.tmgo');if(b)b.focus()},60)};
  function showPrep(){
