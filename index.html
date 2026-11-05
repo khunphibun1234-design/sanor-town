@@ -390,6 +390,7 @@ body.tlock{overflow:hidden}
 .ttalk[hidden],.tpanel[hidden],.twin[hidden],.thint[hidden],.tnext[hidden]{display:none}
 .tpanel{position:absolute;left:0;right:0;bottom:0;background:var(--paper);color:var(--ink);border-radius:16px 16px 0 0;padding:12px 14px 16px;max-height:72vh;overflow:auto;box-shadow:0 -4px 16px #0004;display:flex;flex-direction:column;gap:8px}
 .tdh{display:flex;align-items:center;gap:4px}
+.tpic{width:46px;height:46px;border-radius:50%;object-fit:cover;flex:none;background:#DCE7FF;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.25);margin-right:6px}
 .tline{background:var(--card);border:1.5px solid var(--line);border-radius:10px;padding:10px 12px}
 .timg{display:flex;justify-content:center;margin:6px 0 8px}.timg svg{display:block;max-width:60%;height:auto;background:#fff;border-radius:12px;padding:4px 10px}
 .ten{font-size:1.15rem;font-weight:700}.tth{margin:2px 0 6px;color:var(--soft);font-size:.88rem}
@@ -916,7 +917,7 @@ function vcKey(text,slow){const s=(slow?'s|':'n|')+String(text).replace(/\s+/g,'
   for(let i=0;i<s.length;i++){const c=s.charCodeAt(i);h1=Math.imul(h1^c,2654435761);h2=Math.imul(h2^c,1597334677)}
   h1=Math.imul(h1^(h1>>>16),2246822507)^Math.imul(h2^(h2>>>13),3266489909);h2=Math.imul(h2^(h2>>>16),2246822507)^Math.imul(h1^(h1>>>13),3266489909);
   return(4294967296*(2097151&h2)+(h1>>>0)).toString(16)}
-const BUILD='20261105d';/* bump when voice files change: it forces browsers to fetch the new files together */
+const BUILD='20261105e';/* bump when voice files change: it forces browsers to fetch the new files together */
 try{fetch('voice/index.json?v='+BUILD).then(r=>r.ok?r.json():null).then(j=>{if(j&&j.clips&&j.bundles)VC.idx=j}).catch(e=>{VC.err='index: '+e})}catch(e){}
 /* One shared <audio> element (works with the iPhone silent switch). It is "unlocked" by the first tap. */
 function vcEl(){try{if(!VC.el){VC.el=new Audio();VC.el.preload='auto';VC.el.setAttribute('playsinline','')}
@@ -1255,6 +1256,23 @@ SCENES.push({id:'clinic',name:'Clinic',th:'คลินิก',color:'#D6336C',s
   TT("Drink water and get some rest. Feel better soon!",'ดื่มน้ำและพักผ่อนด้วยนะครับ หายไวๆ นะ',"Thank you. Goodbye!","Yes. Here it is.","I'd like to see a doctor, please.",'ได้รับคำอวยพร ให้ขอบคุณและลา','Feel better soon! = ขอให้หายไวๆ')]}]});
 /* ===== batch 2: daily life ===== */
 const NPCDEF=(id,name,role,x,z,ry,shirt,pants,hair,acc,turns)=>({id,name,role,x,z,ry,shirt,pants,hair,acc,turns});
+/* speaker pictures (5 Nov, 3D plan item 3): eight made-up adult roles from the teacher's Meshy models (img/npc) and the two student
+   characters (img/avatar). The picture is chosen from the person's title, role words, hair and clothes; people who fit none
+   (children out of uniform, visitors, animals) get no picture. */
+function npcPic(n){const nm=n.name||'',r=String(n.role||'').split('⁣')[0].toLowerCase(),acc=n.acc||'';
+ const fem=/^(Ms|Mrs|Miss|Auntie|Grandma|Mom|Mother|Teacher Suda|Teacher Wan)\b/.test(nm)||(!/^(Mr|Uncle|Grandpa|Dad|Officer|Coach)\b/.test(nm)&&/long|bun|pony/.test(acc));
+ const adult=/^(Ms|Mrs|Miss|Mr|Auntie|Uncle|Grandma|Grandpa|Mom|Mother|Dad|Dr|Coach|Officer|Teacher)\b/.test(nm);
+ if(!adult){const sh=n.shirt||[0,0,0],uni=sh[0]>.9&&sh[1]>.9&&sh[2]>.9;
+  return !/visitor|tourist|traveler|traveller|customer|shopper|passenger|spectator|runner|player|child|sister/.test(r)&&(uni||/student|classmate|class monitor|deskmate|lab partner/.test(r))?(fem?'avatar/girl-head':'avatar/boy-head'):''}
+ let k='';
+ if(/^(Auntie|Grandma)\b/.test(nm))k='auntie';else if(/^(Uncle|Grandpa)\b/.test(nm))k='uncle';
+ else if(/teacher|coach|adviser|advisor|principal|homeroom|tutor/.test(r)||/^(Teacher|Coach)\b/.test(nm))k=fem?'teacherf':'teacherm';
+ else if(/guard|security|police|ranger/.test(r))k=fem?'office':'guard';
+ else if(/cashier|barista|waiter|waitress|sales|shop|store|server|hostess|bellboy|concierge|housekeeping|food court|electronics|clothes|drive-through|ticket|t-shirt|chef/.test(r))k=fem?'shopf':'shopm';
+ else if(/seller|vendor|cook|stall|grill|noodle|fruit|market|farmer|janitor/.test(r))k=fem?'auntie':'uncle';
+ else if(/mother|mom|parent/.test(r))k='teacherf';
+ else if(/librar|information|desk|reception|counter|clerk|teller|officer|office|staff|agent|nurse|doctor|pharmac|supervisor|conductor|assistant|attendant|mail/.test(r))k=fem?'office':'teacherm';
+ return k?'npc/'+k:''}
 SCENES.push({id:'restaurant',name:'Restaurant',th:'ร้านอาหาร',color:'#C2410C',spawn:[0,3.2,Math.PI],bounds:[-12.4,12.4,-9,9],
  build(){const c=mk();base(c,[-12.4,12.4,-9,9],0,[.9,.8,.62]);shell(c,[.93,.8,.6],[.6,.2,.15],true);
   c.box(0,3.0,-6.12,5,.7,.12,[.55,.12,.1]);c.box(0,1.0,-6.18,1.4,2,.06,DOOR);
@@ -4496,7 +4514,7 @@ function playPlace(sc,onExit,bl){
     else{b.disabled=true;b.classList.add('bad');fb.className='tfb bad';const w=tn.why&&tn.why[o.k-1];
      const wp=w?w.split(' | '):[];fb.replaceChildren(el('span',{class:'twhy'},'Not quite. '+(w?'✗ '+wp[0]:'Try again.'),...(wp.length>1?[el('br'),wp.slice(1).join(' | ')]:[])),el('span',{class:'thintl'},'\u{1F4A1} '+tn.hint))}});return b});
   panel.replaceChildren(
-   el('div',{class:'tdh'},el('b',{},n.name),el('span',{class:'hint'},' · '+n.role),el('button',{class:'tx',type:'button','aria-label':'Close',onclick:closeDlg},'×')),
+   el('div',{class:'tdh'},(p=>p?el('img',{class:'tpic',src:'img/'+p+'.png',alt:'',width:'46',height:'46',decoding:'async'}):null)(npcPic(n)),el('b',{},n.name),el('span',{class:'hint'},' · '+n.role),el('button',{class:'tx',type:'button','aria-label':'Close',onclick:closeDlg},'×')),
    el('div',{class:'tline'},el('p',{class:'ten'},tn.npc),el('p',{class:'tth'},tn.th),tn.img&&TIMG[tn.img]?timg(tn.img):null,el('button',{class:'tsay',type:'button',onclick:()=>say(tn.npc,.9)},'Listen⁣ฟัง')),
    el('p',{class:'hint'},label),
    el('div',{class:'topts'},btns),fb,nextBtn);
