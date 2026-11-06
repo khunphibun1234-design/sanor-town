@@ -698,6 +698,26 @@ body:has(.sxnav){padding-bottom:calc(84px + env(safe-area-inset-bottom,0px))}
 .mrbadges li b{font-size:.92rem;color:#1F2937}.mrbadges li small{font-size:.76rem;color:var(--sx-mute)}
 .mrnote{font-size:.8rem;color:var(--sx-mute);margin:8px 0 0}
 .mrs :focus-visible{outline:3px solid var(--sx-gold);outline-offset:2px}
+.hubb .hubbar{align-items:center;gap:8px}.hubb .hubbar h2,.hubb .hubbar b{flex:1;margin:0;font-size:1.05rem}
+.hubback{padding:6px 10px;min-height:44px}
+.hubhero{display:flex;gap:10px;align-items:center;background:var(--c);color:#fff;border-radius:14px;padding:8px;margin:8px 0}
+.hubhero img{width:110px;height:auto;border-radius:10px}.hubhero b{display:block;font-size:1.15rem}.hubhero small{opacity:.9}
+.hubms{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:6px 0 10px}.hubms .btn{min-height:52px}
+.hubfree{border:2px dashed #94a3b8;border-radius:12px;padding:6px 8px;text-align:center;color:#64748b}.hubfree b,.hubfree small{display:block}.hubfree small{font-size:.75rem}
+.hubgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.hubm{display:flex;flex-direction:column;align-items:center;gap:1px;min-height:84px;padding:8px 4px;border-radius:14px;border:1px solid #cbd5e1;background:#fff;color:#1f2937;font:inherit;text-align:center;cursor:pointer}
+.hubm b{font-size:.98rem}.hubm small{font-size:.78rem;color:#64748b}.hubic{font-size:1.4rem;line-height:1.2}
+.hubm.talk{grid-column:1/-1;flex-direction:row;justify-content:center;gap:10px;background:#ede9fe;border:2px solid #7c3aed;color:#4c1d95;order:-1}
+.hubm.talk small{color:#5b21b6}.hubmq{font-weight:700}
+.hubm.soon{opacity:.55;cursor:default}.hubsoon{font-size:.7rem!important}
+.hubst{font-size:.72rem;color:#b45309;font-weight:700}.hubst.ok{color:#047857}
+.hubprog{font-size:.82rem;color:#475569;margin:10px 0 0}
+.hubfc{background:#fff;border:1px solid #cbd5e1;border-radius:16px;padding:12px;text-align:center;margin:8px 0;color:#1f2937}
+.hubfc h3{margin:4px 0;font-size:1.4rem}.hubpic{font-size:2.6rem}.hubth{color:#64748b;font-size:.9rem;margin:2px 0 8px;display:block}
+.hubex{margin:8px 0 4px}.hubex span{display:block;font-weight:600}.hubex small{color:#64748b}
+.hubq{font-weight:700;font-size:1.05rem;margin:4px 0}.hubtx{background:#f1f5f9;border-radius:10px;padding:8px;font-weight:600}
+.hubnote{font-size:.8rem;color:#64748b;background:#fffbeb;border:1px solid #fde68a;border-radius:10px;padding:6px 8px}.hubnote.strong{color:#78350f;font-weight:600}
+.hubsp li{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.hubsp li>span{flex:1;min-width:150px}.hubsaid{min-height:44px;padding:6px 10px}.hubsaid.on{background:#dcfce7;border-color:#16a34a;color:#166534}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .mrcard,:root:not([data-theme="light"]) .mrxp{background:#1E2A44;border-color:#2B3B60}:root:not([data-theme="light"]) .mrtop b,:root:not([data-theme="light"]) .mrrew,:root:not([data-theme="light"]) .mrxp span{color:#E8ECF7}:root:not([data-theme="light"]) .mrxp b{color:#8DB4FF}:root:not([data-theme="light"]) .mrsteps li,:root:not([data-theme="light"]) .mrbadges li{background:#16203A;border-color:#2B3B60}:root:not([data-theme="light"]) .mrsteps li span.mrtx b,:root:not([data-theme="light"]) .mrbadges li b{color:#E8ECF7}:root:not([data-theme="light"]) .mrfut li{background:#16203A;border-color:#3A4A6E}:root:not([data-theme="light"]) .mrfut li b{color:#C3CBE0}:root:not([data-theme="light"]) .mrbadges li.on{background:#2A2410;border-color:#B8902A}}
 :root[data-theme="dark"] .mrcard,:root[data-theme="dark"] .mrxp{background:#1E2A44;border-color:#2B3B60}:root[data-theme="dark"] .mrtop b,:root[data-theme="dark"] .mrrew,:root[data-theme="dark"] .mrxp span{color:#E8ECF7}:root[data-theme="dark"] .mrxp b{color:#8DB4FF}:root[data-theme="dark"] .mrsteps li,:root[data-theme="dark"] .mrbadges li{background:#16203A;border-color:#2B3B60}:root[data-theme="dark"] .mrsteps li span.mrtx b,:root[data-theme="dark"] .mrbadges li b{color:#E8ECF7}:root[data-theme="dark"] .mrfut li{background:#16203A;border-color:#3A4A6E}:root[data-theme="dark"] .mrfut li b{color:#C3CBE0}:root[data-theme="dark"] .mrbadges li.on{background:#2A2410;border-color:#B8902A}
 .tfstat b{font-size:1.05rem;color:#1E5BD6;font-variant-numeric:tabular-nums}
@@ -922,7 +942,7 @@ function vcKey(text,slow){const s=(slow?'s|':'n|')+String(text).replace(/\s+/g,'
   for(let i=0;i<s.length;i++){const c=s.charCodeAt(i);h1=Math.imul(h1^c,2654435761);h2=Math.imul(h2^c,1597334677)}
   h1=Math.imul(h1^(h1>>>16),2246822507)^Math.imul(h2^(h2>>>13),3266489909);h2=Math.imul(h2^(h2>>>16),2246822507)^Math.imul(h1^(h1>>>13),3266489909);
   return(4294967296*(2097151&h2)+(h1>>>0)).toString(16)}
-const BUILD='20261105l';/* bump when voice files change: it forces browsers to fetch the new files together */
+const BUILD='20261106a';/* bump when voice files change: it forces browsers to fetch the new files together */
 try{fetch('voice/index.json?v='+BUILD).then(r=>r.ok?r.json():null).then(j=>{if(j&&j.clips&&j.bundles)VC.idx=j}).catch(e=>{VC.err='index: '+e})}catch(e){}
 /* One shared <audio> element (works with the iPhone silent switch). It is "unlocked" by the first tap. */
 function vcEl(){try{if(!VC.el){VC.el=new Audio();VC.el.preload='auto';VC.el.setAttribute('playsinline','')}
@@ -4284,6 +4304,70 @@ function mrSheet(label,kids){const opener=document.activeElement;
  const x=el('button',{class:'tx',type:'button','aria-label':'Close',onclick:()=>close()},'×');
  const body=el('div',{class:'sheet card stack mrs',role:'dialog','aria-modal':'true','aria-label':label},kids(x,close));
  const sheet=el('div',{class:'sheetbg',onclick:e=>{if(e.target===sheet)close()}},body);document.body.append(sheet);document.addEventListener('keydown',onk);x.focus();return close}
+const HUB={canteen:{
+ words:[["I'd like ..., please.", "request frame", "ขอ... หน่อย (สั่งอย่างสุภาพ)", "I'd like rice and curry, please.", "ขอข้าวราดแกงหน่อยครับ/ค่ะ", "A1", "💬"], ["curry", "noun", "แกง", "Would you like green curry or stir-fried vegetables with your rice?", "อยากได้แกงเขียวหวานหรือผัดผักกับข้าวดีจ๊ะ", "A1", "🍛"], ["spicy", "adjective", "เผ็ด", "Green curry is a little spicy.", "แกงเขียวหวานเผ็ดนิดหน่อย", "A2", "🌶️"], ["a bowl of", "quantifier", "...หนึ่งชาม", "I'd like a bowl of noodle soup, please.", "ขอก๋วยเตี๋ยวน้ำหนึ่งชามครับ/ค่ะ", "A1", "🍜"], ["noodles", "noun", "เส้นก๋วยเตี๋ยว", "Would you like thin rice noodles or wide rice noodles?", "จะรับเส้นเล็กหรือเส้นใหญ่", "A1", "🍜"], ["a bottle of", "quantifier", "...หนึ่งขวด", "A bottle of water, please.", "ขอน้ำเปล่าหนึ่งขวดครับ/ค่ะ", "A1", "💧"], ["How much is it?", "question", "ราคาเท่าไร", "Thank you. How much is it?", "ขอบคุณ ราคาเท่าไรครับ/คะ", "A1", "💰"], ["free seat", "noun phrase", "ที่นั่งว่าง", "Hey! There's a free seat here. Come and sit with me.", "เฮ้ ตรงนี้มีที่ว่าง มานั่งด้วยกันสิ", "A2", "🪑"], ["left", "adjective", "เหลือ", "Let's return our plates after lunch. How much money do you have left?", "กินเสร็จแล้วเอาจานไปเก็บกันนะ เธอเหลือเงินเท่าไร", "A2", "👛"]],
+ listen:[["I'd like a bowl of noodle soup, please.", "What does the student order?", "นักเรียนสั่งอะไร", ["Noodle soup", "Rice and curry", "A bottle of water"], ["ก๋วยเตี๋ยวน้ำ", "ข้าวราดแกง", "น้ำเปล่าหนึ่งขวด"], ["เสียงที่ได้ยินคือ noodle soup ไม่ใช่ rice and curry", "เสียงที่ได้ยินคือสั่งก๋วยเตี๋ยว ไม่ใช่น้ำ"]], ["Would you like thin rice noodles or wide rice noodles?", "What is Uncle Chai asking about?", "ลุงไชยถามเรื่องอะไร", ["The type of noodles", "The price", "A drink"], ["ชนิดของเส้น", "ราคา", "เครื่องดื่ม"], ["ลุงถามว่าเส้นเล็กหรือเส้นใหญ่ ไม่ได้ถามราคา", "ลุงถามเรื่องเส้น ไม่ได้ถามเรื่องเครื่องดื่ม"]], ["It's five baht, please.", "How much is the water?", "น้ำราคาเท่าไร", ["5 baht", "15 baht", "50 baht"], ["5 บาท", "15 บาท", "50 บาท"], ["five คือ 5 ส่วน fifteen คือ 15", "five คือ 5 ส่วน fifty คือ 50"]], ["Thank you. How much is it?", "What does the student want to know?", "นักเรียนอยากรู้อะไร", ["The price", "The time", "The number of bottles"], ["ราคา", "เวลา", "จำนวนขวด"], ["How much ถามราคา ส่วน What time ถามเวลา", "How much ถามราคา ส่วน How many ถามจำนวน"]], ["Hey! There's a free seat here. Come and sit with me.", "What does Bow want you to do?", "โบว์อยากให้เธอทำอะไร", ["Sit with her", "Buy some water", "Go home"], ["นั่งกับเธอ", "ซื้อน้ำ", "กลับบ้าน"], ["Bow ชวนมานั่งด้วยกัน ไม่ได้ให้ไปซื้อน้ำ", "Bow ชวนมานั่งด้วยกัน ไม่ได้ให้กลับบ้าน"]], ["Let's return our plates after lunch.", "What will they do after lunch?", "หลังกินข้าว พวกเขาจะทำอะไร", ["Return their plates", "Buy more food", "Leave the plates"], ["เอาจานไปเก็บ", "ซื้ออาหารเพิ่ม", "ทิ้งจานไว้"], ["return our plates แปลว่าเอาจานไปเก็บ ไม่ใช่ซื้อเพิ่ม", "return แปลว่าเอาไปคืน/เก็บ ไม่ใช่ทิ้งไว้"]]]}};
+/* ===== ST-UX-007 CS-1: station Hub with learning modes (School Canteen first). Talk = the 3D scene (unchanged).
+   Words / Listen / Speak are practice: they never change stars, money or XP. Speak is practice only (no microphone, no score). ===== */
+const HUBMODES=[['talk','Talk','คุยภารกิจหลัก','\u{1F4AC}'],['words','Words','คำศัพท์','\u{1F524}'],['listen','Listen','ฟัง','\u{1F3A7}'],['speak','Speak','พูดตาม','\u{1F5E3}️'],
+ ['read','Read','อ่าน','\u{1F4D6}'],['write','Write','เขียน','✏️'],['quiz','Quiz','แบบทดสอบ','✅']];
+const HUBSOON=['read','write','quiz'];
+const hubRec=(id,m)=>{SAVE.modes=SAVE.modes||{};SAVE.modes[id]=SAVE.modes[id]||{};return SAVE.modes[id][m]=SAVE.modes[id][m]||{s:'started',a:0,f:0,t:0}};
+const hubSt=(id,m)=>m==='talk'?(doneCount(id)>=nTotal(SCENES.find(s=>s.id===id))?'done':doneCount(id)?'started':'none'):((SAVE.modes&&SAVE.modes[id]&&SAVE.modes[id][m]||{}).s||'none');
+function goPlace(s,onExit,bl){if(HUB[s.id])hubSheet(s,onExit);else playPlace(s,onExit,bl)}
+function hubSheet(sc,onExit){const H=HUB[sc.id],nm=GNAME[sc.id]||[shortName(sc),sc.th];
+ mrSheet(nm[0]+' learning modes',(x,close)=>{const body=el('div',{class:'hubb'});
+  const talk=()=>{close();stopSay();playPlace(sc,onExit)};
+  const back=()=>{stopSay();body.replaceChildren(...home())};
+  const bar=(t)=>el('div',{class:'row hubbar'},el('button',{class:'btn ghost hubback',type:'button',onclick:back},'← Hub'),el('b',{},t),x);
+  const stTag=s=>s==='done'?el('span',{class:'hubst ok'},'✓ Done · เสร็จ'):s==='started'?el('span',{class:'hubst'},'Started · เริ่มแล้ว'):null;
+  const home=()=>{const on=['talk','words','listen','speak'],nDone=on.filter(m=>hubSt(sc.id,m)==='done').length,stars=doneCount(sc.id),n=nTotal(sc);
+   const card=([m,en,th,ic])=>{const soon=HUBSOON.includes(m),st=hubSt(sc.id,m);
+    const kids=[el('span',{class:'hubic','aria-hidden':'true'},ic),el('b',{},en),el('small',{},th),m==='talk'?el('small',{class:'hubmq'},'Main Quest · '+stars+'/'+n+' ★'):null,soon?el('small',{class:'hubsoon'},'Coming soon · เร็ว ๆ นี้'):stTag(st)];
+    return soon?el('div',{class:'hubm soon','aria-label':en+', coming soon'},...kids)
+     :el('button',{class:'hubm'+(m==='talk'?' talk':''),type:'button','data-mode':m,onclick:()=>m==='talk'?talk():body.replaceChildren(...run(m))},...kids)};
+   return [el('div',{class:'row hubbar'},el('h2',{},nm[0]+'⁣'+nm[1]),x),
+    el('div',{class:'hubhero',style:'--c:'+(LCOL[sc.id]||sc.color)},el('img',{src:'img/stations3/'+sc.id+'.jpg',alt:'',width:'268',height:'91'}),el('div',{},el('b',{},"Let's Order Lunch!"),el('small',{},'สั่งอาหารกลางวันกันเถอะ'))),
+    el('div',{class:'hubms'},el('button',{class:'btn cta hubgo',type:'button',onclick:talk},'Guided Mission ▶⁣ภารกิจหลัก · นับดาว'),
+     el('div',{class:'hubfree','aria-label':'Free Shopping, coming soon'},el('b',{},'Free Shopping'),el('small',{},'ซื้ออิสระ · Coming soon · เร็ว ๆ นี้'))),
+    el('div',{class:'hubgrid'},HUBMODES.map(card)),
+    el('p',{class:'hubprog'},'Modes done · ทำแล้ว '+nDone+' / '+on.length+' · Stars come from Talk only. ⁣ดาวมาจากภารกิจ Talk เท่านั้น ไม่ต้องทำตามลำดับ')]};
+  /* ---- Words: flash cards, then a 4-question match (Thai -> English) ---- */
+  const words=(k)=>{const W=H.words,w=W[k];hubRec(sc.id,'words');
+   if(k>=W.length)return match(0,shuffle(W).slice(0,4));
+   return [bar('Words '+(k+1)+' / '+W.length),
+    el('div',{class:'hubfc'},el('div',{class:'hubpic','aria-hidden':'true'},w[6]),el('h3',{},w[0]),el('p',{class:'hubth'},w[2]+' · '+w[1]+' · '+w[5]),
+     el('button',{class:'btn ghost',type:'button',onclick:()=>say(w[0].replace('...','something'),.85)},'\u{1F50A} Listen · ฟัง'),
+     el('p',{class:'hubex'},el('span',{},w[3]),el('small',{},w[4])),el('button',{class:'tpsay',type:'button','aria-label':'Listen: '+w[3],onclick:()=>say(w[3],.85)},'\u{1F50A}')),
+    el('button',{class:'btn cta',type:'button',onclick:()=>body.replaceChildren(...words(k+1))},k+1<W.length?'Next · ต่อไป':'Match game · เกมจับคู่ ▶'),
+    el('p',{class:'hubnote'},'Voice: your phone · เสียงอ่านจากเครื่อง (ไม่ใช่ไฟล์เสียงต้นฉบับ)')]};
+  const match=(k,qs)=>{const r=hubRec(sc.id,'words');
+   if(k>=qs.length){r.s='done';persist();return [bar('Words'),el('div',{class:'hubfc'},el('h3',{},'Well done! ✓ เก่งมาก'),el('p',{class:'hubth'},'You practised '+H.words.length+' words. · ฝึกครบ '+H.words.length+' คำแล้ว')),el('button',{class:'btn cta',type:'button',onclick:back},'Back to Hub · กลับหน้าโหมด')]}
+   const q=qs[k],opts=shuffle([q,...shuffle(H.words.filter(w=>w!==q)).slice(0,2)]);return quizView('Words · match '+(k+1)+' / '+qs.length,'Which English means … · คำไหนแปลว่า',q[2],null,opts.map(o=>[o[0],o===q,'']),r,()=>body.replaceChildren(...match(k+1,qs)))};
+  /* ---- Listen: the phone reads a line, the student answers; text can always be shown (no hidden real audio) ---- */
+  const listen=(k)=>{const L=H.listen,r=hubRec(sc.id,'listen');
+   if(k>=L.length){r.s='done';persist();return [bar('Listen'),el('div',{class:'hubfc'},el('h3',{},'Great listening! ✓'),el('p',{class:'hubth'},'Right on the first try: '+r.lf+' / '+L.length+' · ตอบถูกครั้งแรก')),el('p',{class:'hubnote'},'This is listening practice with your phone voice. It is not a test score.⁣เป็นแบบฝึกฟังด้วยเสียงจากเครื่อง ไม่ใช่คะแนนสอบ'),el('button',{class:'btn cta',type:'button',onclick:back},'Back to Hub · กลับหน้าโหมด')]}
+   if(k===0)r.lf=0;const [line,q,qth,o,oth,why]=L[k];
+   const tx=el('p',{class:'hubtx',hidden:true},line);
+   const play=el('button',{class:'btn cta',type:'button',onclick:()=>say(line,.85)},'▶ Play · เล่น');setTimeout(()=>say(line,.85),250);
+   return quizView('Listen '+(k+1)+' / '+L.length,q,qth,[play,el('button',{class:'btn ghost',type:'button',onclick:()=>say(line,.65)},'↻ Slower · ช้าลง'),
+     el('button',{class:'btn ghost',type:'button',onclick:()=>{tx.hidden=false}},'Show text · แสดงข้อความ'),tx,el('p',{class:'hubnote'},'Voice: your phone · เสียงจากเครื่อง ถ้าไม่มีเสียง กด Show text')],
+    o.map((t,i)=>[t+' · '+oth[i],i===0,i?why[i-1]:'']),r,()=>body.replaceChildren(...listen(k+1)),()=>{tx.hidden=false})};
+  /* ---- Speak: listen and say aloud. Practice only: no microphone, no recording, no score ---- */
+  const speak=()=>{const P=sc.prep||[],r=hubRec(sc.id,'speak'),said=new Set();
+   const doneB=el('button',{class:'btn cta',type:'button',disabled:true,onclick:()=>{r.s='done';persist();back()}},'Finish · เสร็จ (0 / '+P.length+')');
+   return [bar('Speak'),el('p',{class:'hubnote strong'},'Practise aloud — not automatically scored.⁣ฝึกพูดออกเสียง แอปไม่ได้ฟังหรือให้คะแนน และไม่บันทึกเสียง · พูดกับเพื่อนได้'),
+    el('ul',{class:'tplist hubsp'},P.map(([en,th])=>{const b=el('button',{class:'btn ghost hubsaid',type:'button',onclick:()=>{said.add(en);b.classList.add('on');b.textContent='✓ I said it · พูดแล้ว';doneB.textContent='Finish · เสร็จ ('+said.size+' / '+P.length+')';doneB.disabled=said.size<P.length}},'I said it · ฉันพูดแล้ว');
+     return el('li',{},el('button',{class:'tpsay',type:'button','aria-label':'Listen: '+en,onclick:()=>say(en,.85)},'\u{1F50A}'),el('span',{},el('b',{},en),el('small',{},th)),b)})),
+    el('p',{class:'hubnote'},'Your teacher checks speaking with a rubric outside the app.⁣ครูประเมินการพูดด้วยเกณฑ์ (rubric) นอกแอป'),doneB]};
+  /* shared 3-option question: first try counts once; wrong = WHY + try again (same as Talk) */
+  const quizView=(title,q,qth,extra,opts,r,next,reveal)=>{let first=true;const fb=el('p',{class:'tfb','aria-live':'polite'});
+   const bs=shuffle(opts).map(([t,ok,why])=>{const b=el('button',{class:'topt',type:'button'},t);b.addEventListener('click',()=>{
+     if(ok){bs.forEach(x=>x.disabled=true);b.classList.add('good');fb.className='tfb good';fb.textContent='Great! ✓';r.t++;if(first){r.f++;if(r.lf!==undefined)r.lf++}if(reveal)reveal();persist();setTimeout(next,900)}
+     else{if(first)r.a++;first=false;b.disabled=true;b.classList.add('bad');fb.className='tfb bad';fb.replaceChildren('Not quite. Try again. · ยังไม่ใช่ ลองใหม่',why?el('br'):'',why||'')}});return b});
+   return [bar(title),el('div',{class:'hubfc'},el('p',{class:'hubq'},q),qth?el('small',{class:'hubth'},qth):null,...(extra||[])),el('div',{class:'topts'},bs),fb]};
+  const run=m=>m==='words'?words(0):m==='listen'?listen(0):speak();
+  body.replaceChildren(...home());return [body]})}
 const RW_FUTURE=[['Daily missions','ภารกิจประจำวัน'],['Skill missions','ภารกิจฝึกทักษะ'],['Improvement missions','ภารกิจแก้จุดที่ผิด'],['Real-life missions','ภารกิจในชีวิตจริง']];
 function missionsSheet(){const m=canteenMission(),sc=SCENES.find(x=>x.id==='canteen');
  const tag={new:['Not started','ยังไม่เริ่ม',''],progress:['In progress','กำลังทำ',''],done:['Completed','จบแล้ว','ok'],earlier:['Completed earlier','จบแล้ว','old']}[m.state];
@@ -4428,7 +4512,7 @@ function playPlace(sc,onExit,bl){
  const hint=el('div',{class:'thint'},sc.hub?'Walk to a green sign to enter a room.⁣เดินไปที่ป้ายสีเขียวเพื่อเข้าห้อง':'Walk to a person with a yellow !⁣เดินไปหาคนที่มีเครื่องหมาย ! สีเหลือง',sc.orbit?el('div',{},'Drag the screen to look around. \u{1F440} = eye-level view⁣ลากนิ้วบนจอเพื่อหมุนมองรอบตัว กดปุ่ม \u{1F440} เพื่อมองระดับสายตา'):null);
  const panel=el('div',{class:'tpanel',hidden:true,role:'region','aria-label':'Conversation'});
  const win=el('div',{class:'twin',hidden:true});
- const warp=el('button',{class:'tplaces',type:'button',onclick:()=>placesSheet(s=>{if(s.id===sc.id)return;close(true);playPlace(s,onExit,bl)})},'Go to another place\u2063ไปสถานที่อื่น');
+ const warp=el('button',{class:'tplaces',type:'button',onclick:()=>placesSheet(s=>{if(s.id===sc.id)return;close(true);goPlace(s,onExit,bl)})},'Go to another place\u2063ไปสถานที่อื่น');
  const zIn=el('button',{type:'button','aria-label':'Zoom in','title':'Zoom in'},'+'),zOut=el('button',{type:'button','aria-label':'Zoom out','title':'Zoom out'},'−');
  const setZ=z=>{ZOOM=Math.min(ZMAX,Math.max(ZMIN,z));zIn.disabled=ZOOM<=ZMIN+.001;zOut.disabled=ZOOM>=ZMAX-.001};setZ(ZOOM);
  zIn.addEventListener('click',()=>setZ(ZOOM-.15));zOut.addEventListener('click',()=>setZ(ZOOM+.15));
@@ -4723,7 +4807,7 @@ function gridBlock(list){
    el('span',{class:'sgimg'},el('img',{src:'img/stations3/'+s.id+'.jpg',alt:'',width:'268',height:'91',loading:'lazy',decoding:'async'}),full?el('span',{class:'sgok','aria-hidden':'true'},'✓'):null),
    el('span',{class:'sgrow'},ic,el('span',{class:'sgtx'},el('b',{},nm[0]),el('small',{},nm[1]))),
    el('span',{class:'sgst','aria-hidden':'true'},locked?el('span',{class:'sgsoon'},'Soon',el('span',{class:'th'},' · เร็ว ๆ นี้')):Array.from({length:n},(_,i)=>el('i',{class:i<d?'on':''},'★'))));
-  b.addEventListener('click',()=>{if(locked)toast(nm[0]+' is coming soon. · เร็ว ๆ นี้');else playPlace(s,render)});
+  b.addEventListener('click',()=>{if(locked)toast(nm[0]+' is coming soon. · เร็ว ๆ นี้');else goPlace(s,render)});
   wrap.append(el('li',{},b))});
  /* the teacher's picture (4 Nov): stations 22-24 fill the last row; under them a full-width banner (students with the app, map and quest) */
  wrap.append(el('li',{class:'sgbanner','aria-hidden':'true'},el('img',{src:'img/grid/deco-banner.jpg',alt:'',width:'937',height:'298',loading:'lazy',decoding:'async'})));
@@ -4743,7 +4827,7 @@ function mapBlock(list){
     rich?(()=>{const ic=el('span',{class:'sxic','aria-hidden':'true'});ic.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'+STICON[s.id]+'</svg>';return ic})():null,
     el('span',{class:'sxtx'},el('span',{class:'pen'},shortName(s)),el('span',{class:'pth'},rich?s.th.replace(/ ?โรงเรียนพิบูลมังสาหาร$/,''):s.th),el('span',{class:'pst'},locked?'Soon':stars)),
     sxIcon('chev','sxgo')));
-  b.addEventListener('click',()=>{if(locked)toast(s.name+' is coming soon. · เร็ว ๆ นี้');else playPlace(s,render)});
+  b.addEventListener('click',()=>{if(locked)toast(s.name+' is coming soon. · เร็ว ๆ นี้');else goPlace(s,render)});
   wrap.append(el('li',{},b))});
  return wrap}
 function tabBar(){return el('div',{class:'ttabs sxtabs',role:'tablist','aria-label':'Lines'},TABS.map(([id,en,th])=>{const on=TAB===id,l=SCENES.filter(s=>s.group===id),n=l.length,dn=l.filter(s=>doneCount(s.id)>=nTotal(s)).length;
@@ -4872,7 +4956,7 @@ function navBar(){
  const soon=(en,th)=>()=>toast(en+' is coming soon. · '+th+' เร็ว ๆ นี้');
  return el('nav',{class:'sxnav','aria-label':'Menu'},
   it('home','Home','หน้าแรก',()=>window.scrollTo({top:0,behavior:'smooth'}),true),
-  it('map','Map','แผนที่',()=>placesSheet(s=>playPlace(s,render))),
+  it('map','Map','แผนที่',()=>placesSheet(s=>goPlace(s,render))),
   it('missions','Missions','ภารกิจ',missionsSheet),
   it('passport','Passport','สมุดเดินทาง',passportSheet),
   it('rewards','Rewards','รางวัล',rewardsSheet),

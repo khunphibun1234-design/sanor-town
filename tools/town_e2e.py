@@ -48,6 +48,8 @@ def main():
             tab.nth(i).click(); pg.wait_for_timeout(150)
             if pg.locator('button[data-scene="%s"]' % scene).count(): break
         pg.locator('button[data-scene="%s"]' % scene).first.click(); pg.wait_for_timeout(800)
+        if pg.locator('.hubb .hubgo').count():  # stations with a learning-modes Hub (ST-UX-007): Talk = Guided Mission
+            pg.locator('.hubb .hubgo').click(); pg.wait_for_timeout(800)
         check('C1 tapping the place on the map opens it', pg.evaluate("()=>!!(SanorTown.g&&SanorTown.g.sc)"), sc['name'])
         talked, bad_fb = 0, 0
         for k in want:

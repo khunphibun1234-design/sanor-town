@@ -33,6 +33,8 @@ def main():
                 tab.nth(i).click(); pg.wait_for_timeout(120)
                 if pg.locator('button[data-scene="canteen"]').count(): break
             pg.locator('button[data-scene="canteen"]').first.click(); pg.wait_for_timeout(900)
+            if pg.locator('.hubb .hubgo').count():  # canteen Hub (ST-UX-007): start the Guided Mission
+                pg.locator('.hubb .hubgo').click(); pg.wait_for_timeout(900)
             sk = pg.get_by_role('button', name='Skip')
             if sk.count(): sk.first.click(); pg.wait_for_timeout(200)
         def talk(nid, pick):
