@@ -95,6 +95,7 @@ with sync_playwright() as p:
     pg.keyboard.press('Escape'); pg.wait_for_timeout(200)
     # R13 gate1 unchanged
     card('gate1'); pg.wait_for_timeout(500)
+    if pg.locator('.hubb .hubgo').count(): pg.locator('.hubb .hubgo').click(); pg.wait_for_timeout(700)  # every Our School station has a Hub (10 Nov)
     sk = pg.get_by_role('button', name='Skip')
     if sk.count(): sk.first.click()
     nid = g("g.npcs[0].id"); talk(nid)

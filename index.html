@@ -702,7 +702,7 @@ body:has(.sxnav){padding-bottom:calc(84px + env(safe-area-inset-bottom,0px))}
 .hubback{padding:6px 10px;min-height:44px}
 .hubhero{display:flex;gap:10px;align-items:center;background:var(--c);color:#fff;border-radius:14px;padding:8px;margin:8px 0}
 .hubhero img{width:110px;height:auto;border-radius:10px}.hubhero b{display:block;font-size:1.15rem}.hubhero small{opacity:.9}
-.hubms{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:6px 0 10px}.hubms .btn{min-height:52px}
+.hubms{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:6px 0 10px}.hubms.one{grid-template-columns:1fr}.hubms .btn{min-height:52px}
 .hubfree{border:2px dashed #94a3b8;border-radius:12px;padding:6px 8px;text-align:center;color:#64748b}.hubfree b,.hubfree small{display:block}.hubfree small{font-size:.75rem}
 button.hubfree.on{border:2px solid #C2410C;background:#fff7ed;color:#9a3412;cursor:pointer;font:inherit;width:100%}button.hubfree.on small{color:#9a3412}
 .shmenu,.shpay{display:flex;flex-direction:column;gap:8px}.shlist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
@@ -967,7 +967,7 @@ function vcKey(text,slow){const s=(slow?'s|':'n|')+String(text).replace(/\s+/g,'
   for(let i=0;i<s.length;i++){const c=s.charCodeAt(i);h1=Math.imul(h1^c,2654435761);h2=Math.imul(h2^c,1597334677)}
   h1=Math.imul(h1^(h1>>>16),2246822507)^Math.imul(h2^(h2>>>13),3266489909);h2=Math.imul(h2^(h2>>>16),2246822507)^Math.imul(h1^(h1>>>13),3266489909);
   return(4294967296*(2097151&h2)+(h1>>>0)).toString(16)}
-const BUILD='20261110e';/* bump when voice files change: it forces browsers to fetch the new files together */
+const BUILD='20261110f';/* bump when voice files change: it forces browsers to fetch the new files together */
 try{fetch('voice/index.json?v='+BUILD).then(r=>r.ok?r.json():null).then(j=>{if(j&&j.clips&&j.bundles)VC.idx=j}).catch(e=>{VC.err='index: '+e})}catch(e){}
 /* One shared <audio> element (works with the iPhone silent switch). It is "unlocked" by the first tap. */
 function vcEl(){try{if(!VC.el){VC.el=new Audio();VC.el.preload='auto';VC.el.setAttribute('playsinline','')}
@@ -4423,6 +4423,209 @@ function mrSheet(label,kids){const opener=document.activeElement;
 const HUB={canteen:{
  words:[["I'd like ..., please.", "request frame", "ขอ... หน่อย (สั่งอย่างสุภาพ)", "I'd like rice and curry, please.", "ขอข้าวราดแกงหน่อยครับ/ค่ะ", "A1", "💬"], ["curry", "noun", "แกง", "Would you like green curry or stir-fried vegetables with your rice?", "อยากได้แกงเขียวหวานหรือผัดผักกับข้าวดีจ๊ะ", "A1", "🍛"], ["spicy", "adjective", "เผ็ด", "Green curry is a little spicy.", "แกงเขียวหวานเผ็ดนิดหน่อย", "A2", "🌶️"], ["a bowl of", "quantifier", "...หนึ่งชาม", "I'd like a bowl of noodle soup, please.", "ขอก๋วยเตี๋ยวน้ำหนึ่งชามครับ/ค่ะ", "A1", "🍜"], ["noodles", "noun", "เส้นก๋วยเตี๋ยว", "Would you like thin rice noodles or wide rice noodles?", "จะรับเส้นเล็กหรือเส้นใหญ่", "A1", "🍜"], ["a bottle of", "quantifier", "...หนึ่งขวด", "A bottle of water, please.", "ขอน้ำเปล่าหนึ่งขวดครับ/ค่ะ", "A1", "💧"], ["How much is it?", "question", "ราคาเท่าไร", "Thank you. How much is it?", "ขอบคุณ ราคาเท่าไรครับ/คะ", "A1", "💰"], ["free seat", "noun phrase", "ที่นั่งว่าง", "Hey! There's a free seat here. Come and sit with me.", "เฮ้ ตรงนี้มีที่ว่าง มานั่งด้วยกันสิ", "A2", "🪑"], ["left", "adjective", "เหลือ", "Let's return our plates after lunch. How much money do you have left?", "กินเสร็จแล้วเอาจานไปเก็บกันนะ เธอเหลือเงินเท่าไร", "A2", "👛"]],
  listen:[["I'd like a bowl of noodle soup, please.", "What does the student order?", "นักเรียนสั่งอะไร", ["Noodle soup", "Rice and curry", "A bottle of water"], ["ก๋วยเตี๋ยวน้ำ", "ข้าวราดแกง", "น้ำเปล่าหนึ่งขวด"], ["เสียงที่ได้ยินคือ noodle soup ไม่ใช่ rice and curry", "เสียงที่ได้ยินคือสั่งก๋วยเตี๋ยว ไม่ใช่น้ำ"]], ["Would you like thin rice noodles or wide rice noodles?", "What is Uncle Chai asking about?", "ลุงไชยถามเรื่องอะไร", ["The type of noodles", "The price", "A drink"], ["ชนิดของเส้น", "ราคา", "เครื่องดื่ม"], ["ลุงถามว่าเส้นเล็กหรือเส้นใหญ่ ไม่ได้ถามราคา", "ลุงถามเรื่องเส้น ไม่ได้ถามเรื่องเครื่องดื่ม"]], ["It's five baht, please.", "How much is the water?", "น้ำราคาเท่าไร", ["5 baht", "15 baht", "50 baht"], ["5 บาท", "15 บาท", "50 บาท"], ["five คือ 5 ส่วน fifteen คือ 15", "five คือ 5 ส่วน fifty คือ 50"]], ["Thank you. How much is it?", "What does the student want to know?", "นักเรียนอยากรู้อะไร", ["The price", "The time", "The number of bottles"], ["ราคา", "เวลา", "จำนวนขวด"], ["How much ถามราคา ส่วน What time ถามเวลา", "How much ถามราคา ส่วน How many ถามจำนวน"]], ["Hey! There's a free seat here. Come and sit with me.", "What does Bow want you to do?", "โบว์อยากให้เธอทำอะไร", ["Sit with her", "Buy some water", "Go home"], ["นั่งกับเธอ", "ซื้อน้ำ", "กลับบ้าน"], ["Bow ชวนมานั่งด้วยกัน ไม่ได้ให้ไปซื้อน้ำ", "Bow ชวนมานั่งด้วยกัน ไม่ได้ให้กลับบ้าน"]], ["Let's return our plates after lunch.", "What will they do after lunch?", "หลังกินข้าว พวกเขาจะทำอะไร", ["Return their plates", "Buy more food", "Leave the plates"], ["เอาจานไปเก็บ", "ซื้ออาหารเพิ่ม", "ทิ้งจานไว้"], ["return our plates แปลว่าเอาจานไปเก็บ ไม่ใช่ซื้อเพิ่ม", "return แปลว่าเอาไปคืน/เก็บ ไม่ใช่ทิ้งไว้"]]]}};
+/* ===== Hub for the other Our School stations (10 Nov, owner choice: build ONLY from approved content, no new items).
+   Words  = the vocabulary register the teacher approved on 5 Nov (term | part of speech | Thai | turn n.t | N = NPC line, A = right answer | CEFR | Thai of the answer);
+            the example sentence is read from that turn of the scene, so it always matches the game
+   Listen = NPC lines with their 3 options and WHY (reviewed in ST-CNT-024B–E) · Quiz = PREP meanings + NPC replies
+   Speak  = PREP · Write = PREP sentences in word order · Read = coming soon (needs a text for each station) ===== */
+const HUBV=`gate1|security guard|noun phrase|ยามรักษาความปลอดภัย|3.3|A|A2|กรุณาถามยามรักษาความปลอดภัยที่ป้อมยาม
+gate1|crosswalk|noun|ทางม้าลาย|1.2|N|A2|
+gate1|You too!|expression|เช่นกันนะ (ตอบคำอวยพร)|1.3|A|A1|ขอบคุณ ขอให้เป็นวันที่ดีเช่นกัน
+gate1|line up|phrasal verb|เข้าแถว|3.2|A|A2|นักเรียนเข้าแถวที่โดม
+gate1|wake up (woke up)|phrasal verb|ตื่นนอน|4.1|A|A1|สวัสดีตอนเช้าครับ ผมตื่นเช้า
+gate1|breakfast|noun|อาหารเช้า|4.2|N|A1|
+gate1|by bus|prepositional phrase|โดยรถบัส|5.1|A|A1|ฉันมาโดยรถบัส
+gate1|traffic|noun|การจราจร|5.2|N|A2|
+flagpole|line|noun|แถว|1.1|N|A1|
+flagpole|Here!|expression|มาครับ/มาค่ะ (ขานรับชื่อ)|1.2|A|A1|มาครับ/มาค่ะ
+flagpole|national anthem|noun phrase|เพลงชาติ|2.1|N|A2|
+flagpole|stand still|verb phrase|ยืนนิ่ง ๆ|2.1|A|A2|ได้ ฉันจะยืนนิ่ง ๆ
+flagpole|announcement|noun|ประกาศ|2.3|N|A2|
+flagpole|homework|noun|การบ้าน|3.1|N|A1|
+flagpole|late|adjective|สาย, มาช้า|4.1|N|A1|
+flagpole|homeroom teacher|noun phrase|ครูประจำชั้น|4.2|A|A2|กรุณาถามครูประจำชั้นที่อยู่ตรงนั้น
+class85|page|noun|หน้า (หนังสือ)|1.2|N|A1|
+class85|What does ... mean?|question frame|... แปลว่าอะไร|1.3|A|A1|มีค่ะ/ครับ คำว่า library แปลว่าอะไร
+class85|borrow|verb|ขอยืม|2.1|N|A1|
+class85|Here you are.|expression|นี่จ้ะ (ใช้ตอนยื่นของให้)|2.1|A|A1|ได้สิ นี่จ้ะ
+class85|eraser|noun|ยางลบ|2.3|A|A1|มันคือยางลบ
+class85|cleaning duty|noun phrase|เวรทำความสะอาด|4.2|N|A2|
+class85|sweep|verb|กวาด|4.2|A|A2|พิมกับฉันเอง เราจะกวาดพื้น
+class85|forget|verb|ลืม|4.3|N|A1|
+scilab|safety goggles|noun|แว่นตานิรภัย|1.1|A|A2|ฉันควรสวมแว่นตานิรภัย
+scilab|leaf|noun|ใบไม้|1.2|N|A1|
+scilab|equipment|noun|อุปกรณ์|2.1|N|A2|
+scilab|beaker|noun|บีกเกอร์|2.1|A|B1|ขอบีกเกอร์หนึ่งใบได้ไหมคะ/ครับ
+scilab|microscope|noun|กล้องจุลทรรศน์|3.1|N|A2|
+scilab|measure|verb|วัด, ตวง|3.2|N|A2|
+scilab|observe (observed)|verb|สังเกต|3.3|A|B1|มาจดสิ่งที่เราสังเกตเห็นกัน
+scilab|spill (spilled)|verb|ทำหก|4.1|N|A2|
+council|idea board|noun phrase|บอร์ดแสดงความคิดเห็น|1.1|N|A2|
+council|notice|noun|ประกาศ|1.2|N|A2|
+council|share an idea|verb phrase|แบ่งปันความคิด|1.3|N|A2|
+council|listen to each other|verb phrase|ฟังกันและกัน|1.3|A|A2|เราควรรับฟังกันและกัน
+council|meeting|noun|การประชุม|2.2|N|A2|
+council|helpful|adjective|มีประโยชน์|3.1|N|A2|
+council|keep ... clean|verb phrase|รักษา...ให้สะอาด|3.1|A|A1|มาช่วยกันรักษาห้องเรียนให้สะอาด
+council|poster|noun|โปสเตอร์|4.1|N|A1|
+englab|ready|adjective|พร้อม|1.1|N|A1|
+englab|twice|adverb|สองครั้ง|1.2|A|A2|ได้ ฉันจะฟังสองครั้ง
+englab|Could you ..., please?|request frame|ช่วย...ได้ไหม (ขออย่างสุภาพ)|1.3|A|A2|ช่วยเปิดอีกครั้งได้ไหมคะ/ครับ
+englab|headphones|noun|หูฟัง|2.1|A|A2|ฉันจะใส่หูฟัง
+englab|turn the volume down|verb phrase|ลดเสียง|2.2|A|A2|ฉันจะลดเสียงลง
+englab|speak clearly|verb phrase|พูดให้ชัด|3.2|N|A2|
+englab|sound|noun|เสียง|3.3|N|A1|
+englab|carefully|adverb|อย่างระมัดระวัง|4.3|A|A2|ฉันจะวางคืนอย่างระมัดระวัง
+music|instrument|noun|เครื่องดนตรี|1.2|N|A2|
+music|in a row|prepositional phrase|เป็นแถว|2.1|A|A2|ได้ ฉันจะจัดเก้าอี้เป็นแถว
+music|music stand|noun|ขาตั้งโน้ตเพลง|2.2|N|B1|
+music|keyboard|noun|คีย์บอร์ด|3.1|A|A1|มันคือคีย์บอร์ด
+music|drum|noun|กลอง|3.2|N|A1|
+music|heavy|adjective|หนัก|3.3|N|A1|
+music|xylophone (ranat)|noun|ระนาด|4.1|A|B1|มันคือระนาด เครื่องดนตรีไทยประเภทตี
+music|practise|verb (BrE)|ฝึกซ้อม|4.2|A|A2|อยากมาซ้อมกับพวกเราไหม
+art|sketch|verb|ร่างภาพ|1.1|N|B1|
+art|topic|noun|หัวข้อ|1.2|N|A2|
+art|title|noun|ชื่อเรื่อง|1.3|N|A2|
+art|coloured pencil|noun|ดินสอสี|2.1|A|A2|ฉันจะใช้ดินสอสีแดง
+art|glue stick|noun|กาวแท่ง|2.2|A|A2|ฉันจะใช้กาวแท่งติดใบไม้
+art|top right corner|noun phrase|มุมขวาบน|3.2|A|A2|วางไว้ที่มุมขวาบนกันเถอะ
+art|brush|noun|พู่กัน|4.1|A|A2|มาล้างพู่กันด้วยน้ำสะอาดกัน
+art|supplies|noun|อุปกรณ์ (เครื่องเขียน/วาดรูป)|4.2|A|A2|มาเก็บอุปกรณ์ใส่กล่องกัน
+gym|warm up|phrasal verb|อบอุ่นร่างกาย|1.1|A|A2|มาอบอุ่นร่างกายก่อนเล่นกัน
+gym|sports shoes|noun|รองเท้ากีฬา|1.2|A|A1|ฉันจะใส่รองเท้ากีฬาที่สะอาด
+gym|thirsty|adjective|กระหายน้ำ|1.3|N|A1|
+gym|racket|noun|ไม้แบดมินตัน|2.2|N|A2|
+gym|bench|noun|ม้านั่ง|2.3|A|A2|เราจะวางกระเป๋าไว้บนม้านั่ง
+gym|serve|noun|ลูกเสิร์ฟ|3.1|N|B1|
+gym|out of bounds|adjective phrase|ออกนอกเส้น|3.2|A|B1|ลูกออกนอกเส้น
+gym|shuttlecock|noun|ลูกขนไก่|4.1|N|B1|
+guidance|improve|verb|ปรับปรุง, พัฒนา|1.1|N|A2|
+guidance|daily|adverb|ทุกวัน|1.1|A|A2|ฉันอยากอ่านภาษาอังกฤษวันละสิบนาที
+guidance|review|verb|ทบทวน|1.2|N|A2|
+guidance|study routine|noun phrase|กิจวัตรการเรียน|1.3|A|B1|ช่วยแนะนำกิจวัตรการเรียนง่าย ๆ ได้ไหมคะ/ครับ
+guidance|join|verb|เข้าร่วม|2.3|A|A1|ฉันอยากเข้าชมรมการพูด
+guidance|chef|noun|พ่อครัว, แม่ครัว|3.1|N|A1|
+guidance|career|noun|อาชีพ|3.2|A|A2|ฉันอยากลองศึกษาอาชีพด้านการออกแบบ
+guidance|goal|noun|เป้าหมาย|4.1|N|A2|
+garden|protect|verb|ปกป้อง|1.1|A|A2|ฉันจะสวมหมวกเพื่อปกป้องศีรษะ
+garden|water (the plants)|verb|รดน้ำ (ต้นไม้)|1.2|A|A1|ฉันรดน้ำต้นไม้ด้วยบัวรดน้ำเล็ก ๆ ได้
+garden|watering can|noun|บัวรดน้ำ|2.1|A|A2|ฉันจะใช้บัวรดน้ำเล็ก ๆ รดต้นไม้พวกนี้
+garden|soil|noun|ดิน|2.2|A|A2|ฉันจะเทน้ำลงบนดินใกล้โคนต้น
+garden|soap|noun|สบู่|2.3|A|A1|ฉันจะล้างมือด้วยสบู่หลังทำสวน
+garden|label|noun|ป้าย|3.3|N|A2|
+garden|compost bin|noun|ถังปุ๋ยหมัก|4.1|A|B1|เราใส่ใบไม้แห้งลงถังปุ๋ยหมักได้
+garden|path|noun|ทางเดิน|4.2|N|A2|
+lostfound|missing|adjective|หาย|1.1|N|A2|
+lostfound|pencil case|noun|กระเป๋าดินสอ|1.2|A|A1|มันเป็นกระเป๋าดินสอสีเหลืองใบเล็ก
+lostfound|beside|preposition|ข้าง ๆ|1.3|A|A2|ฉันเห็นมันครั้งสุดท้ายข้างโต๊ะของฉัน
+lostfound|lunch box|noun|กล่องข้าว|2.1|A|A1|ฉันเจอกล่องข้าวข้างสนามเด็กเล่น
+lostfound|hand in|phrasal verb|ส่ง, มอบให้|2.2|N|A2|
+lostfound|sticker|noun|สติกเกอร์|2.3|A|A1|มีสติกเกอร์รูปดาวอยู่บนฝา
+lostfound|name label|noun|ป้ายชื่อ|3.2|A|A2|หมวกของฉันมีป้ายชื่อสีขาว
+lostfound|owner|noun|เจ้าของ|4.3|A|A2|ฉันจะคืนไม้บรรทัดให้เจ้าของ
+pmstudio|clip|noun|คลิปวิดีโอ|1.1|A|A2|เราจะทำคลิปสั้นเรื่องการรีไซเคิล
+pmstudio|recycling|noun|การรีไซเคิล|1.1|N|A2|
+pmstudio|permission|noun|การอนุญาต|1.2|A|B1|ฉันจะขออนุญาตเพื่อนก่อน
+pmstudio|tripod|noun|ขาตั้งกล้อง|2.1|N|B1|
+pmstudio|speaker|noun|ผู้พูด|2.2|N|A2|
+pmstudio|walkway|noun|ทางเดิน|2.3|A|B1|เราควรขอให้ครูเคลียร์ทางเดิน
+pmstudio|script|noun|บท (สำหรับพูด)|3.3|N|B1|
+pmstudio|microphone|noun|ไมโครโฟน|4.1|N|A2|
+coop|shopping list|noun|รายการซื้อของ|1.1|N|A2|
+coop|notebook|noun|สมุด|1.1|A|A1|ฉันต้องการสมุดหนึ่งเล่มและปากกาหนึ่งด้าม
+coop|cost|verb|มีราคา|1.2|A|A1|สมุดราคายี่สิบบาท
+coop|total|noun|ยอดรวม|1.3|N|A2|
+coop|change|noun|เงินทอน|2.2|A|A2|เงินทอนคือยี่สิบบาท
+coop|receipt|noun|ใบเสร็จ|2.3|A|A2|ฉันจะเก็บใบเสร็จไว้ตรวจสอบ
+coop|scan|verb|สแกน|3.1|A|A2|ขอสแกนคิวอาร์โค้ดของร้านได้ไหมคะ/ครับ
+coop|remaining|adjective|ที่เหลือ|4.3|A|B1|ฉันมีเงินเหลือยี่สิบบาท
+pool|wet|adjective|เปียก|1.1|N|A1|
+pool|adult|noun|ผู้ใหญ่|1.2|N|A2|
+pool|whistle|noun|นกหวีด|1.3|N|A2|
+pool|take a shower|verb phrase|อาบน้ำ (ฝักบัว)|2.1|A|A1|มาอาบน้ำก่อนว่ายน้ำกัน
+pool|towel|noun|ผ้าเช็ดตัว|2.2|N|A1|
+pool|swim cap|noun|หมวกว่ายน้ำ|2.3|N|A2|
+pool|shallow|adjective|ตื้น|3.3|N|B1|
+pool|lifeguard|noun|เจ้าหน้าที่ช่วยชีวิต|4.2|N|A2|
+teacherroom|May I come in?|request|ขออนุญาตเข้าไปได้ไหม|1.1|A|A1|ขออนุญาตเข้าไปได้ไหมคะ/ครับ
+teacherroom|wait outside|verb phrase|รอข้างนอก|1.2|A|A1|ฉันจะรอข้างนอกจนกว่าครูจะว่าง
+teacherroom|quiet voice|noun phrase|เสียงเบา|1.3|A|A2|ฉันจะใช้เสียงเบา ๆ ในห้องนี้
+teacherroom|worksheet|noun|ใบงาน|2.1|N|A2|
+teacherroom|lesson|noun|บทเรียน|2.2|N|A1|
+teacherroom|break|noun|ช่วงพัก|2.3|A|A1|ฉันจะกลับมาหลังพักครั้งถัดไป
+teacherroom|instructions|noun|คำชี้แจง, คำสั่ง|4.1|A|A2|ฉันจะอ่านคำชี้แจงก่อนเริ่มทำ
+teacherroom|gently|adverb|เบา ๆ, อย่างนุ่มนวล|4.3|N|A2|
+academic|timetable|noun|ตาราง (สอบ/เรียน)|1.1|N|A2|
+academic|blank|adjective|เปล่า (ยังไม่กรอก)|1.3|A|B1|ขอแบบฟอร์มเปล่าหนึ่งใบได้ไหม
+academic|form|noun|แบบฟอร์ม|1.3|N|A2|
+academic|hand in|phrasal verb|ส่ง|2.3|A|A2|ควรส่งแบบฟอร์มนี้ที่ไหน
+academic|join the line|verb phrase|ต่อแถว|3.1|A|A2|ฉันจะต่อแถวข้างหลังพวกเขา
+academic|make-up test|noun|การสอบชดเชย|3.2|A|B1|ขอสอบถามเรื่องการสอบชดเชยได้ไหมคะ/ครับ
+academic|due|adjective|ครบกำหนดส่ง|3.3|N|B1|
+academic|front counter|noun|เคาน์เตอร์ด้านหน้า|4.1|N|A2|
+itlib|return|verb|คืน|1.1|A|A2|ฉันขอคืนหนังสือเล่มนี้ค่ะ/ครับ
+itlib|borrow|verb|ยืม|1.2|N|A1|
+itlib|comic book|noun|หนังสือการ์ตูน|1.2|A|A1|ได้ค่ะ/ครับ มีหนังสือการ์ตูนภาษาอังกฤษไหม
+itlib|quietly|adverb|เบา ๆ|2.1|N|A2|
+itlib|shelf|noun|ชั้นวาง (หนังสือ)|2.2|N|A2|
+itlib|information|noun|ข้อมูล|3.1|A|A2|ใช่ ฉันต้องหาข้อมูลทำรายงาน
+itlib|print|verb|พิมพ์ (ปริ้น)|3.3|N|A2|
+itlib|past tense|noun|รูปอดีต (ไวยากรณ์)|4.2|N|A2|
+sbank|deposit|verb|ฝากเงิน|1.1|N|A2|
+sbank|withdraw|verb|ถอนเงิน|1.1|N|B1|
+sbank|bank book|noun|สมุดบัญชี|1.2|N|A2|
+sbank|save|verb|ออมเงิน|2.1|N|A2|
+sbank|account|noun|บัญชี (ธนาคาร)|3.1|N|A2|
+sbank|student ID card|noun|บัตรประจำตัวนักเรียน|3.1|A|A2|น่าจะต้องใช้บัตรนักเรียน
+sbank|counter|noun|เคาน์เตอร์|4.1|A|A2|ไปหาพลอยที่เคาน์เตอร์
+sbank|gift|noun|ของขวัญ|4.2|N|A1|
+football|warm up|phrasal verb|อบอุ่นร่างกาย|1.1|N|A2|
+football|lap|noun|รอบ (สนาม)|1.2|N|A2|
+football|take a rest|verb phrase|พักผ่อน|1.3|N|A1|
+football|goalkeeper|noun|ผู้รักษาประตู|2.2|N|A2|
+football|pass|verb|ส่ง (ลูกบอล)|2.3|N|A2|
+football|sports day|noun|วันกีฬาสี|3.3|N|A2|
+football|ankle|noun|ข้อเท้า|4.1|N|A2|
+football|Get well soon!|expression|หายไว ๆ นะ|4.3|A|A1|ไม่เป็นไร หายไว ๆ นะ
+nurse|hurt|verb|ทำให้เจ็บ, บาดเจ็บ|1.1|A|A1|เพื่อนของฉันเจ็บข้อเท้าในคาบพละ
+nurse|ice|noun|น้ำแข็ง|1.3|N|A1|
+nurse|nurse|noun|พยาบาล|2.1|A|A1|ไม่ต้องห่วง ครูพยาบาลจะช่วยเธอ
+nurse|stomachache|noun|อาการปวดท้อง|3.1|N|A2|
+nurse|medicine|noun|ยา|3.2|N|A2|
+nurse|should|modal verb|ควร|3.2|A|A2|ดีแล้ว เธอควรพักนะ
+nurse|fall (fell)|verb|ล้ม|4.2|A|A2|ใช่ เขาล้มตอนกำลังวิ่ง
+hall14|seat|noun|ที่นั่ง|1.1|N|A1|
+hall14|row|noun|แถว (ที่นั่ง)|1.2|N|A2|
+hall14|turn off|phrasal verb|ปิด (เครื่อง)|1.3|N|A2|
+hall14|speech|noun|สุนทรพจน์|2.1|N|A2|
+hall14|nervous|adjective|ประหม่า, ตื่นเต้น|2.1|N|A2|
+hall14|take a deep breath|verb phrase|หายใจลึก ๆ|2.2|A|A2|หายใจลึก ๆ แล้วยิ้ม
+hall14|clap|verb|ปรบมือ|2.3|N|A2|
+hall14|stage|noun|เวที|3.2|N|A2|
+market2|stick|noun|ไม้ (ไม้เสียบ)|1.1|N|A2|
+market2|sauce|noun|น้ำจิ้ม, ซอส|1.2|N|A1|
+market2|grilled pork|noun|หมูปิ้ง|2.1|N|A2|
+market2|sticky rice|noun|ข้าวเหนียว|2.2|N|A1|
+market2|Be careful!|expression|ระวังนะ|2.3|N|A1|
+market2|iced milk tea|noun|ชานมเย็น|3.1|A|A1|ขอชานมเย็นหนึ่งแก้ว
+market2|less sugar|phrase|หวานน้อย|3.3|N|A2|
+market2|How much is ...?|question frame|...ราคาเท่าไร|4.1|A|A1|มะม่วงราคาเท่าไร`;
+const HUBVR=HUBV.split('\n').map(l=>l.split('|'));
+function hubAuto(sc){const T=(a,b)=>{const n=sc.npcs[a-1];return n&&n.turns[b-1]};
+ const words=HUBVR.filter(r=>r[0]===sc.id).map(r=>{const [a,b]=r[4].split('.').map(Number),t=T(a,b);if(!t)return null;
+  return r[5]==='N'?[r[1],r[2],r[3],t.npc,t.th,r[6],'\u{1F4AC}']:[r[1],r[2],r[3],t.o[0],r[7]||'',r[6],'\u{1F4AC}']}).filter(Boolean);
+ const turns=[];sc.npcs.forEach((n,k)=>n.turns.forEach((t,i)=>turns.push({n,k,i,t})));
+ const ok=x=>x.t.o&&x.t.o.length===3&&x.t.why&&x.t.why.length===2;
+ const listen=turns.filter(x=>ok(x)&&x.i<2&&x.k<3).slice(0,6).map(x=>[x.t.npc,'What is the best reply to '+x.n.name+'?','คำตอบไหนเหมาะที่สุด',x.t.o,null,x.t.why]);
+ const P=(sc.prep||[]).filter(p=>p[0]&&p[1]);
+ const mean=P.length<3?[]:P.slice(0,4).map((p,j)=>{const oth=[P[(j+1)%P.length],P[(j+2)%P.length]];
+  return ['M','Which English sentence means: “'+p[1]+'”?','ประโยคไหนแปลว่า “'+p[1]+'”',[p[0],...oth.map(q=>q[0])],oth.map(q=>'That means “'+q[1]+'”. | ประโยคนี้แปลว่า '+q[1])]});
+ const used=new Set(listen.map(l=>l[0]));
+ const reply=turns.filter(x=>ok(x)&&!used.has(x.t.npc)).filter((x,j,a)=>j%Math.max(1,Math.floor(a.length/4))===0).slice(0,4)
+  .map(x=>['R',x.n.name+': “'+x.t.npc+'”',x.t.th,x.t.o,x.t.why]);
+ const write=P.map(p=>p[0]).filter(s=>{const w=s.split(' ').length;return w>=3&&w<=9}).slice(0,4).map(s=>({t:'order',q:'Put the words in order.',th:'เรียงคำให้เป็นประโยค',w:s.split(' ')}));
+ return {auto:true,title:null,words,listen,quiz:[...mean,...reply],parts:{M:['Meaning','ความหมาย'],R:['Replies','การตอบโต้']},write,soon:['read']}}
 /* ===== ST-UX-007 CS-1: station Hub with learning modes (School Canteen first). Talk = the 3D scene (unchanged).
    Words / Listen / Speak / Read / Write / Quiz are practice: they never change stars, money or XP. Speak is practice only (no microphone, no score). ===== */
 const HUBMODES=[['talk','Talk','คุยภารกิจหลัก','\u{1F4AC}'],['words','Words','คำศัพท์','\u{1F524}'],['listen','Listen','ฟัง','\u{1F3A7}'],['speak','Speak','พูดตาม','\u{1F5E3}️'],
@@ -4432,23 +4635,26 @@ const hubRec=(id,m)=>{SAVE.modes=SAVE.modes||{};SAVE.modes[id]=SAVE.modes[id]||{
 /* CS-4 (10 Nov): a finished practice run keeps its last result (first-try right / items) and how many times it was done */
 const hubFin=(id,m,last)=>{const r=hubRec(id,m);r.s='done';r.runs=(r.runs||0)+1;r.last=Object.assign({at:new Date().toISOString().slice(0,10)},last||{});persist();return r};
 const hubSt=(id,m)=>m==='talk'?(doneCount(id)>=nTotal(SCENES.find(s=>s.id===id))?'done':doneCount(id)?'started':'none'):((SAVE.modes&&SAVE.modes[id]&&SAVE.modes[id][m]||{}).s||'none');
-function goPlace(s,onExit,bl){if(HUB[s.id])hubSheet(s,onExit);else playPlace(s,onExit,bl)}
-function hubSheet(sc,onExit){const H=HUB[sc.id],nm=GNAME[sc.id]||[shortName(sc),sc.th];
+/* Hub for every Our School station (10 Nov): canteen has its own HUB data; the others are built by hubAuto() from approved content */
+const hubOK=s=>!!(HUB[s.id]||(s.group==='phibun'&&s.npcs&&s.npcs.length&&s.prep&&s.prep.length));
+function goPlace(s,onExit,bl){if(hubOK(s))hubSheet(s,onExit);else playPlace(s,onExit,bl)}
+function hubSheet(sc,onExit){const H=HUB[sc.id]||(HUB[sc.id]=hubAuto(sc)),nm=GNAME[sc.id]||[shortName(sc),sc.th];
+ const soonM=m=>HUBSOON.includes(m)||(H.soon||[]).includes(m);
  mrSheet(nm[0]+' learning modes',(x,close)=>{const body=el('div',{class:'hubb'});
   const talk=()=>{close();stopSay();playPlace(sc,onExit)};
   const back=()=>{stopSay();body.replaceChildren(...home())};
   const bar=(t)=>el('div',{class:'row hubbar'},el('button',{class:'btn ghost hubback',type:'button',onclick:back},'← Hub'),el('b',{},t),x);
   const stTag=s=>s==='done'?el('span',{class:'hubst ok'},'✓ Done · เสร็จ'):s==='started'?el('span',{class:'hubst'},'Started · เริ่มแล้ว'):null;
-  const home=()=>{const on=HUBMODES.map(m=>m[0]).filter(m=>!HUBSOON.includes(m)),nDone=on.filter(m=>hubSt(sc.id,m)==='done').length,stars=doneCount(sc.id),n=nTotal(sc);
-   const card=([m,en,th,ic])=>{const soon=HUBSOON.includes(m),st=hubSt(sc.id,m);
+  const home=()=>{const on=HUBMODES.map(m=>m[0]).filter(m=>!soonM(m)),nDone=on.filter(m=>hubSt(sc.id,m)==='done').length,stars=doneCount(sc.id),n=nTotal(sc);
+   const card=([m,en,th,ic])=>{const soon=soonM(m),st=hubSt(sc.id,m);
     const kids=[el('span',{class:'hubic','aria-hidden':'true'},ic),el('b',{},en),el('small',{},th),m==='talk'?el('small',{class:'hubmq'},'Main Quest · '+stars+'/'+n+' ★'):null,soon?el('small',{class:'hubsoon'},'Coming soon · เร็ว ๆ นี้'):stTag(st)];
     return soon?el('div',{class:'hubm soon','aria-label':en+', coming soon'},...kids)
      :el('button',{class:'hubm'+(m==='talk'?' talk':''),type:'button','data-mode':m,onclick:()=>m==='talk'?talk():body.replaceChildren(...run(m))},...kids)};
    return [el('div',{class:'row hubbar'},el('h2',{},nm[0]+'⁣'+nm[1]),x),
-    el('div',{class:'hubhero',style:'--c:'+(LCOL[sc.id]||sc.color)},el('img',{src:'img/stations3/'+sc.id+'.jpg',alt:'',width:'268',height:'91'}),el('div',{},el('b',{},"Let's Order Lunch!"),el('small',{},'สั่งอาหารกลางวันกันเถอะ'))),
-    el('div',{class:'hubms'},el('button',{class:'btn cta hubgo',type:'button',onclick:talk},'Guided Mission ▶⁣ภารกิจหลัก · นับดาว'),
+    el('div',{class:'hubhero',style:'--c:'+(LCOL[sc.id]||sc.color)},el('img',{src:'img/stations3/'+sc.id+'.jpg',alt:'',width:'268',height:'91'}),(t=>el('div',{},el('b',{},t[0]),el('small',{},t[1])))(H.title||(H.auto?['Our School · '+(STIME[sc.id]||''),'ฝึกภาษาอังกฤษที่'+nm[1]]:["Let's Order Lunch!",'สั่งอาหารกลางวันกันเถอะ']))),
+    el('div',{class:'hubms'+(sc.shop?'':' one')},el('button',{class:'btn cta hubgo',type:'button',onclick:talk},'Guided Mission ▶⁣ภารกิจหลัก · นับดาว'),
      sc.shop?el('button',{class:'hubfree on',type:'button',onclick:()=>{close();stopSay();playPlace(Object.assign({},sc,{free:true,mission:null,prep:null}),onExit)}},el('b',{},'Free Shopping ▶'),el('small',{},'ซื้ออิสระ · no stars · ไม่นับดาว'))
-     :el('div',{class:'hubfree','aria-label':'Free Shopping, coming soon'},el('b',{},'Free Shopping'),el('small',{},'ซื้ออิสระ · Coming soon · เร็ว ๆ นี้'))),
+     :null),
     el('div',{class:'hubgrid'},HUBMODES.map(card)),
     el('button',{class:'btn ghost hubresb',type:'button',onclick:()=>body.replaceChildren(...results())},'\u{1F4CA} My results · ผลของฉัน'),
     el('p',{class:'hubprog'},'Modes done · ทำแล้ว '+nDone+' / '+on.length+' · Stars come from Talk only. ⁣ดาวมาจากภารกิจ Talk เท่านั้น ไม่ต้องทำตามลำดับ')]};
@@ -4472,7 +4678,7 @@ function hubSheet(sc,onExit){const H=HUB[sc.id],nm=GNAME[sc.id]||[shortName(sc),
    const play=el('button',{class:'btn cta',type:'button',onclick:()=>say(line,.85)},'▶ Play · เล่น');setTimeout(()=>say(line,.85),250);
    return quizView('Listen '+(k+1)+' / '+L.length,q,qth,[play,el('button',{class:'btn ghost',type:'button',onclick:()=>say(line,.65)},'↻ Slower · ช้าลง'),
      el('button',{class:'btn ghost',type:'button',onclick:()=>{tx.hidden=false}},'Show text · แสดงข้อความ'),tx,el('p',{class:'hubnote'},'Voice: your phone · เสียงจากเครื่อง ถ้าไม่มีเสียง กด Show text')],
-    o.map((t,i)=>[t+' · '+oth[i],i===0,i?why[i-1]:'']),r,()=>body.replaceChildren(...listen(k+1)),()=>{tx.hidden=false})};
+    o.map((t,i)=>[oth?t+' · '+oth[i]:t,i===0,i?why[i-1]:'']),r,()=>body.replaceChildren(...listen(k+1)),()=>{tx.hidden=false})};
   /* ---- Speak: listen and say aloud. Practice only: no microphone, no recording, no score ---- */
   const speak=()=>{const P=sc.prep||[],r=hubRec(sc.id,'speak'),said=new Set();
    const doneB=el('button',{class:'btn cta',type:'button',disabled:true,onclick:()=>{hubFin(sc.id,'speak',{said:P.length});back()}},'Finish · เสร็จ (0 / '+P.length+')');
@@ -4531,8 +4737,8 @@ function hubSheet(sc,onExit){const H=HUB[sc.id],nm=GNAME[sc.id]||[shortName(sc),
    {t:'type',q:'Change “regular” to “large”:  Regular, please.',th:'เปลี่ยนเป็นจานพิเศษ แล้วพิมพ์ประโยค',a:['Large, please.'],ok:['large please','a large one please','large one please','a large plate please'],hint:'Use the word “large”. | ใช้คำว่า large แทน regular'},
    {t:'type',q:'Make it two:  A bottle of water, please.',th:'เปลี่ยนเป็น 2 ขวด แล้วพิมพ์ประโยค',a:['Two bottles of water, please.'],ok:['two bottles of water please','2 bottles of water please'],hint:'two + bottles (add -s). | สองขวด = two bottles'}];
   const write=k=>{const r=hubRec(sc.id,'write');if(k===0)r.lf=0;
-   if(k>=WQ.length)return done('write','Write',['Right on the first try: '+r.lf+' / '+WQ.length+' · ทำถูกครั้งแรก'],'Writing practice: the app checks your text, not your speaking.⁣ฝึกเขียน แอปตรวจข้อความ ไม่ใช่การพูด',{f:r.lf,n:WQ.length});
-   const w=WQ[k],title='Write '+(k+1)+' / '+WQ.length,next=()=>body.replaceChildren(...write(k+1));
+   if(k>=WQx.length)return done('write','Write',['Right on the first try: '+r.lf+' / '+WQx.length+' · ทำถูกครั้งแรก'],'Writing practice: the app checks your text, not your speaking.⁣ฝึกเขียน แอปตรวจข้อความ ไม่ใช่การพูด',{f:r.lf,n:WQx.length});
+   const w=WQx[k],title='Write '+(k+1)+' / '+WQx.length,next=()=>body.replaceChildren(...write(k+1));
    if(w.t==='pick')return quizView(title,w.q,w.th,[el('div',{class:'hubpic','aria-hidden':'true'},w.pic)],w.o.map((t,i)=>[t,i===0,i?w.why[i-1]:'']),r,next);
    let first=true;const fb=el('p',{class:'tfb','aria-live':'polite'}),nx=el('button',{class:'btn cta',type:'button',hidden:true,onclick:next},'Next · ต่อไป');
    const good=()=>{fb.className='tfb good';fb.textContent='Great! ✓';r.t++;if(first){r.f++;r.lf++}persist();nx.hidden=false;nx.focus()};
@@ -4560,12 +4766,13 @@ function hubSheet(sc,onExit){const H=HUB[sc.id],nm=GNAME[sc.id]||[shortName(sc),
    ['P','In Sanor Town, the QR code is …','QR ในเกมคืออะไร',['a sample picture in the game (no real money)','a real bank payment','a way to open the camera'],['No real money moves in the game. | ในเกมไม่มีการโอนเงินจริง','The game never opens the camera. | เกมไม่เปิดกล้อง']],
    ['P','You paid by QR code. Do you get change?','จ่ายด้วย QR ได้เงินทอนไหม',['No. QR pays the exact amount.','Yes, always.','Yes, but only coins.'],['QR pays the exact price, so there is no change. | QR จ่ายตามยอดพอดี','QR pays the exact price, so there is no change. | QR จ่ายตามยอดพอดี']]];
   const PART={L:['Language','ภาษา'],M:['Math','คิดเลข'],P:['Payment','การจ่ายเงิน']};
-  const quiz=(k,got)=>{const r=hubRec(sc.id,'quiz');if(k===0){r.lf=0;got={L:0,M:0,P:0}}
-   if(k>=QQ.length)return done('quiz','Quiz',[...Object.keys(PART).map(c=>PART[c][0]+' · '+PART[c][1]+': '+got[c]+' / '+QQ.filter(q=>q[0]===c).length),'Right on the first try: '+r.lf+' / '+QQ.length],
-    'Practice quiz. It is not a research test (K1–K3) and gives no stars or XP.⁣แบบทดสอบฝึกหัด ไม่ใช่แบบทดสอบวิจัย K1–K3 ไม่ได้ดาวหรือ XP',{f:r.lf,n:QQ.length,parts:got});
-   const [c,q,qth,o,why]=QQ[k],lf0=r.lf;return quizView('Quiz '+(k+1)+' / '+QQ.length+' · '+PART[c][0],q,qth,null,o.map((t,i)=>[t,i===0,i?why[i-1]:'']),r,()=>{if(r.lf>lf0)got[c]++;body.replaceChildren(...quiz(k+1,got))})};
+  const QQx=H.quiz||QQ,WQx=H.write||WQ,PARTx=H.parts||PART;/* the other stations use their own approved-content items */
+  const quiz=(k,got)=>{const r=hubRec(sc.id,'quiz');if(k===0){r.lf=0;got=Object.fromEntries(Object.keys(PARTx).map(c=>[c,0]))}
+   if(k>=QQx.length)return done('quiz','Quiz',[...Object.keys(PARTx).map(c=>PARTx[c][0]+' · '+PARTx[c][1]+': '+got[c]+' / '+QQx.filter(q=>q[0]===c).length),'Right on the first try: '+r.lf+' / '+QQx.length],
+    'Practice quiz. It is not a research test (K1–K3) and gives no stars or XP.⁣แบบทดสอบฝึกหัด ไม่ใช่แบบทดสอบวิจัย K1–K3 ไม่ได้ดาวหรือ XP',{f:r.lf,n:QQx.length,parts:got});
+   const [c,q,qth,o,why]=QQx[k],lf0=r.lf;return quizView('Quiz '+(k+1)+' / '+QQx.length+' · '+PARTx[c][0],q,qth,null,o.map((t,i)=>[t,i===0,i?why[i-1]:'']),r,()=>{if(r.lf>lf0)got[c]++;body.replaceChildren(...quiz(k+1,got))})};
   /* ---- CS-4 My results: one card per mode, from this phone's save only. Practice results: not a test, not a speaking score ---- */
-  const results=()=>{const M=(SAVE.modes&&SAVE.modes[sc.id])||{},on=HUBMODES.map(m=>m[0]).filter(m=>!HUBSOON.includes(m)),nDone=on.filter(m=>hubSt(sc.id,m)==='done').length;
+  const results=()=>{const M=(SAVE.modes&&SAVE.modes[sc.id])||{},on=HUBMODES.map(m=>m[0]).filter(m=>!soonM(m)),nDone=on.filter(m=>hubSt(sc.id,m)==='done').length;
    const ST={done:['Completed','ทำครบแล้ว','ok'],started:['In progress','กำลังทำ','go'],none:['Not started','ยังไม่เริ่ม','no']};
    const cm=sc.id==='canteen'?canteenMission():null;
    const row=([m,en,th,ic])=>{const st=hubSt(sc.id,m),r=M[m]||{},L=r.last,t=ST[st];let det=[];
@@ -4573,7 +4780,7 @@ function hubSheet(sc,onExit){const H=HUB[sc.id],nm=GNAME[sc.id]||[shortName(sc),
      if(cm)det.push(cm.got?'Reward: 40 XP + Lunch Master ✓ · ได้รางวัลแล้ว':cm.state==='earlier'?'Finished before rewards started · จบก่อนมีระบบรางวัล':'Reward when you finish: 40 XP (once) · รางวัลเมื่อจบ 40 XP')}
     else if(m==='speak')det.push(L?'Practised '+L.said+' phrases aloud · not scored · ฝึกพูด '+L.said+' ประโยค ไม่มีคะแนน':'Practise aloud · not scored · ไม่มีคะแนน');
     else if(L){det.push('Last time: right on the first try '+L.f+' / '+L.n+' · ครั้งล่าสุด ตอบถูกครั้งแรก '+L.f+' / '+L.n);
-     if(L.parts)det.push(Object.keys(L.parts).map(c=>({L:'Language',M:'Math',P:'Payment'}[c])+' '+L.parts[c]+'/'+({L:3,M:3,P:2}[c])).join(' · '))}
+     if(L.parts)det.push(Object.keys(L.parts).map(c=>(PARTx[c]?PARTx[c][0]:c)+' '+L.parts[c]+'/'+QQx.filter(q=>q[0]===c).length).join(' · '))}
     else if(st==='started')det.push('Not finished yet · ยังทำไม่จบ');
     return el('li',{class:'hubrrow','data-mode':m},el('span',{class:'hubic','aria-hidden':'true'},ic),
      el('div',{class:'hubrtx'},el('b',{},en+' · '+th),...det.map(d=>el('small',{},d))),
@@ -5290,7 +5497,7 @@ function openScene(id,bl){
  playPlace(sc,closeTown,bl);
  if(!TOWN){closeTown();return false}
  return true}
-return {open,openScene,mount,unmount,close:closeTown,get g(){return TOWN},SCENES,LOCKED,shop:SHOPI,rw:{read:rwRead,xp:rwXP,grant:rwGrant,canteen:canteenMission}};
+return {open,openScene,mount,unmount,close:closeTown,get g(){return TOWN},SCENES,LOCKED,hubData:id=>{const s=SCENES.find(x=>x.id===id);return s&&hubOK(s)?(HUB[id]||hubAuto(s)):null},shop:SHOPI,rw:{read:rwRead,xp:rwXP,grant:rwGrant,canteen:canteenMission}};
 })();
 
 /* ============ START ============ */

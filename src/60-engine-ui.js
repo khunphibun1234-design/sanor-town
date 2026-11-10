@@ -7,23 +7,26 @@ const hubRec=(id,m)=>{SAVE.modes=SAVE.modes||{};SAVE.modes[id]=SAVE.modes[id]||{
 /* CS-4 (10 Nov): a finished practice run keeps its last result (first-try right / items) and how many times it was done */
 const hubFin=(id,m,last)=>{const r=hubRec(id,m);r.s='done';r.runs=(r.runs||0)+1;r.last=Object.assign({at:new Date().toISOString().slice(0,10)},last||{});persist();return r};
 const hubSt=(id,m)=>m==='talk'?(doneCount(id)>=nTotal(SCENES.find(s=>s.id===id))?'done':doneCount(id)?'started':'none'):((SAVE.modes&&SAVE.modes[id]&&SAVE.modes[id][m]||{}).s||'none');
-function goPlace(s,onExit,bl){if(HUB[s.id])hubSheet(s,onExit);else playPlace(s,onExit,bl)}
-function hubSheet(sc,onExit){const H=HUB[sc.id],nm=GNAME[sc.id]||[shortName(sc),sc.th];
+/* Hub for every Our School station (10 Nov): canteen has its own HUB data; the others are built by hubAuto() from approved content */
+const hubOK=s=>!!(HUB[s.id]||(s.group==='phibun'&&s.npcs&&s.npcs.length&&s.prep&&s.prep.length));
+function goPlace(s,onExit,bl){if(hubOK(s))hubSheet(s,onExit);else playPlace(s,onExit,bl)}
+function hubSheet(sc,onExit){const H=HUB[sc.id]||(HUB[sc.id]=hubAuto(sc)),nm=GNAME[sc.id]||[shortName(sc),sc.th];
+ const soonM=m=>HUBSOON.includes(m)||(H.soon||[]).includes(m);
  mrSheet(nm[0]+' learning modes',(x,close)=>{const body=el('div',{class:'hubb'});
   const talk=()=>{close();stopSay();playPlace(sc,onExit)};
   const back=()=>{stopSay();body.replaceChildren(...home())};
   const bar=(t)=>el('div',{class:'row hubbar'},el('button',{class:'btn ghost hubback',type:'button',onclick:back},'← Hub'),el('b',{},t),x);
   const stTag=s=>s==='done'?el('span',{class:'hubst ok'},'✓ Done · เสร็จ'):s==='started'?el('span',{class:'hubst'},'Started · เริ่มแล้ว'):null;
-  const home=()=>{const on=HUBMODES.map(m=>m[0]).filter(m=>!HUBSOON.includes(m)),nDone=on.filter(m=>hubSt(sc.id,m)==='done').length,stars=doneCount(sc.id),n=nTotal(sc);
-   const card=([m,en,th,ic])=>{const soon=HUBSOON.includes(m),st=hubSt(sc.id,m);
+  const home=()=>{const on=HUBMODES.map(m=>m[0]).filter(m=>!soonM(m)),nDone=on.filter(m=>hubSt(sc.id,m)==='done').length,stars=doneCount(sc.id),n=nTotal(sc);
+   const card=([m,en,th,ic])=>{const soon=soonM(m),st=hubSt(sc.id,m);
     const kids=[el('span',{class:'hubic','aria-hidden':'true'},ic),el('b',{},en),el('small',{},th),m==='talk'?el('small',{class:'hubmq'},'Main Quest · '+stars+'/'+n+' ★'):null,soon?el('small',{class:'hubsoon'},'Coming soon · เร็ว ๆ นี้'):stTag(st)];
     return soon?el('div',{class:'hubm soon','aria-label':en+', coming soon'},...kids)
      :el('button',{class:'hubm'+(m==='talk'?' talk':''),type:'button','data-mode':m,onclick:()=>m==='talk'?talk():body.replaceChildren(...run(m))},...kids)};
    return [el('div',{class:'row hubbar'},el('h2',{},nm[0]+'⁣'+nm[1]),x),
-    el('div',{class:'hubhero',style:'--c:'+(LCOL[sc.id]||sc.color)},el('img',{src:'img/stations3/'+sc.id+'.jpg',alt:'',width:'268',height:'91'}),el('div',{},el('b',{},"Let's Order Lunch!"),el('small',{},'สั่งอาหารกลางวันกันเถอะ'))),
-    el('div',{class:'hubms'},el('button',{class:'btn cta hubgo',type:'button',onclick:talk},'Guided Mission ▶⁣ภารกิจหลัก · นับดาว'),
+    el('div',{class:'hubhero',style:'--c:'+(LCOL[sc.id]||sc.color)},el('img',{src:'img/stations3/'+sc.id+'.jpg',alt:'',width:'268',height:'91'}),(t=>el('div',{},el('b',{},t[0]),el('small',{},t[1])))(H.title||(H.auto?['Our School · '+(STIME[sc.id]||''),'ฝึกภาษาอังกฤษที่'+nm[1]]:["Let's Order Lunch!",'สั่งอาหารกลางวันกันเถอะ']))),
+    el('div',{class:'hubms'+(sc.shop?'':' one')},el('button',{class:'btn cta hubgo',type:'button',onclick:talk},'Guided Mission ▶⁣ภารกิจหลัก · นับดาว'),
      sc.shop?el('button',{class:'hubfree on',type:'button',onclick:()=>{close();stopSay();playPlace(Object.assign({},sc,{free:true,mission:null,prep:null}),onExit)}},el('b',{},'Free Shopping ▶'),el('small',{},'ซื้ออิสระ · no stars · ไม่นับดาว'))
-     :el('div',{class:'hubfree','aria-label':'Free Shopping, coming soon'},el('b',{},'Free Shopping'),el('small',{},'ซื้ออิสระ · Coming soon · เร็ว ๆ นี้'))),
+     :null),
     el('div',{class:'hubgrid'},HUBMODES.map(card)),
     el('button',{class:'btn ghost hubresb',type:'button',onclick:()=>body.replaceChildren(...results())},'\u{1F4CA} My results · ผลของฉัน'),
     el('p',{class:'hubprog'},'Modes done · ทำแล้ว '+nDone+' / '+on.length+' · Stars come from Talk only. ⁣ดาวมาจากภารกิจ Talk เท่านั้น ไม่ต้องทำตามลำดับ')]};
@@ -47,7 +50,7 @@ function hubSheet(sc,onExit){const H=HUB[sc.id],nm=GNAME[sc.id]||[shortName(sc),
    const play=el('button',{class:'btn cta',type:'button',onclick:()=>say(line,.85)},'▶ Play · เล่น');setTimeout(()=>say(line,.85),250);
    return quizView('Listen '+(k+1)+' / '+L.length,q,qth,[play,el('button',{class:'btn ghost',type:'button',onclick:()=>say(line,.65)},'↻ Slower · ช้าลง'),
      el('button',{class:'btn ghost',type:'button',onclick:()=>{tx.hidden=false}},'Show text · แสดงข้อความ'),tx,el('p',{class:'hubnote'},'Voice: your phone · เสียงจากเครื่อง ถ้าไม่มีเสียง กด Show text')],
-    o.map((t,i)=>[t+' · '+oth[i],i===0,i?why[i-1]:'']),r,()=>body.replaceChildren(...listen(k+1)),()=>{tx.hidden=false})};
+    o.map((t,i)=>[oth?t+' · '+oth[i]:t,i===0,i?why[i-1]:'']),r,()=>body.replaceChildren(...listen(k+1)),()=>{tx.hidden=false})};
   /* ---- Speak: listen and say aloud. Practice only: no microphone, no recording, no score ---- */
   const speak=()=>{const P=sc.prep||[],r=hubRec(sc.id,'speak'),said=new Set();
    const doneB=el('button',{class:'btn cta',type:'button',disabled:true,onclick:()=>{hubFin(sc.id,'speak',{said:P.length});back()}},'Finish · เสร็จ (0 / '+P.length+')');
@@ -106,8 +109,8 @@ function hubSheet(sc,onExit){const H=HUB[sc.id],nm=GNAME[sc.id]||[shortName(sc),
    {t:'type',q:'Change “regular” to “large”:  Regular, please.',th:'เปลี่ยนเป็นจานพิเศษ แล้วพิมพ์ประโยค',a:['Large, please.'],ok:['large please','a large one please','large one please','a large plate please'],hint:'Use the word “large”. | ใช้คำว่า large แทน regular'},
    {t:'type',q:'Make it two:  A bottle of water, please.',th:'เปลี่ยนเป็น 2 ขวด แล้วพิมพ์ประโยค',a:['Two bottles of water, please.'],ok:['two bottles of water please','2 bottles of water please'],hint:'two + bottles (add -s). | สองขวด = two bottles'}];
   const write=k=>{const r=hubRec(sc.id,'write');if(k===0)r.lf=0;
-   if(k>=WQ.length)return done('write','Write',['Right on the first try: '+r.lf+' / '+WQ.length+' · ทำถูกครั้งแรก'],'Writing practice: the app checks your text, not your speaking.⁣ฝึกเขียน แอปตรวจข้อความ ไม่ใช่การพูด',{f:r.lf,n:WQ.length});
-   const w=WQ[k],title='Write '+(k+1)+' / '+WQ.length,next=()=>body.replaceChildren(...write(k+1));
+   if(k>=WQx.length)return done('write','Write',['Right on the first try: '+r.lf+' / '+WQx.length+' · ทำถูกครั้งแรก'],'Writing practice: the app checks your text, not your speaking.⁣ฝึกเขียน แอปตรวจข้อความ ไม่ใช่การพูด',{f:r.lf,n:WQx.length});
+   const w=WQx[k],title='Write '+(k+1)+' / '+WQx.length,next=()=>body.replaceChildren(...write(k+1));
    if(w.t==='pick')return quizView(title,w.q,w.th,[el('div',{class:'hubpic','aria-hidden':'true'},w.pic)],w.o.map((t,i)=>[t,i===0,i?w.why[i-1]:'']),r,next);
    let first=true;const fb=el('p',{class:'tfb','aria-live':'polite'}),nx=el('button',{class:'btn cta',type:'button',hidden:true,onclick:next},'Next · ต่อไป');
    const good=()=>{fb.className='tfb good';fb.textContent='Great! ✓';r.t++;if(first){r.f++;r.lf++}persist();nx.hidden=false;nx.focus()};
@@ -135,12 +138,13 @@ function hubSheet(sc,onExit){const H=HUB[sc.id],nm=GNAME[sc.id]||[shortName(sc),
    ['P','In Sanor Town, the QR code is …','QR ในเกมคืออะไร',['a sample picture in the game (no real money)','a real bank payment','a way to open the camera'],['No real money moves in the game. | ในเกมไม่มีการโอนเงินจริง','The game never opens the camera. | เกมไม่เปิดกล้อง']],
    ['P','You paid by QR code. Do you get change?','จ่ายด้วย QR ได้เงินทอนไหม',['No. QR pays the exact amount.','Yes, always.','Yes, but only coins.'],['QR pays the exact price, so there is no change. | QR จ่ายตามยอดพอดี','QR pays the exact price, so there is no change. | QR จ่ายตามยอดพอดี']]];
   const PART={L:['Language','ภาษา'],M:['Math','คิดเลข'],P:['Payment','การจ่ายเงิน']};
-  const quiz=(k,got)=>{const r=hubRec(sc.id,'quiz');if(k===0){r.lf=0;got={L:0,M:0,P:0}}
-   if(k>=QQ.length)return done('quiz','Quiz',[...Object.keys(PART).map(c=>PART[c][0]+' · '+PART[c][1]+': '+got[c]+' / '+QQ.filter(q=>q[0]===c).length),'Right on the first try: '+r.lf+' / '+QQ.length],
-    'Practice quiz. It is not a research test (K1–K3) and gives no stars or XP.⁣แบบทดสอบฝึกหัด ไม่ใช่แบบทดสอบวิจัย K1–K3 ไม่ได้ดาวหรือ XP',{f:r.lf,n:QQ.length,parts:got});
-   const [c,q,qth,o,why]=QQ[k],lf0=r.lf;return quizView('Quiz '+(k+1)+' / '+QQ.length+' · '+PART[c][0],q,qth,null,o.map((t,i)=>[t,i===0,i?why[i-1]:'']),r,()=>{if(r.lf>lf0)got[c]++;body.replaceChildren(...quiz(k+1,got))})};
+  const QQx=H.quiz||QQ,WQx=H.write||WQ,PARTx=H.parts||PART;/* the other stations use their own approved-content items */
+  const quiz=(k,got)=>{const r=hubRec(sc.id,'quiz');if(k===0){r.lf=0;got=Object.fromEntries(Object.keys(PARTx).map(c=>[c,0]))}
+   if(k>=QQx.length)return done('quiz','Quiz',[...Object.keys(PARTx).map(c=>PARTx[c][0]+' · '+PARTx[c][1]+': '+got[c]+' / '+QQx.filter(q=>q[0]===c).length),'Right on the first try: '+r.lf+' / '+QQx.length],
+    'Practice quiz. It is not a research test (K1–K3) and gives no stars or XP.⁣แบบทดสอบฝึกหัด ไม่ใช่แบบทดสอบวิจัย K1–K3 ไม่ได้ดาวหรือ XP',{f:r.lf,n:QQx.length,parts:got});
+   const [c,q,qth,o,why]=QQx[k],lf0=r.lf;return quizView('Quiz '+(k+1)+' / '+QQx.length+' · '+PARTx[c][0],q,qth,null,o.map((t,i)=>[t,i===0,i?why[i-1]:'']),r,()=>{if(r.lf>lf0)got[c]++;body.replaceChildren(...quiz(k+1,got))})};
   /* ---- CS-4 My results: one card per mode, from this phone's save only. Practice results: not a test, not a speaking score ---- */
-  const results=()=>{const M=(SAVE.modes&&SAVE.modes[sc.id])||{},on=HUBMODES.map(m=>m[0]).filter(m=>!HUBSOON.includes(m)),nDone=on.filter(m=>hubSt(sc.id,m)==='done').length;
+  const results=()=>{const M=(SAVE.modes&&SAVE.modes[sc.id])||{},on=HUBMODES.map(m=>m[0]).filter(m=>!soonM(m)),nDone=on.filter(m=>hubSt(sc.id,m)==='done').length;
    const ST={done:['Completed','ทำครบแล้ว','ok'],started:['In progress','กำลังทำ','go'],none:['Not started','ยังไม่เริ่ม','no']};
    const cm=sc.id==='canteen'?canteenMission():null;
    const row=([m,en,th,ic])=>{const st=hubSt(sc.id,m),r=M[m]||{},L=r.last,t=ST[st];let det=[];
@@ -148,7 +152,7 @@ function hubSheet(sc,onExit){const H=HUB[sc.id],nm=GNAME[sc.id]||[shortName(sc),
      if(cm)det.push(cm.got?'Reward: 40 XP + Lunch Master ✓ · ได้รางวัลแล้ว':cm.state==='earlier'?'Finished before rewards started · จบก่อนมีระบบรางวัล':'Reward when you finish: 40 XP (once) · รางวัลเมื่อจบ 40 XP')}
     else if(m==='speak')det.push(L?'Practised '+L.said+' phrases aloud · not scored · ฝึกพูด '+L.said+' ประโยค ไม่มีคะแนน':'Practise aloud · not scored · ไม่มีคะแนน');
     else if(L){det.push('Last time: right on the first try '+L.f+' / '+L.n+' · ครั้งล่าสุด ตอบถูกครั้งแรก '+L.f+' / '+L.n);
-     if(L.parts)det.push(Object.keys(L.parts).map(c=>({L:'Language',M:'Math',P:'Payment'}[c])+' '+L.parts[c]+'/'+({L:3,M:3,P:2}[c])).join(' · '))}
+     if(L.parts)det.push(Object.keys(L.parts).map(c=>(PARTx[c]?PARTx[c][0]:c)+' '+L.parts[c]+'/'+QQx.filter(q=>q[0]===c).length).join(' · '))}
     else if(st==='started')det.push('Not finished yet · ยังทำไม่จบ');
     return el('li',{class:'hubrrow','data-mode':m},el('span',{class:'hubic','aria-hidden':'true'},ic),
      el('div',{class:'hubrtx'},el('b',{},en+' · '+th),...det.map(d=>el('small',{},d))),
@@ -865,5 +869,5 @@ function openScene(id,bl){
  playPlace(sc,closeTown,bl);
  if(!TOWN){closeTown();return false}
  return true}
-return {open,openScene,mount,unmount,close:closeTown,get g(){return TOWN},SCENES,LOCKED,shop:SHOPI,rw:{read:rwRead,xp:rwXP,grant:rwGrant,canteen:canteenMission}};
+return {open,openScene,mount,unmount,close:closeTown,get g(){return TOWN},SCENES,LOCKED,hubData:id=>{const s=SCENES.find(x=>x.id===id);return s&&hubOK(s)?(HUB[id]||hubAuto(s)):null},shop:SHOPI,rw:{read:rwRead,xp:rwXP,grant:rwGrant,canteen:canteenMission}};
 })();
