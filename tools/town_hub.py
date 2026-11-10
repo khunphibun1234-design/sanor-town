@@ -18,7 +18,7 @@ with sync_playwright() as p:
     card('canteen')
     hub=pg.locator('.hubb')
     ck('H01 canteen card opens the Hub (not the 3D scene)',hub.count()==1 and pg.evaluate("!document.querySelector('.town')"))
-    ck('H02 Hub shows 7 modes: 4 open + 3 coming soon',pg.locator('.hubm[data-mode]').count()==4 and pg.locator('.hubm.soon').count()==3)
+    ck('H02 Hub shows 7 modes, all open (CS-2)',pg.locator('.hubm[data-mode]').count()==7 and pg.locator('.hubm.soon').count()==0)
     ck('H03 no horizontal overflow',pg.evaluate("document.documentElement.scrollWidth<=window.innerWidth"))
     small=pg.evaluate("[...document.querySelectorAll('.hubb button')].filter(b=>{const r=b.getBoundingClientRect();return r.width>0&&(r.height<44||r.width<44)}).map(b=>b.textContent.trim().slice(0,20))")
     ck('H04 touch targets >= 44px',not small,small)
@@ -61,8 +61,56 @@ with sync_playwright() as p:
     fin=pg.locator('button:has-text("Finish")');ck('H12 Finish is locked until each phrase is marked',fin.is_disabled())
     for i in range(pg.locator('.hubsaid').count()): pg.locator('.hubsaid').nth(i).click()
     fin.click();pg.wait_for_timeout(200)
-    ck('H13 Hub shows 3 modes done, Talk not started',pg.locator('.hubst.ok').count()==3 and 'Modes done · ทำแล้ว 3 / 4' in pg.locator('.hubprog').inner_text())
+    ck('H13 Hub shows 3 modes done, Talk not started',pg.locator('.hubst.ok').count()==3 and 'Modes done · ทำแล้ว 3 / 7' in pg.locator('.hubprog').inner_text())
     shot('hub_after')
+    # ---- CS-2 Read / Write / Quiz ----
+    def answer_all(n,label):
+        why=False
+        for k in range(n):
+            for i in range(3):
+                pg.locator('.topts .topt:not([disabled])').nth(0).click();pg.wait_for_timeout(120)
+                if pg.locator('.tfb.good').count():break
+                why=why or len(pg.locator('.tfb.bad').inner_text())>30
+            pg.wait_for_timeout(1000)
+        return why
+    pg.locator('.hubm[data-mode=read]').click();pg.wait_for_timeout(300);shot('read')
+    menu=pg.locator('.hubmenu').inner_text()
+    ck('R01 Read menu uses the price registry (25/30/5/20)',all(x in menu for x in ['25 ฿','30 ฿','5 ฿','20 ฿']),menu[:80])
+    w=answer_all(3,'menu');shot('read_rc')
+    ck('R02 receipt: total 45, paid 50, change 5',all(x in pg.locator('.hubrc').inner_text() for x in ['45 ฿','50 ฿','5 ฿']))
+    w=answer_all(5,'rest') or w
+    ck('R03 Read finishes after 8 questions, wrong answers show a WHY',pg.locator('text=Well done').count()==1 and w)
+    pg.locator('button:has-text("Back to Hub")').click();pg.wait_for_timeout(200)
+    pg.locator('.hubm[data-mode=write]').click();pg.wait_for_timeout(300)
+    answer_all(2,'pick')
+    # word order: wrong order first, then right
+    words=["Can","I","pay","by","QR","code?"]
+    for t in reversed(words): pg.locator('.hubtile:not([disabled])',has_text=t).first.click()
+    pg.locator('button:has-text("Check")').click();pg.wait_for_timeout(100)
+    ck('W01 wrong word order: Not quite + hint',pg.locator('.tfb.bad').count()==1 and 'Start with' in pg.locator('.tfb').inner_text())
+    for t in words: pg.locator('.hubtile:not([disabled])',has_text=t).first.click()
+    shot('write_order');pg.locator('button:has-text("Check")').click();pg.wait_for_timeout(100)
+    ck('W02 right word order: Great',pg.locator('.tfb.good').count()==1);pg.locator('button:has-text("Next · ต่อไป")').click();pg.wait_for_timeout(100)
+    for t in ["I","have","twenty","baht","left."]: pg.locator('.hubtile:not([disabled])',has_text=t).first.click()
+    pg.locator('button:has-text("Check")').click();pg.locator('button:has-text("Next · ต่อไป")').click();pg.wait_for_timeout(100)
+    inp=pg.locator('.hubin');inp.fill('regular please');pg.locator('button:has-text("Check")').click()
+    inp.fill('Medium please');pg.locator('button:has-text("Check")').click()
+    ck('W03 typed: 2 wrong tries show the answer',"Large, please." in pg.locator('.tfb').inner_text())
+    inp.fill('  large,  PLEASE ');pg.keyboard.press('Enter');pg.wait_for_timeout(100)
+    ck('W04 typed: case, commas and spaces do not matter',pg.locator('.tfb.good').count()==1);shot('write_type')
+    pg.locator('button:has-text("Next · ต่อไป")').click();pg.wait_for_timeout(100)
+    pg.locator('.hubin').fill('2 bottles of water, please.');pg.locator('button:has-text("Check")').click();pg.wait_for_timeout(100)
+    ck('W05 typed: another right form accepted (2 bottles)',pg.locator('.tfb.good').count()==1)
+    pg.locator('button:has-text("Next · ต่อไป")').click();pg.wait_for_timeout(200)
+    ck('W06 Write finishes, shows first-try / 6, says text not speaking',pg.locator('text=Well done').count()==1 and ' / 6' in pg.locator('.hubb').inner_text() and 'not your speaking' in pg.locator('.hubb').inner_text())
+    pg.locator('button:has-text("Back to Hub")').click();pg.wait_for_timeout(200)
+    pg.locator('.hubm[data-mode=quiz]').click();pg.wait_for_timeout(300);shot('quiz')
+    ck('Q01 quiz shows the part name',' · Language' in pg.locator('.hubbar b').inner_text())
+    answer_all(8,'quiz');shot('quiz_done')
+    t=pg.locator('.hubb').inner_text()
+    ck('Q02 result by part (Language/Math/Payment) and "not a research test"','Language' in t and 'Math' in t and 'Payment' in t and 'K1–K3' in t,t[:200])
+    pg.locator('button:has-text("Back to Hub")').click();pg.wait_for_timeout(200)
+    ck('Q03 Hub: 6 / 7 modes done (Talk not started)','Modes done · ทำแล้ว 6 / 7' in pg.locator('.hubprog').inner_text());shot('hub_cs2')
     sv=pg.evaluate(f"JSON.parse(localStorage.getItem('{KEY}'))")
     ck('H14 practice does not change stars/done/XP',not sv.get('done',{}).get('canteen') and 'rewards' not in str(sv.get('rw','')) ,{k:v for k,v in sv.items() if k!='phrases'})
     # Talk

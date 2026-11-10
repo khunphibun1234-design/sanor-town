@@ -724,6 +724,13 @@ button.hubfree.on{border:2px solid #C2410C;background:#fff7ed;color:#9a3412;curs
 .hubm.talk small{color:#5b21b6}.hubmq{font-weight:700}
 .hubm.soon{opacity:.55;cursor:default}.hubsoon{font-size:.7rem!important}
 .hubst{font-size:.72rem;color:#b45309;font-weight:700}.hubst.ok{color:#047857}
+.hubdoc{background:#fffdf5;border:2px solid #92400e;border-radius:12px;padding:8px 10px;margin:8px 0 2px;text-align:left;font-size:.92rem}
+.hubdoc .hubdh{display:block;text-align:center;color:#92400e;letter-spacing:.02em}.hubdoc ul{list-style:none;margin:4px 0 0;padding:0}.hubdoc li{display:flex;justify-content:space-between;gap:8px;border-bottom:1px dotted #d6c7a8;padding:2px 0}
+.hubdoc li b{font-variant-numeric:tabular-nums;white-space:nowrap}.hubdsec small{display:block;font-weight:700;color:#475569;margin-top:6px}.hubrc{font-family:ui-monospace,Menlo,monospace;border-style:dashed}.hubrc>small{display:block;text-align:center;color:#64748b}
+.hubrc .hubrt{font-weight:800;border-top:2px solid #92400e}.hubnt{background:#ecfdf5;border-color:#047857}.hubnt .hubdh{color:#047857}.hubnt p{margin:3px 0}
+.hubline{min-height:2.4em;background:#f1f5f9;border-radius:10px;padding:8px;font-weight:700;font-size:1.05rem}.hubtiles{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:8px}
+.hubtile{min-height:44px;min-width:44px;padding:6px 12px;border-radius:10px;border:2px solid #7c3aed;background:#fff;color:#4c1d95;font:inherit;font-weight:700;cursor:pointer}.hubtile:disabled{opacity:.3;cursor:default}
+.hubwb{gap:8px;justify-content:center}.hubwb .btn{flex:1 1 120px;min-height:48px}.hubin{width:100%;box-sizing:border-box;min-height:48px;font:inherit;font-size:1.05rem;padding:8px 10px;border:2px solid #94a3b8;border-radius:10px;margin:8px 0 4px}
 .hubprog{font-size:.82rem;color:#475569;margin:10px 0 0}
 .hubfc{background:#fff;border:1px solid #cbd5e1;border-radius:16px;padding:12px;text-align:center;margin:8px 0;color:#1f2937}
 .hubfc h3{margin:4px 0;font-size:1.4rem}.hubpic{font-size:2.6rem}.hubth{color:#64748b;font-size:.9rem;margin:2px 0 8px;display:block}
@@ -955,7 +962,7 @@ function vcKey(text,slow){const s=(slow?'s|':'n|')+String(text).replace(/\s+/g,'
   for(let i=0;i<s.length;i++){const c=s.charCodeAt(i);h1=Math.imul(h1^c,2654435761);h2=Math.imul(h2^c,1597334677)}
   h1=Math.imul(h1^(h1>>>16),2246822507)^Math.imul(h2^(h2>>>13),3266489909);h2=Math.imul(h2^(h2>>>16),2246822507)^Math.imul(h1^(h1>>>13),3266489909);
   return(4294967296*(2097151&h2)+(h1>>>0)).toString(16)}
-const BUILD='20261110a';/* bump when voice files change: it forces browsers to fetch the new files together */
+const BUILD='20261110b';/* bump when voice files change: it forces browsers to fetch the new files together */
 try{fetch('voice/index.json?v='+BUILD).then(r=>r.ok?r.json():null).then(j=>{if(j&&j.clips&&j.bundles)VC.idx=j}).catch(e=>{VC.err='index: '+e})}catch(e){}
 /* One shared <audio> element (works with the iPhone silent switch). It is "unlocked" by the first tap. */
 function vcEl(){try{if(!VC.el){VC.el=new Audio();VC.el.preload='auto';VC.el.setAttribute('playsinline','')}
@@ -4412,10 +4419,10 @@ const HUB={canteen:{
  words:[["I'd like ..., please.", "request frame", "ขอ... หน่อย (สั่งอย่างสุภาพ)", "I'd like rice and curry, please.", "ขอข้าวราดแกงหน่อยครับ/ค่ะ", "A1", "💬"], ["curry", "noun", "แกง", "Would you like green curry or stir-fried vegetables with your rice?", "อยากได้แกงเขียวหวานหรือผัดผักกับข้าวดีจ๊ะ", "A1", "🍛"], ["spicy", "adjective", "เผ็ด", "Green curry is a little spicy.", "แกงเขียวหวานเผ็ดนิดหน่อย", "A2", "🌶️"], ["a bowl of", "quantifier", "...หนึ่งชาม", "I'd like a bowl of noodle soup, please.", "ขอก๋วยเตี๋ยวน้ำหนึ่งชามครับ/ค่ะ", "A1", "🍜"], ["noodles", "noun", "เส้นก๋วยเตี๋ยว", "Would you like thin rice noodles or wide rice noodles?", "จะรับเส้นเล็กหรือเส้นใหญ่", "A1", "🍜"], ["a bottle of", "quantifier", "...หนึ่งขวด", "A bottle of water, please.", "ขอน้ำเปล่าหนึ่งขวดครับ/ค่ะ", "A1", "💧"], ["How much is it?", "question", "ราคาเท่าไร", "Thank you. How much is it?", "ขอบคุณ ราคาเท่าไรครับ/คะ", "A1", "💰"], ["free seat", "noun phrase", "ที่นั่งว่าง", "Hey! There's a free seat here. Come and sit with me.", "เฮ้ ตรงนี้มีที่ว่าง มานั่งด้วยกันสิ", "A2", "🪑"], ["left", "adjective", "เหลือ", "Let's return our plates after lunch. How much money do you have left?", "กินเสร็จแล้วเอาจานไปเก็บกันนะ เธอเหลือเงินเท่าไร", "A2", "👛"]],
  listen:[["I'd like a bowl of noodle soup, please.", "What does the student order?", "นักเรียนสั่งอะไร", ["Noodle soup", "Rice and curry", "A bottle of water"], ["ก๋วยเตี๋ยวน้ำ", "ข้าวราดแกง", "น้ำเปล่าหนึ่งขวด"], ["เสียงที่ได้ยินคือ noodle soup ไม่ใช่ rice and curry", "เสียงที่ได้ยินคือสั่งก๋วยเตี๋ยว ไม่ใช่น้ำ"]], ["Would you like thin rice noodles or wide rice noodles?", "What is Uncle Chai asking about?", "ลุงไชยถามเรื่องอะไร", ["The type of noodles", "The price", "A drink"], ["ชนิดของเส้น", "ราคา", "เครื่องดื่ม"], ["ลุงถามว่าเส้นเล็กหรือเส้นใหญ่ ไม่ได้ถามราคา", "ลุงถามเรื่องเส้น ไม่ได้ถามเรื่องเครื่องดื่ม"]], ["It's five baht, please.", "How much is the water?", "น้ำราคาเท่าไร", ["5 baht", "15 baht", "50 baht"], ["5 บาท", "15 บาท", "50 บาท"], ["five คือ 5 ส่วน fifteen คือ 15", "five คือ 5 ส่วน fifty คือ 50"]], ["Thank you. How much is it?", "What does the student want to know?", "นักเรียนอยากรู้อะไร", ["The price", "The time", "The number of bottles"], ["ราคา", "เวลา", "จำนวนขวด"], ["How much ถามราคา ส่วน What time ถามเวลา", "How much ถามราคา ส่วน How many ถามจำนวน"]], ["Hey! There's a free seat here. Come and sit with me.", "What does Bow want you to do?", "โบว์อยากให้เธอทำอะไร", ["Sit with her", "Buy some water", "Go home"], ["นั่งกับเธอ", "ซื้อน้ำ", "กลับบ้าน"], ["Bow ชวนมานั่งด้วยกัน ไม่ได้ให้ไปซื้อน้ำ", "Bow ชวนมานั่งด้วยกัน ไม่ได้ให้กลับบ้าน"]], ["Let's return our plates after lunch.", "What will they do after lunch?", "หลังกินข้าว พวกเขาจะทำอะไร", ["Return their plates", "Buy more food", "Leave the plates"], ["เอาจานไปเก็บ", "ซื้ออาหารเพิ่ม", "ทิ้งจานไว้"], ["return our plates แปลว่าเอาจานไปเก็บ ไม่ใช่ซื้อเพิ่ม", "return แปลว่าเอาไปคืน/เก็บ ไม่ใช่ทิ้งไว้"]]]}};
 /* ===== ST-UX-007 CS-1: station Hub with learning modes (School Canteen first). Talk = the 3D scene (unchanged).
-   Words / Listen / Speak are practice: they never change stars, money or XP. Speak is practice only (no microphone, no score). ===== */
+   Words / Listen / Speak / Read / Write / Quiz are practice: they never change stars, money or XP. Speak is practice only (no microphone, no score). ===== */
 const HUBMODES=[['talk','Talk','คุยภารกิจหลัก','\u{1F4AC}'],['words','Words','คำศัพท์','\u{1F524}'],['listen','Listen','ฟัง','\u{1F3A7}'],['speak','Speak','พูดตาม','\u{1F5E3}️'],
  ['read','Read','อ่าน','\u{1F4D6}'],['write','Write','เขียน','✏️'],['quiz','Quiz','แบบทดสอบ','✅']];
-const HUBSOON=['read','write','quiz'];
+const HUBSOON=[];/* CS-2 (10 Nov): Read / Write / Quiz open */
 const hubRec=(id,m)=>{SAVE.modes=SAVE.modes||{};SAVE.modes[id]=SAVE.modes[id]||{};return SAVE.modes[id][m]=SAVE.modes[id][m]||{s:'started',a:0,f:0,t:0}};
 const hubSt=(id,m)=>m==='talk'?(doneCount(id)>=nTotal(SCENES.find(s=>s.id===id))?'done':doneCount(id)?'started':'none'):((SAVE.modes&&SAVE.modes[id]&&SAVE.modes[id][m]||{}).s||'none');
 function goPlace(s,onExit,bl){if(HUB[s.id])hubSheet(s,onExit);else playPlace(s,onExit,bl)}
@@ -4425,7 +4432,7 @@ function hubSheet(sc,onExit){const H=HUB[sc.id],nm=GNAME[sc.id]||[shortName(sc),
   const back=()=>{stopSay();body.replaceChildren(...home())};
   const bar=(t)=>el('div',{class:'row hubbar'},el('button',{class:'btn ghost hubback',type:'button',onclick:back},'← Hub'),el('b',{},t),x);
   const stTag=s=>s==='done'?el('span',{class:'hubst ok'},'✓ Done · เสร็จ'):s==='started'?el('span',{class:'hubst'},'Started · เริ่มแล้ว'):null;
-  const home=()=>{const on=['talk','words','listen','speak'],nDone=on.filter(m=>hubSt(sc.id,m)==='done').length,stars=doneCount(sc.id),n=nTotal(sc);
+  const home=()=>{const on=HUBMODES.map(m=>m[0]).filter(m=>!HUBSOON.includes(m)),nDone=on.filter(m=>hubSt(sc.id,m)==='done').length,stars=doneCount(sc.id),n=nTotal(sc);
    const card=([m,en,th,ic])=>{const soon=HUBSOON.includes(m),st=hubSt(sc.id,m);
     const kids=[el('span',{class:'hubic','aria-hidden':'true'},ic),el('b',{},en),el('small',{},th),m==='talk'?el('small',{class:'hubmq'},'Main Quest · '+stars+'/'+n+' ★'):null,soon?el('small',{class:'hubsoon'},'Coming soon · เร็ว ๆ นี้'):stTag(st)];
     return soon?el('div',{class:'hubm soon','aria-label':en+', coming soon'},...kids)
@@ -4471,7 +4478,85 @@ function hubSheet(sc,onExit){const H=HUB[sc.id],nm=GNAME[sc.id]||[shortName(sc),
      if(ok){bs.forEach(x=>x.disabled=true);b.classList.add('good');fb.className='tfb good';fb.textContent='Great! ✓';r.t++;if(first){r.f++;if(r.lf!==undefined)r.lf++}if(reveal)reveal();persist();setTimeout(next,900)}
      else{if(first)r.a++;first=false;b.disabled=true;b.classList.add('bad');fb.className='tfb bad';fb.replaceChildren('Not quite. Try again. · ยังไม่ใช่ ลองใหม่',why?el('br'):'',why||'')}});return b});
    return [bar(title),el('div',{class:'hubfc'},el('p',{class:'hubq'},q),qth?el('small',{class:'hubth'},qth):null,...(extra||[])),el('div',{class:'topts'},bs),fb]};
-  const run=m=>m==='words'?words(0):m==='listen'?listen(0):speak();
+  /* ===== CS-2 (10 Nov): Read / Write / Quiz. Practice only: never change stars, money, XP or research data.
+     Prices come from the price registry (SHOPI), so the texts always match the shop. ===== */
+  const P=k=>SHOPI[k].p,done=(m,title,lines,note)=>{const r=hubRec(sc.id,m);r.s='done';persist();
+   return [bar(title),el('div',{class:'hubfc'},el('h3',{},'Well done! ✓ เก่งมาก'),...lines.map(l=>el('p',{class:'hubth'},l))),note?el('p',{class:'hubnote'},note):null,
+    el('button',{class:'btn cta',type:'button',onclick:back},'Back to Hub · กลับหน้าโหมด')]};
+  /* ---- Read: a menu board, a sample receipt and a canteen notice, then questions ---- */
+  const menuCard=()=>el('div',{class:'hubdoc hubmenu','aria-label':'Canteen menu'},el('b',{class:'hubdh'},'Canteen Menu · เมนูโรงอาหาร'),
+   ...[['rice','Auntie Pen'],['noodle','Uncle Chai'],['drinks','Ms. Kaew']].map(([s,who])=>el('div',{class:'hubdsec'},el('small',{},who),
+    el('ul',{},Object.keys(SHOPI).filter(k=>SHOPI[k].shop===s).map(k=>el('li',{},el('span',{},SHOPI[k].en),el('b',{},SHOPI[k].p==null?'—':SHOPI[k].p+' ฿')))))));
+  const RC={items:[['noodle_soup',1],['lemontea',1]],paid:50};RC.total=RC.items.reduce((a,[k,q])=>a+P(k)*q,0);RC.change=RC.paid-RC.total;
+  const receipt=()=>el('div',{class:'hubdoc hubrc','aria-label':'Sample receipt'},el('b',{class:'hubdh'},'SAMPLE RECEIPT · ใบเสร็จตัวอย่าง'),el('small',{},'Sanor Town Canteen (game) · ในเกมเท่านั้น'),
+   el('ul',{},RC.items.map(([k,q])=>el('li',{},el('span',{},SHOPI[k].en+' × '+q),el('b',{},P(k)*q+' ฿'))),el('li',{class:'hubrt'},el('span',{},'Total'),el('b',{},RC.total+' ฿')),
+    el('li',{},el('span',{},'Paid: cash'),el('b',{},RC.paid+' ฿')),el('li',{},el('span',{},'Change'),el('b',{},RC.change+' ฿'))));
+  const notice=()=>el('div',{class:'hubdoc hubnt','aria-label':'Canteen notice'},el('b',{class:'hubdh'},'NOTICE · ประกาศ'),
+   el('p',{},'Wash your hands before you eat.'),el('p',{},'Please queue at the stalls.'),el('p',{},'After lunch, return your plates to the tray rack.'),el('p',{},'Meatballs: '+P('meatball')+' baht a stick.'));
+  const RQ=[[menuCard,'How much is a large plate of rice and curry?','ข้าวราดแกงพิเศษราคาเท่าไร',[P('rice_big')+' baht',P('rice_reg')+' baht',P('bubble')+' baht'],
+     ['That is the regular plate. | นั่นคือราคาจานธรรมดา','That is the price of a drink. | นั่นคือราคาเครื่องดื่ม']],
+   [menuCard,'Which one costs '+NW(P('water'))+' baht?','ข้อใดราคา '+P('water')+' บาท',['Bottled water','Bubble milk tea','Noodle soup'],
+     ['Bubble milk tea is '+P('bubble')+' baht. | ชาไข่มุก '+P('bubble')+' บาท','Noodle soup is '+P('noodle_soup')+' baht. | ก๋วยเตี๋ยว '+P('noodle_soup')+' บาท']],
+   [menuCard,'Who sells guay jub?','ใครขายก๋วยจั๊บ',['Uncle Chai','Auntie Pen','Ms. Kaew'],
+     ['Auntie Pen sells rice and curry. | ป้าเพ็ญขายข้าวราดแกง','Ms. Kaew sells drinks and meatballs. | ป้าแก้วขายเครื่องดื่มและลูกชิ้น']],
+   [receipt,'What is the total?','ยอดรวมเท่าไร',[RC.total+' baht',RC.paid+' baht',RC.change+' baht'],
+     [RC.paid+' baht is the money paid. | '+RC.paid+' บาทคือเงินที่จ่าย',RC.change+' baht is the change. | '+RC.change+' บาทคือเงินทอน']],
+   [receipt,'How much change did the student get?','นักเรียนได้เงินทอนเท่าไร',[RC.change+' baht',RC.total+' baht',RC.paid+' baht'],
+     [RC.total+' baht is the total. | นั่นคือยอดรวม',RC.paid+' baht is the money paid. | นั่นคือเงินที่จ่าย']],
+   [receipt,'How did the student pay?','นักเรียนจ่ายเงินแบบไหน',['By cash','By QR code','By card'],
+     ['The receipt says “Paid: cash”. | ใบเสร็จเขียนว่าจ่ายเงินสด','There is no card on the receipt. | ใบเสร็จไม่มีการจ่ายด้วยบัตร']],
+   [notice,'Where do you return your plates?','เก็บจานไว้ที่ไหน',['To the tray rack','To Ms. Kaew','To the classroom'],
+     ['The notice says the tray rack. | ประกาศบอกให้เก็บที่ชั้นวางถาด','The notice says the tray rack. | ประกาศบอกให้เก็บที่ชั้นวางถาด']],
+   [notice,'What should you do before you eat?','ก่อนกินควรทำอะไร',['Wash your hands','Return your plates','Buy meatballs'],
+     ['You return plates AFTER lunch. | เก็บจานหลังกินเสร็จ','The notice gives the price of meatballs, not a rule. | ประกาศบอกราคาลูกชิ้น ไม่ได้สั่งให้ซื้อ']]];
+  const read=k=>{const r=hubRec(sc.id,'read');if(k===0)r.lf=0;
+   if(k>=RQ.length)return done('read','Read',['Right on the first try: '+r.lf+' / '+RQ.length+' · ตอบถูกครั้งแรก'],'Reading practice. It is not a test score.⁣เป็นแบบฝึกอ่าน ไม่ใช่คะแนนสอบ');
+   const [doc,q,qth,o,why]=RQ[k];return quizView('Read '+(k+1)+' / '+RQ.length,q,qth,[doc()],o.map((t,i)=>[t,i===0,i?why[i-1]:'']),r,()=>body.replaceChildren(...read(k+1)))};
+  /* ---- Write: fill the gap -> put words in order -> change a sentence (typed; several right forms are accepted) ---- */
+  const norm=s=>s.toLowerCase().replace(/[’']/g,"'").replace(/[^a-z0-9' ]+/g,' ').replace(/\s+/g,' ').trim();
+  const WQ=[{t:'pick',q:"I'd like ___, please.",th:'เติมคำ: ขอก๋วยเตี๋ยวน้ำหนึ่งชาม',pic:'\u{1F35C}',o:['a bowl of noodle soup','a bottle of noodle soup','a noodle soup bowls'],
+     why:['Soup comes in a bowl, not a bottle. | ก๋วยเตี๋ยวใส่ชาม ไม่ได้ใส่ขวด','Say “a bowl of noodle soup”. | ใช้ a bowl of noodle soup']},
+   {t:'pick',q:'How ___ is it?',th:'เติมคำ: ถามราคา',pic:'\u{1F4B0}',o:['much','many','long'],
+     why:['“How many” asks the number of things. | How many ถามจำนวน','“How long” asks about time or length. | How long ถามเวลา/ความยาว']},
+   {t:'order',q:'Put the words in order.',th:'เรียงคำ: ขอจ่ายด้วย QR code ได้ไหม',w:['Can','I','pay','by','QR','code?']},
+   {t:'order',q:'Put the words in order.',th:'เรียงคำ: ฉันเหลือเงินยี่สิบบาท',w:['I','have','twenty','baht','left.']},
+   {t:'type',q:'Change “regular” to “large”:  Regular, please.',th:'เปลี่ยนเป็นจานพิเศษ แล้วพิมพ์ประโยค',a:['Large, please.'],ok:['large please','a large one please','large one please','a large plate please'],hint:'Use the word “large”. | ใช้คำว่า large แทน regular'},
+   {t:'type',q:'Make it two:  A bottle of water, please.',th:'เปลี่ยนเป็น 2 ขวด แล้วพิมพ์ประโยค',a:['Two bottles of water, please.'],ok:['two bottles of water please','2 bottles of water please'],hint:'two + bottles (add -s). | สองขวด = two bottles'}];
+  const write=k=>{const r=hubRec(sc.id,'write');if(k===0)r.lf=0;
+   if(k>=WQ.length)return done('write','Write',['Right on the first try: '+r.lf+' / '+WQ.length+' · ทำถูกครั้งแรก'],'Writing practice: the app checks your text, not your speaking.⁣ฝึกเขียน แอปตรวจข้อความ ไม่ใช่การพูด');
+   const w=WQ[k],title='Write '+(k+1)+' / '+WQ.length,next=()=>body.replaceChildren(...write(k+1));
+   if(w.t==='pick')return quizView(title,w.q,w.th,[el('div',{class:'hubpic','aria-hidden':'true'},w.pic)],w.o.map((t,i)=>[t,i===0,i?w.why[i-1]:'']),r,next);
+   let first=true;const fb=el('p',{class:'tfb','aria-live':'polite'}),nx=el('button',{class:'btn cta',type:'button',hidden:true,onclick:next},'Next · ต่อไป');
+   const good=()=>{fb.className='tfb good';fb.textContent='Great! ✓';r.t++;if(first){r.f++;r.lf++}persist();nx.hidden=false;nx.focus()};
+   const bad=(msg,show)=>{if(first)r.a++;first=false;persist();fb.className='tfb bad';fb.replaceChildren('Not quite. Try again. · ยังไม่ใช่ ลองใหม่',el('br'),msg);if(show)fb.append(el('br'),el('b',{},'Answer · คำตอบ: '+show))};
+   if(w.t==='order'){const ans=w.w.join(' '),pool=shuffle(w.w.map((t,i)=>({t,i}))),pick=[];let tries=0;
+    const line=el('p',{class:'hubline','aria-live':'polite'}),tiles=el('div',{class:'hubtiles'}),chk=el('button',{class:'btn cta',type:'button',disabled:true},'Check · ตรวจ');
+    const paint=()=>{line.textContent=pick.map(p=>p.t).join(' ')||'…';tiles.replaceChildren(...pool.map(p=>{const b=el('button',{class:'hubtile',type:'button',disabled:pick.includes(p)},p.t);
+      b.addEventListener('click',()=>{if(!nx.hidden)return;pick.push(p);paint()});return b}));chk.disabled=pick.length<pool.length||!nx.hidden};
+    const clr=el('button',{class:'btn ghost',type:'button',onclick:()=>{if(nx.hidden){pick.length=0;paint()}}},'Clear · ล้าง');
+    chk.addEventListener('click',()=>{if(pick.map(p=>p.t).join(' ')===ans){chk.disabled=true;good()}else{tries++;bad('Start with “'+w.w[0]+'”. | เริ่มด้วยคำว่า '+w.w[0],tries>=2?ans:null);pick.length=0;paint()}});
+    paint();return [bar(title),el('div',{class:'hubfc'},el('p',{class:'hubq'},w.q),el('small',{class:'hubth'},w.th),line,tiles),el('div',{class:'row hubwb'},clr,chk),fb,nx]}
+   let tries=0;const inp=el('input',{class:'hubin',type:'text','aria-label':'Your sentence',autocomplete:'off',autocapitalize:'sentences',spellcheck:'false',placeholder:'Type here · พิมพ์ที่นี่'});
+   const chk=el('button',{class:'btn cta',type:'button'},'Check · ตรวจ');
+   const go=()=>{if(!nx.hidden||!inp.value.trim())return;if(w.ok.includes(norm(inp.value))){inp.disabled=true;chk.disabled=true;good()}else{tries++;bad(w.hint,tries>=2?w.a[0]:null)}};
+   chk.addEventListener('click',go);inp.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();go()}});
+   setTimeout(()=>inp.focus({preventScroll:true}),80);
+   return [bar(title),el('div',{class:'hubfc'},el('p',{class:'hubq'},w.q),el('small',{class:'hubth'},w.th),inp,el('small',{class:'hubth'},'Capital letters and full stops are not checked. · ไม่ตรวจตัวพิมพ์ใหญ่และจุด')),el('div',{class:'row hubwb'},chk),fb,nx]};
+  /* ---- Quiz: 8 questions in 3 parts (Language / Math / Payment). Practice only: not the research tests K1–K3 ---- */
+  const QQ=[['L','Which is the polite way to order?','ข้อใดสั่งอาหารสุภาพ',["I'd like rice and curry, please.",'Give me rice.','Rice. Now.'],['That sounds like an order, not a request. | ฟังดูเป็นคำสั่ง ไม่สุภาพ','That is not polite. | ไม่สุภาพ']],
+   ['L','How do you ask the price?','ถามราคาอย่างไร',['How much is it?','How many is it?','What price you?'],['“How many” asks the number. | How many ถามจำนวน','The grammar is not correct. | ไวยากรณ์ไม่ถูก']],
+   ['L','Bow asks, “What did you get for lunch?” The best answer is …','Bow ถามว่าซื้ออะไรมา ตอบว่าอะไรดีที่สุด',['I got noodle soup and a bottle of water.','I get to the canteen.','Yes, I got.'],['That is about going somewhere. | เป็นการบอกว่าไปถึงที่ไหน','Bow wants to know WHAT you got. | Bow ถามว่าซื้ออะไร']],
+   ['M','Rice and curry (large) + bottled water = ?','ข้าวพิเศษ + น้ำ = ?',[(P('rice_big')+P('water'))+' baht',P('rice_big')+' baht',(P('rice_big')+P('water')+5)+' baht'],[P('rice_big')+' + '+P('water')+' = '+(P('rice_big')+P('water'))+'. | อย่าลืมบวกค่าน้ำ',P('rice_big')+' + '+P('water')+' = '+(P('rice_big')+P('water'))+'. | บวกเกินมา 5 บาท']],
+   ['M','You give 50 baht for noodle soup ('+P('noodle_soup')+' baht). What is your change?','จ่าย 50 บาท ซื้อก๋วยเตี๋ยว เงินทอนเท่าไร',[(50-P('noodle_soup'))+' baht',(50-P('noodle_soup')-5)+' baht',(50+P('noodle_soup'))+' baht'],['50 − '+P('noodle_soup')+' = '+(50-P('noodle_soup'))+'. | ลองลบใหม่','Change = money given − price. | เงินทอน = เงินที่ให้ − ราคา']],
+   ['M','You have 50 baht. You buy two bubble milk teas. How much money is left?','มี 50 บาท ซื้อชาไข่มุก 2 แก้ว เหลือเท่าไร',[(50-2*P('bubble'))+' baht',(50-P('bubble'))+' baht',2*P('bubble')+' baht'],['That is for ONE tea. You bought two. | นั่นคือซื้อแก้วเดียว',2*P('bubble')+' baht is what you spent. | นั่นคือเงินที่ใช้ไป']],
+   ['P','In Sanor Town, the QR code is …','QR ในเกมคืออะไร',['a sample picture in the game (no real money)','a real bank payment','a way to open the camera'],['No real money moves in the game. | ในเกมไม่มีการโอนเงินจริง','The game never opens the camera. | เกมไม่เปิดกล้อง']],
+   ['P','You paid by QR code. Do you get change?','จ่ายด้วย QR ได้เงินทอนไหม',['No. QR pays the exact amount.','Yes, always.','Yes, but only coins.'],['QR pays the exact price, so there is no change. | QR จ่ายตามยอดพอดี','QR pays the exact price, so there is no change. | QR จ่ายตามยอดพอดี']]];
+  const PART={L:['Language','ภาษา'],M:['Math','คิดเลข'],P:['Payment','การจ่ายเงิน']};
+  const quiz=(k,got)=>{const r=hubRec(sc.id,'quiz');if(k===0){r.lf=0;got={L:0,M:0,P:0}}
+   if(k>=QQ.length)return done('quiz','Quiz',[...Object.keys(PART).map(c=>PART[c][0]+' · '+PART[c][1]+': '+got[c]+' / '+QQ.filter(q=>q[0]===c).length),'Right on the first try: '+r.lf+' / '+QQ.length],
+    'Practice quiz. It is not a research test (K1–K3) and gives no stars or XP.⁣แบบทดสอบฝึกหัด ไม่ใช่แบบทดสอบวิจัย K1–K3 ไม่ได้ดาวหรือ XP');
+   const [c,q,qth,o,why]=QQ[k],lf0=r.lf;return quizView('Quiz '+(k+1)+' / '+QQ.length+' · '+PART[c][0],q,qth,null,o.map((t,i)=>[t,i===0,i?why[i-1]:'']),r,()=>{if(r.lf>lf0)got[c]++;body.replaceChildren(...quiz(k+1,got))})};
+  const run=m=>m==='words'?words(0):m==='listen'?listen(0):m==='read'?read(0):m==='write'?write(0):m==='quiz'?quiz(0):speak();
   body.replaceChildren(...home());return [body]})}
 const RW_FUTURE=[['Daily missions','ภารกิจประจำวัน'],['Skill missions','ภารกิจฝึกทักษะ'],['Improvement missions','ภารกิจแก้จุดที่ผิด'],['Real-life missions','ภารกิจในชีวิตจริง']];
 function missionsSheet(){const m=canteenMission(),sc=SCENES.find(x=>x.id==='canteen');
