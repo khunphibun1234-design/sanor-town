@@ -63,7 +63,8 @@ with sync_playwright() as p:
     ids = sorted({e['turnId'] for e in A})
     ck('R03 15 turns of the rice route (C-01..05, C-11..15, C-16..20)', ids == ['C-%02d' % i for i in list(range(1, 6)) + list(range(11, 21))], ids)
     ck('R04 first try wrong then right on C-01 (attempt 1 false, 2 true)', [(e['attemptNumber'], e['isCorrect']) for e in A if e['turnId'] == 'C-01'] == [(1, False), (2, True)])
-    ck('R05 contentVersion ST-CNT-025-CR01 CS-3, build 20261110c, participant TEST01', all(e['contentVersion'] == 'ST-CNT-025-CR01 CS-3' and e['build'] == '20261110c' and e['participantCode'] == 'TEST01' for e in E))
+    BLD = pg.evaluate("()=>document.getElementById('fbuild').textContent")
+    ck('R05 contentVersion ST-CNT-025-CR01 CS-3, build = this build, participant TEST01', all(e['contentVersion'] == 'ST-CNT-025-CR01 CS-3' and e['build'] == BLD and e['participantCode'] == 'TEST01' for e in E), BLD)
     ct = {e['turnId']: e.get('correctText') for e in A if e['isCorrect']}
     ck('R06 correctText follows the purchase (C-02 Large, C-04 fifty baht, C-19 five baht left)', ct.get('C-02') == 'Large, please.' and ct.get('C-04') == "Here's fifty baht." and ct.get('C-19') == 'I have five baht left.', {k: ct.get(k) for k in ['C-02', 'C-04', 'C-19']})
     ck('R07 two purchase events with items/total/method/change/money left',

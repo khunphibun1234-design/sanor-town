@@ -118,6 +118,11 @@ with sync_playwright() as p:
     ck('T09 "not a speaking grade" note still on the win card', 'not a speaking grade' in pg.locator('.twin').inner_text()); shot('win')
     s = sv(); ck('G08 saved payments = 2, none open', len(s['shop']['canteen']['tx']) == 2 and all(t['fin'] for t in s['shop']['canteen']['tx']))
     ck('G09 numbers with prices are not added to Phrases', not any('baht' in x for x in s['phrases']))
+    # CS-4: the Guided win is shown in the Hub's My results (Talk row)
+    pg.evaluate("()=>SanorTown.g.close()"); pg.wait_for_timeout(400); card(); pg.locator('.hubresb').click(); pg.wait_for_timeout(200)
+    tt = pg.locator('.hubrrow[data-mode=talk]').inner_text(); shot('results')
+    ck('G11 My results: Talk 3/3 stars, last mission first-try result, 40 XP (12 turns here: the page was refreshed after paying)', '3 / 3' in tt and 'first try 12 / 12' in tt and '40 XP' in tt and 'Completed' in tt, tt)
+    pg.keyboard.press('Escape'); pg.wait_for_timeout(200)
 
     # ---------- Cancel / Back = no charge (T08) ----------
     fresh(); guided()
