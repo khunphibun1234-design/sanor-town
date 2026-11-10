@@ -39,10 +39,15 @@ def main():
             if sk.count(): sk.first.click(); pg.wait_for_timeout(200)
         def talk(nid, pick):
             k = pg.evaluate("id=>SanorTown.g.npcs.findIndex(n=>n.id===id)", nid)
-            turns = pg.evaluate("([k,p])=>{const g=SanorTown.g;g.openDlg(g.npcs[k]);return g.dlg?g.npcs[k].turns.map(t=>t.by&&p&&t.by[p]?t.by[p].o:t.o):null}", [k, pick])
-            if turns is None: return False
-            for o in turns:
+            if not pg.evaluate("k=>{const g=SanorTown.g;g.openDlg(g.npcs[k]);return !!g.dlg}", k): return False
+            for _ in range(30):  # CS-3: the sellers open a menu and a pay screen between turns
+                if not pg.evaluate("()=>!!SanorTown.g.dlg"): break
                 pg.wait_for_timeout(50)
+                if pg.locator('.tpanel .shmenu').count():
+                    pg.locator('.tpanel .shplus').first.click(); pg.locator('.tpanel .shok').click(); continue
+                if pg.locator('.tpanel .shpay').count():
+                    pg.locator('.tpanel .shm[data-m=cash]').click(); pg.locator('.tpanel .shnote').first.click(); pg.locator('.tpanel .shcf').click(); continue
+                o = pg.evaluate("()=>SanorTown.g.cur()")
                 pg.locator('.tpanel .topt').filter(has_text=o[0]).first.click()
                 pg.locator('.tpanel .tnext').click()
             pg.wait_for_timeout(250); return True

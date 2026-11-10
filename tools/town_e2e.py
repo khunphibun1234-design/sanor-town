@@ -54,9 +54,15 @@ def main():
         talked, bad_fb = 0, 0
         for k in want:
             # a turn may have a version for the chosen seller (t.by[pick], e.g. Bow asking what you bought)
-            turns = pg.evaluate("([k,p])=>{const g=SanorTown.g;g.openDlg(g.npcs[k]);return g.npcs[k].turns.map(t=>t.by&&p&&t.by[p]?t.by[p].o:t.o)}", [k, (pick or (sc['ch'][0] if sc['ch'] else None))])
-            for i, o in enumerate(turns):
+            pg.evaluate("k=>{const g=SanorTown.g;g.openDlg(g.npcs[k])}", k)
+            for _ in range(30):  # answer each turn; shop scenes (canteen, CS-3) open a menu and a pay screen between turns
+                if not pg.evaluate("()=>!!SanorTown.g.dlg"): break
                 pg.wait_for_timeout(60)
+                if pg.locator('.tpanel .shmenu').count():
+                    pg.locator('.tpanel .shplus').first.click(); pg.locator('.tpanel .shok').click(); continue
+                if pg.locator('.tpanel .shpay').count():
+                    pg.locator('.tpanel .shm[data-m=cash]').click(); pg.locator('.tpanel .shnote').first.click(); pg.locator('.tpanel .shcf').click(); continue
+                o = pg.evaluate("()=>SanorTown.g.cur()")
                 pg.locator('.tpanel .topt', has_text=o[1]).first.click()
                 if 'bad' not in (pg.locator('.tpanel .tfb').get_attribute('class') or ''): bad_fb += 1
                 pg.locator('.tpanel .topt').filter(has_text=o[0]).first.click()
