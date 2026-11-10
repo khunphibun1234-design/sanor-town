@@ -962,7 +962,7 @@ function vcKey(text,slow){const s=(slow?'s|':'n|')+String(text).replace(/\s+/g,'
   for(let i=0;i<s.length;i++){const c=s.charCodeAt(i);h1=Math.imul(h1^c,2654435761);h2=Math.imul(h2^c,1597334677)}
   h1=Math.imul(h1^(h1>>>16),2246822507)^Math.imul(h2^(h2>>>13),3266489909);h2=Math.imul(h2^(h2>>>16),2246822507)^Math.imul(h1^(h1>>>13),3266489909);
   return(4294967296*(2097151&h2)+(h1>>>0)).toString(16)}
-const BUILD='20261110b';/* bump when voice files change: it forces browsers to fetch the new files together */
+const BUILD='20261110c';/* bump when voice files change: it forces browsers to fetch the new files together */
 try{fetch('voice/index.json?v='+BUILD).then(r=>r.ok?r.json():null).then(j=>{if(j&&j.clips&&j.bundles)VC.idx=j}).catch(e=>{VC.err='index: '+e})}catch(e){}
 /* One shared <audio> element (works with the iPhone silent switch). It is "unlocked" by the first tap. */
 function vcEl(){try{if(!VC.el){VC.el=new Audio();VC.el.preload='auto';VC.el.setAttribute('playsinline','')}
@@ -4804,7 +4804,7 @@ function playPlace(sc,onExit,bl){
   const btns=opts.map(o=>{const b=el('button',{class:'topt',type:'button'},o.t);
    b.addEventListener('click',()=>{
     att++;RLOG.add(RSES,sc,{npcId:n.id,turnId:RLOG.turnId(sc,n,i),source:src,event:'answer',attemptNumber:att,selectedOptionId:['correct','A','B'][o.k],isCorrect:o.k===0,
-     responseTimeMs:Math.round(performance.now()-t0),retryRound:src==='retry_practice'?rRound:null});
+     responseTimeMs:Math.round(performance.now()-t0),retryRound:src==='retry_practice'?rRound:null,correctText:SH?tn.o[0]:undefined});
     if(!tried){tried=true;onFirst(o.k===0)}
     if(o.k===0){btns.forEach(x=>x.disabled=true);b.classList.add('good');fb.className='tfb good';{const op=tn.ok.split(' | ');if(op.length>1)fb.replaceChildren('Great! ✓ '+op[0],el('br'),op.slice(1).join(' | '));else fb.textContent='Great! ✓ '+tn.ok}nextBtn.hidden=false;nextBtn.focus();
      const ph=tn.o[0];if(!FREE&&!tn.dynd&&!SAVE.phrases.includes(ph)){SAVE.phrases.push(ph);persist()}}
@@ -4902,6 +4902,7 @@ function playPlace(sc,onExit,bl){
    if(!FREE&&TX.some(x=>x.shop===n.id))return;/* one payment per shop in the Guided Mission */
    cf.disabled=true;const tx={id:'tx'+Date.now().toString(36)+Math.random().toString(36).slice(2,6),shop:n.id,items:c.items,total:t,method,given:method==='cash'?given:t,change:method==='cash'?given-t:0,fin:false};
    TX.push(tx);dlg.ctx=tx;if(!FREE&&inG(n))runPick=n.id;saveTx();paintWal();
+   RLOG.add(RSES,sc,{source:'main_dialogue',event:'purchase',npcId:n.id,items:tx.items.map(x=>x.id+' x'+x.q).join('; '),total:t,payMethod:method,given:tx.given,change:tx.change,moneyLeft:FREE?undefined:SH.budget-shSpent()});
    toast(method==='qr'?'Payment confirmed in the game. · ยืนยันการจ่ายในเกมแล้ว':'Paid '+tx.given+' baht in the game. · จ่ายเงินในเกมแล้ว');dlg.i++;showTurn()});
   panel.replaceChildren(shHead(n),el('div',{class:'shpay'},
    el('div',{class:'tline'},el('p',{class:'ten'},"That's "+NW(t)+' baht. How would you like to pay?'),el('p',{class:'tth'},'ทั้งหมด '+t+' บาท จะจ่ายแบบไหน')),
@@ -5017,21 +5018,24 @@ let DREW=false;
    Each answer click is one event: source main_dialogue or retry_practice, attempt 1 = first attempt.
    The first session of a scene after the code is set is the baseline; later plays are kept separately.
    Hints are not logged (they appear automatically after a wrong answer). ===== */
-const RKEY='sanor-town-research-v1',RCV='ST-CNT-001 V1.1',RMIS={gate1:'M01'},RTP={gate1:'G1'};
+const RKEY='sanor-town-research-v1',RCV='ST-CNT-001 V1.1',RMIS={gate1:'M01',canteen:'M09'},RTP={gate1:'G1',canteen:'C'};
+/* 10 Nov (owner decision, RG-01 follow-up): the School Canteen Guided Mission (CR01 build) is logged too. Free Shopping and the Hub
+   practice modes are never logged. canteen adds correctText (its lines are built from the purchase) and one purchase event per shop. */
+const RCVS={gate1:RCV,canteen:'ST-CNT-025-CR01 CS-3'};
 let RS={pc:null,base:{},ev:[]};
 try{const r=JSON.parse(localStorage.getItem(RKEY)||'null');if(r&&Array.isArray(r.ev))RS=r}catch(e){}
 const rSave=()=>{try{localStorage.setItem(RKEY,JSON.stringify(RS))}catch(e){}};
 try{const q=new URLSearchParams(location.search).get('pc');
  if(q==='off'){RS.pc=null;rSave()}else if(q&&/^[A-Za-z0-9-]{2,24}$/.test(q)&&RS.pc!==q){RS.pc=q;rSave()}}catch(e){}
 const RLOG={
- on:sc=>!!(RS.pc&&RMIS[sc.id]),
+ on:sc=>!!(RS.pc&&RMIS[sc.id]&&!sc.free),
  turnId(sc,n,i){let k=0;for(const x of sc.npcs){if(x===n||x.id===n.id)break;k+=x.turns.length}return (RTP[sc.id]||sc.id)+'-'+String(k+i+1).padStart(2,'0')},
  start(sc){if(!RLOG.on(sc))return null;const key=RS.pc+'|'+sc.id,sid=Date.now().toString(36)+Math.random().toString(36).slice(2,6);
   const baseline=!RS.base[key];if(baseline){RS.base[key]=sid;rSave()}return {sid,baseline}},
  add(ses,sc,o){if(!ses||!RLOG.on(sc))return;if(RS.ev.length>=20000)return;
   RS.ev.push(Object.assign({participantCode:RS.pc,sessionId:ses.sid,baseline:ses.baseline,missionId:RMIS[sc.id],sceneId:sc.id,
-   ts:new Date().toISOString(),contentVersion:RCV,build:BUILD},o));rSave()},
- csv(){const cols=['participantCode','sessionId','baseline','missionId','sceneId','npcId','turnId','source','event','attemptNumber','selectedOptionId','isCorrect','responseTimeMs','retryRound','firstCorrect','firstTotal','ts','contentVersion','build'];
+   ts:new Date().toISOString(),contentVersion:RCVS[sc.id]||RCV,build:BUILD},o));rSave()},
+ csv(){const cols=['participantCode','sessionId','baseline','missionId','sceneId','npcId','turnId','source','event','attemptNumber','selectedOptionId','isCorrect','responseTimeMs','retryRound','firstCorrect','firstTotal','ts','contentVersion','build','correctText','items','total','payMethod','given','change','moneyLeft'];
   const q=v=>v==null?'':(/[",\n]/.test(String(v))?'"'+String(v).replace(/"/g,'""')+'"':String(v));
   return [cols.join(',')].concat(RS.ev.map(e=>cols.map(c=>q(e[c])).join(','))).join('\n')},
  download(){const b=new Blob(['﻿'+RLOG.csv()],{type:'text/csv'}),a=document.createElement('a');a.href=URL.createObjectURL(b);
