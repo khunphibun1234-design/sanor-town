@@ -1,6 +1,6 @@
 """town_smoke.py — open the app and every Sanor Town scene in a headless browser.
 
-Usage: python3 town_smoke.py URL [--scenes N]   (N = expected scene count, default 36)
+Usage: python3 town_smoke.py URL [--scenes N]   (N = expected scene count, default 62 = 36 original + 26 added since 28 Oct, counted 10 Nov)
 Prints one OK/FAIL line per check, then errs [...] (page errors). Exit 0 = all OK.
 Uses SwiftShader (software WebGL). This proves the code runs; it says nothing
 about speed or looks on a real phone.
@@ -10,7 +10,7 @@ from playwright.sync_api import sync_playwright
 
 def main():
     url = sys.argv[1]
-    want = int(sys.argv[sys.argv.index('--scenes') + 1]) if '--scenes' in sys.argv else 36
+    want = int(sys.argv[sys.argv.index('--scenes') + 1]) if '--scenes' in sys.argv else 62
     res, errs = [], []
     def check(name, ok, info=''):
         res.append(ok); print(('OK  ' if ok else 'FAIL'), name, info)
