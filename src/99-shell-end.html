@@ -1,0 +1,18 @@
+
+/* ============ START ============ */
+{const box=el('div',{class:'tinline'});$('#app').append(box);SanorTown.mount(box)}
+{const fb=document.getElementById('fbuild');if(fb)fb.textContent=BUILD}
+/* Visit counter in the footer (teacher, 3 Nov): GoatCounter, no cookies, no personal data. Only the total number of visits is counted;
+   game progress still stays on this device. Runs only on the live site (github.io), so tests and local copies are never counted.
+   GC_CODE = the teacher's GoatCounter code (<code>.goatcounter.com, setting "Allow adding visitor counts on your website" on). Empty = off. */
+const GC_CODE='sanortown';
+if(GC_CODE&&/\.github\.io$/.test(location.hostname)){try{
+ const gc=document.createElement('script');gc.async=true;gc.src='https://gc.zgo.at/count.js';gc.dataset.goatcounter='https://'+GC_CODE+'.goatcounter.com/count';document.head.append(gc);
+ const show=()=>fetch('https://'+GC_CODE+'.goatcounter.com/counter/TOTAL.json').then(r=>r.ok?r.json():null).then(j=>{const n=j&&j.count,el=document.getElementById('fcount');
+  if(n&&el){el.textContent=n;document.getElementById('fstat').hidden=false}}).catch(()=>{});
+ setTimeout(show,1500)}catch(e){}}
+/* offline support (task 9, 5 Nov): sw.js keeps the page and every picture/voice already opened, so the app still opens without Wi-Fi.
+   The page itself is always fetched fresh when online, so a new build shows up as before. */
+if('serviceWorker' in navigator&&/^https?:$/.test(location.protocol))addEventListener('load',()=>{try{navigator.serviceWorker.register('sw.js?b='+BUILD).catch(()=>{})}catch(e){}});
+</script>
+</body></html>
