@@ -23,8 +23,8 @@ with sync_playwright() as p:
         pg.locator('.sxnav button', has_text='Missions').first.click(); w(350)
     def open_core():
         missions(); pg.locator('[data-act=core-open]').click(); w()
-    def right(): pg.locator('.cm .topt[data-opt="0"]').click(); w()
-    def wrong(k=1): pg.locator(f'.cm .topt[data-opt="{k}"]').click(); w()
+    def right(): pg.locator('.cm .topt[data-opt$="-KEY"]').click(); w()
+    def wrong(k=1): pg.locator(f'.cm .topt[data-opt$="-D{k}"]').click(); w()
     def nxt(): pg.locator('.cm [data-act=next]').click(); w()
     def fresh():
         pg.goto(U); ready(); pg.evaluate("localStorage.clear()"); pg.reload(); ready()
@@ -75,11 +75,11 @@ with sync_playwright() as p:
     ck('03a N01 is learner-first: no NPC line before the learner chooses', bub() == [] and len(o) == 3 and 'You need an eraser. Pim has one. Ask to borrow it politely.' in pg.locator('.cmscene').inner_text(), bub())
     one = []
     def one_right(tag):
-        o = opts(); one.append(len(o) == 3 and sum(1 for x in o if x[0] == '0') == 1 and len({x[1] for x in o}) == 3)
+        o = opts(); one.append(len(o) == 3 and sum(1 for x in o if x[0].endswith('-KEY')) == 1 and len({x[1] for x in o}) == 3)
     one_right('N01')
     wrong(1); fb = pg.locator('.cm .tfb').inner_text()
     ck('06a wrong answer: "Not quite", WHY for that option, hint EN/TH', 'Not quite' in fb and 'This answer asks for the wrong item.' in fb and 'คำตอบนี้ขอของผิดชนิด' in fb and 'Look for the eraser and begin with a polite request.' in fb and 'ดูสิ่งของที่ต้องการ' in fb, fb)
-    ck('06b wrong answer does not finish the step; that option is disabled; retry allowed', cur() == 'N01' and rec()['run']['stages']['N01'] is False and pg.locator('.cm .topt[data-opt="1"]').is_disabled() and pg.locator('.cm [data-act=next]').count() == 0)
+    ck('06b wrong answer does not finish the step; that option is disabled; retry allowed', cur() == 'N01' and rec()['run']['stages']['N01'] is False and pg.locator('.cm .topt[data-opt$="-D1"]').is_disabled() and pg.locator('.cm [data-act=next]').count() == 0)
     wrong(2); fb = pg.locator('.cm .tfb').inner_text()
     ck('06c second wrong option has its own WHY', 'This answer states ownership, not a request.' in fb and 'คำตอบนี้บอกว่ามีของ ไม่ได้ขอยืม' in fb, fb)
     right(); fb = pg.locator('.cm .tfb').inner_text()
@@ -94,14 +94,14 @@ with sync_playwright() as p:
     ck('04a N02: Pim speaks "Sure. Here you are." (NPC line); learner options are the acknowledgement set', bb == [['pim', p4[0]]] and sorted(x[1] for x in o) == sorted(['Thank you.', 'May I borrow your ruler, please?', 'I have an eraser.']), [bb, o])
     ck('04b N02 prompt from decision L02', 'Pim gives you the eraser. What do you say?' in pg.locator('.cmact').inner_text() and 'พิมส่งยางลบให้ นักเรียนควรพูดว่าอะไร' in pg.locator('.cmact').inner_text())
     wrong(2); fb = pg.locator('.cm .tfb').inner_text()
-    ck('04c N02 wrong: WHY + hint', 'This answer states possession rather than thanking.' in fb and 'Thank Pim for helping you.' in fb and 'กล่าวขอบคุณพิมที่ช่วยเหลือ' in fb, fb)
+    ck('04c N02 wrong: WHY + hint', 'Not quite. ✗ This says you own an eraser; it does not thank Pim.' in fb and 'ประโยคนี้บอกว่าเธอมียางลบ ไม่ได้ขอบคุณพิม' in fb and 'This answer' not in fb and 'คำตอบนี้' not in fb and 'Thank Pim for helping you.' in fb and 'กล่าวขอบคุณพิมที่ช่วยเหลือ' in fb, fb)
     right(); ck('04d N02 right: learner says "Thank you." and OK text', bub()[-1] == ['you', 'Thank you.'] and 'You thanked Pim politely.' in pg.locator('.cm .tfb').inner_text())
     nxt(); seen.append(cur())
     bb = bub(); o = opts(); one_right('N02-R')
     ck('04e N02-R: role-reversal card; Pim asks for the ruler; learner is the responder', pg.locator('[data-role=reversal]').count() == 1 and bb == [['pim', 'May I borrow your ruler, please?']], bb)
-    ck('04f N02-R options: correct = "Sure. Here you are." (from legacy PREP 4), distractors per L03', [x[1] for x in o if x[0] == '0'] == [p4[0]] and sorted(x[1] for x in o if x[0] != '0') == sorted(['My ruler is blue.', 'May I borrow your ruler, please?']), o)
+    ck('04f N02-R options: correct = "Sure. Here you are." (from legacy PREP 4), distractors per L03', [x[1] for x in o if x[0].endswith('-KEY')] == [p4[0]] and sorted(x[1] for x in o if not x[0].endswith('-KEY')) == sorted(['My ruler is blue.', 'May I borrow your ruler, please?']), o)
     wrong(1); fb1 = pg.locator('.cm .tfb').inner_text(); wrong(2); fb2 = pg.locator('.cm .tfb').inner_text()
-    ck('04g N02-R WHY per option + hint', 'describes the ruler without offering it.' in fb1 and 'repeats the request instead of responding.' in fb2 and 'ตอบรับและส่งไม้บรรทัดที่พิมขอยืม' in fb2, [fb1, fb2])
+    ck('04g N02-R WHY per option + hint', 'This describes the ruler but does not offer it.' in fb1 and 'Pim is asking to borrow your ruler; this repeats her request instead of answering.' in fb2 and 'ตอบรับและส่งไม้บรรทัดที่พิมขอยืม' in fb2, [fb1, fb2])
     right(); ck('04h N02-R right: OK text', 'You offered the ruler politely.' in pg.locator('.cm .tfb').inner_text() and bub()[-1] == ['you', p4[0]])
     nxt(); seen.append(cur())
     # ---------- 5 N03 repetition trigger ----------
@@ -120,7 +120,7 @@ with sync_playwright() as p:
     ck('08a early exit (Escape) closes the mission, returns to Missions, keeps progress', pg.locator('.cm').count() == 0 and pg.locator('[data-core="CORE-M02"]').count() == 1 and r['run']['state'] == 'N03' and r['completion']['status'] == 'in_progress')
     ck('08b Missions card: In progress, 3 / 6, Continue', 'In progress' in pg.locator('[data-core="CORE-M02"]').inner_text() and '3 / 6' in pg.locator('[data-core="CORE-M02"]').inner_text() and 'Continue mission' in pg.locator('[data-core="CORE-M02"]').inner_text())
     pg.keyboard.press('Escape'); pg.reload(); ready(); open_core()
-    ck('09a after refresh the intro offers Continue (Repeat)', pg.locator('[data-act=resume]').count() == 1 and 'Repeat' in pg.locator('[data-act=resume]').inner_text())
+    ck('09a after refresh the intro offers Continue (Ask to repeat)', pg.locator('[data-act=resume]').count() == 1 and 'Ask to repeat' in pg.locator('[data-act=resume]').inner_text())
     pg.locator('[data-act=resume]').click(); w()
     ck('09b resume opens N03 at its start (page number hidden again)', cur() == 'N03' and bub() == [['teacher', 'Please open your book to page ……']] and rec()['run']['first'].get('N03') == 0, [cur(), bub()])
     right(); nxt(); pg.locator('[data-act=say]').click(); w(); seen.append(cur())
@@ -148,7 +148,7 @@ with sync_playwright() as p:
     ck('03e exactly one correct option and 3 distinct options at every choose step', all(one) and len(one) == 5 + 1, one)
     # ---------- completion summary ----------
     r = rec(); t = pg.locator('.cm').inner_text()
-    ck('11a completion saved once: status completed, count 1, runs 1', r['completion']['status'] == 'completed' and r['completion']['count'] == 1 and r['runs'] == 1 and r['contentVersion'] == 'M02-LOCAL-PROTOTYPE-V1.0', r['completion'])
+    ck('11a completion saved once: status completed, count 1, runs 1', r['completion']['status'] == 'completed' and r['completion']['count'] == 1 and r['runs'] == 1 and r['contentVersion'] == 'M02-LOCAL-PROTOTYPE-V1.1', r['completion'])
     ck('11b summary A practice score: first try 2 / 6 (N01, N02, N02-R, N03 missed on purpose), bonus skipped and not counted', 'First try right: 2 / 6' in t and 'skipped' in t and rec()['last']['firstTry'] == 2, rec().get('last'))
     ck('11c summary B mission completed; C speaking "Not assessed in the game"', 'Practice flow completed' in t and 'Not assessed in the game' in t and 'ครูเป็นผู้ประเมินการพูด' in t)
     ck('11d no "Speaking Passed" / CEFR claim anywhere on the summary', 'passed' not in t.lower() and 'cefr' not in t.lower() and 'a2' not in t.lower())
@@ -177,7 +177,7 @@ with sync_playwright() as p:
     ck('13c localStorage keys: only the new core key was added', CK in keys and RK not in keys, keys)
     # ---------- guards against a changed save ----------
     fresh()
-    bad = {"schemaVersion": 1, "missions": {"CORE-M02": {"curriculumMissionId": "CORE-M02", "sceneId": "class85", "contentVersion": "M02-LOCAL-PROTOTYPE-V1.0", "runs": 0,
+    bad = {"schemaVersion": 1, "missions": {"CORE-M02": {"curriculumMissionId": "CORE-M02", "sceneId": "class85", "contentVersion": "M02-LOCAL-PROTOTYPE-V1.1", "runs": 0,
            "run": {"state": "N06", "stages": {"N01": True, "N02": False, "N02-R": False, "N03": False, "N04": False, "N05": "pending", "N06": False}, "first": {}, "attempts": 0, "wrong": 0},
            "completion": {"status": "in_progress", "completedAt": None, "count": 0}, "last": None, "assessment": None}}}
     pg.evaluate("([k,v])=>localStorage.setItem(k,v)", [CK, json.dumps(bad)]); pg.reload(); ready(); open_core(); pg.locator('[data-act=resume]').click(); w()
@@ -221,6 +221,79 @@ with sync_playwright() as p:
     for s in ORDER: do(s)
     ext = [u for u in reqs if not u.startswith(U.rsplit('/', 1)[0])]
     ck('14b no outside request while the mission runs (same-origin files only)', not ext, ext[:3])
+    # ---------- 17 L-02: hint / why / ok follow the stable option ID in every screen order (ST-DEV-001 STEP 02) ----------
+    spec = pg.evaluate("()=>{const M=SanorTown.core.mission,o={};for(const s of M.order){const b=M.states[s].find(x=>x.k==='choose');o[s]={id:b.id,ans:b.ans,why:b.why,ok:b.ok,hint:b.hint}}return o}")
+    ck('17a every choose step has 3 distinct stable option IDs, one answer ID, and a WHY for each other ID',
+       all(len(set(v['id'])) == 3 and v['ans'] in v['id'] and sorted(v['why']) == sorted(x for x in v['id'] if x != v['ans']) for v in spec.values()), {k: v['id'] for k, v in spec.items()})
+    def jump(step):
+        st = {}
+        for x in ORDER: st[x] = 'pending' if x == 'N05' else False
+        for x in ORDER[:ORDER.index(step)]: st[x] = 'done' if x == 'N05' else True
+        d = {"schemaVersion": 1, "missions": {"CORE-M02": {"curriculumMissionId": "CORE-M02", "sceneId": "class85", "contentVersion": pg.evaluate("()=>SanorTown.core.mission.contentVersion"),
+             "run": {"state": step, "stages": st, "first": {}, "attempts": 0, "wrong": 0, "startedAt": 1}, "runs": 0, "completion": {"status": "in_progress", "completedAt": None, "count": 0}, "last": None, "assessment": None, "savedAt": None}}}
+        pg.evaluate("([k,v])=>localStorage.setItem(k,v)", [CK, json.dumps(d)])
+        if pg.locator('[data-act=core-open]').count() == 0: missions()
+        pg.locator('[data-act=core-open]').click(); w(); pg.locator('[data-act=resume]').click(); w()
+        if step == 'N05': pg.locator('[data-act=bonus]').click(); w()
+    fbt = lambda: pg.locator('.cm .tfb').inner_text()
+    pg.keyboard.press('Escape'); w(200)
+    for step in ORDER:
+        v = spec[step]; seen_o = {}; bad = []; d1, d2 = [x for x in v['id'] if x != v['ans']]
+        for n in range(90):
+            if len(seen_o) == 6: break
+            jump(step); order = tuple(x[0] for x in opts())
+            if cur() != step or sorted(order) != sorted(v['id']): bad.append(('open', cur(), order)); break
+            if order not in seen_o:
+                seen_o[order] = 1
+                for wid in ((d1, d2) if len(seen_o) % 2 else (d2, d1)):
+                    pg.locator(f'.cm .topt[data-opt="{wid}"]').click(); w(120); f = fbt()
+                    other = d2 if wid == d1 else d1
+                    if not (v['why'][wid][0] in f and v['hint'][0] in f and v['why'][other][0] not in f and pg.locator(f'.cm .topt[data-opt="{wid}"]').is_disabled() and pg.locator('.cm [data-act=next]').count() == 0): bad.append((order, wid, f[:60]))
+                pg.locator(f'.cm .topt[data-opt="{v["ans"]}"]').click(); w(120); f = fbt(); r = rec()['run']
+                if not (v['ok'][0] in f and pg.locator('.cm [data-act=next]').count() == 1 and r['first'].get(step) == 0 and r['wrong'] == 2 and r['stages'][step] in (False, 'pending')): bad.append((order, 'KEY', f[:60], r['first']))
+            pg.keyboard.press('Escape'); w(150)
+        pos = {o.index(v['ans']) for o in seen_o}
+        ck('17b %s: all 6 screen orders seen; WHY, hint and OK matched the option ID in each (answer shown at positions %s)' % (step, sorted(pos)), len(seen_o) == 6 and not bad and pos == {0, 1, 2}, [len(seen_o), bad[:2]])
+    # first-try credit follows the ID as well: answer chosen first, wherever it is on screen
+    fi = []
+    for n in range(6):
+        jump('N01'); order = [x[0] for x in opts()]; pg.locator('.cm .topt[data-opt="N01-KEY"]').click(); w(120); fi.append((order.index('N01-KEY'), rec()['run']['first'].get('N01'))); pg.keyboard.press('Escape'); w(150)
+    ck('17c first-try credit is given for the answer ID at any screen position', all(x[1] == 1 for x in fi), fi)
+    pg.evaluate("k=>localStorage.removeItem(k)", CK)
+    # ---------- 18 V1.1 content (ST-DEV-002): L-01 exact Thai WHY, L-04 step labels, version change ----------
+    L01 = {'N02-D1': ['This asks to borrow another item instead of thanking Pim.', 'ประโยคนี้เป็นการขอยืมของอีกชิ้น ไม่ใช่การกล่าวขอบคุณพิม'],
+           'N02-D2': ['This says you own an eraser; it does not thank Pim.', 'ประโยคนี้บอกว่าเธอมียางลบ ไม่ได้ขอบคุณพิม'],
+           'N02-R-D1': ['This describes the ruler but does not offer it.', 'ประโยคนี้บอกสีของไม้บรรทัด แต่ไม่ได้ยื่นให้พิมยืม'],
+           'N02-R-D2': ['Pim is asking to borrow your ruler; this repeats her request instead of answering.', 'พิมกำลังขอยืมไม้บรรทัดของเธอ ประโยคนี้ถามขอยืมกลับแทนที่จะตอบรับ']}
+    ok18 = []
+    for oid, (en, th) in L01.items():
+        step = oid.rsplit('-', 1)[0]; jump(step); pg.locator(f'.cm .topt[data-opt="{oid}"]').click(); w(120); f = fbt()
+        ok18.append(('Not quite. ✗ ' + en) in f and th in f and 'This answer' not in f and 'คำตอบนี้' not in f)
+        pg.keyboard.press('Escape'); w(150)
+    ck('18a N02/N02-R: each wrong option ID shows its exact EN/TH WHY from CHAT 03 QA section 4, no "This answer" prefix', all(ok18) and len(ok18) == 4, ok18)
+    empty = pg.evaluate("()=>{const M=SanorTown.core.mission,o=[];for(const s of M.order)for(const b of M.states[s])if(b.k==='choose')for(const [k,v] of Object.entries(b.why))if(!v[0]||!v[1])o.push(k);return o}")
+    ck('18b no WHY in any step has an empty English or Thai text', empty == [], empty)
+    labs = pg.evaluate("()=>SanorTown.core.mission.label")
+    want = {'N01': ['Ask to borrow', 'ขออนุญาตยืม'], 'N02': ['Say thank you', 'กล่าวขอบคุณ'], 'N02-R': ['Swap roles', 'สลับบทบาท'], 'N03': ['Ask to repeat', 'ขอให้พูดซ้ำ'],
+            'N04': ['Ask for help', 'ขอความช่วยเหลือ'], 'N05': ['Optional permission', 'ภารกิจเสริม: ขออนุญาต'], 'N06': ['Close politely', 'กล่าวขอบคุณและจบบทสนทนา']}
+    jump('N01'); bar = pg.evaluate("()=>[...document.querySelectorAll('.cmprog li small')].map(e=>e.textContent)")
+    ck('18c step labels equal CHAT 03 QA section 7 and are shown on the progress bar', labs == want and bar == [want[s][0] for s in ORDER], [labs == want, bar])
+    pg.keyboard.press('Escape'); w(150)
+    ck('18d contentVersion is M02-LOCAL-PROTOTYPE-V1.1', pg.evaluate("()=>SanorTown.core.mission.contentVersion") == 'M02-LOCAL-PROTOTYPE-V1.1')
+    v10 = {"schemaVersion": 1, "missions": {"CORE-M02": {"curriculumMissionId": "CORE-M02", "sceneId": "class85", "contentVersion": "M02-LOCAL-PROTOTYPE-V1.0", "runs": 2,
+           "run": {"state": "N03", "stages": {"N01": True, "N02": True, "N02-R": True, "N03": False, "N04": False, "N05": "pending", "N06": False}, "first": {"N01": 1}, "attempts": 3, "wrong": 0, "startedAt": 1},
+           "completion": {"status": "completed", "completedAt": "2026-11-11T08:00:00.000Z", "count": 1}, "last": {"firstTry": 6, "items": 6}, "assessment": None, "savedAt": None}}}
+    pg.evaluate("([k,v])=>localStorage.setItem(k,v)", [CK, json.dumps(v10)]); pg.reload(); ready()
+    st = pg.evaluate("()=>SanorTown.core.status()"); r = rec()
+    ck('18e a V1.0 save (completed, run at N03): run restarts, completion date, count, runs and last result kept, version becomes V1.1',
+       st['inRun'] is False and st['state'] is None and st['status'] == 'completed' and st['completedAt'] == '2026-11-11T08:00:00.000Z' and st['count'] == 1 and st['runs'] == 2 and st['last'] == {"firstTry": 6, "items": 6} and st['contentVersion'] == 'M02-LOCAL-PROTOTYPE-V1.1', st)
+    # the stored record is rewritten at the next save (Start): the V1.0 run is gone, completion kept
+    if pg.locator('[data-act=core-open]').count() == 0: missions()
+    pg.locator('[data-act=core-open]').click(); w(); ck('18f V1.0 save: intro offers Play again, not Continue', pg.locator('[data-act=resume]').count() == 0 and 'Play again' in pg.locator('[data-act=start]').inner_text())
+    pg.locator('[data-act=start]').click(); w(); r = rec()
+    ck('18g after Start the stored record is V1.1 with a new run at PREP; completion and run count kept', r['contentVersion'] == 'M02-LOCAL-PROTOTYPE-V1.1' and r['run']['state'] == 'PREP' and r['completion'] == v10['missions']['CORE-M02']['completion'] and r['runs'] == 2, [r.get('contentVersion'), r.get('run', {}).get('state'), r.get('completion')])
+    pg.keyboard.press('Escape'); w(150)
+    pg.evaluate("k=>localStorage.removeItem(k)", CK)
     ck('no page errors', not errs, errs[:2])
     b.close()
 print('%d / %d PASS' % (sum(res), len(res)))
