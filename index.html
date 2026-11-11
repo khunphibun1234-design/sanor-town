@@ -689,6 +689,20 @@ body:has(.sxnav){padding-bottom:calc(84px + env(safe-area-inset-bottom,0px))}
 .mrfut{list-style:none;margin:0;padding:0;display:grid;gap:6px}
 .mrfut li{display:flex;align-items:center;gap:10px;min-height:44px;padding:8px 12px;border-radius:12px;border:1px dashed #CBD5E1;color:#64748B;background:#F8FAFC}
 .mrfut li b{color:#475569;font-size:.9rem;display:block}.mrfut li small{font-size:.78rem}.mrfut li .mrtag{background:#EEF2F7;color:#64748B}
+/* CORE-M02 local prototype (11 Nov): practice mission panel */
+.cm{max-width:480px;max-height:92vh}.cmb{display:grid;gap:10px}.cmhead{align-items:flex-start}.cmhead h2{margin:0;font-size:1.25rem}.cmhead>div{flex:1;min-width:0}
+.cmtag{display:inline-block;font:700 .68rem/1 sans-serif;letter-spacing:.02em;padding:4px 8px;border-radius:999px;background:#FEF3C7;color:#92400E;margin-bottom:4px}.cmsub{display:block;color:#64748B;font-size:.82rem}
+.cmen{display:block;font-weight:700}.cmth{display:block;color:#64748B;font-size:.85rem;font-weight:400}
+.cmcard{border:2px solid #DCE7FF;background:#F4F8FF;border-radius:14px;padding:10px 12px;display:grid;gap:4px}.cmcard p{margin:0}.cmk{font-size:.78rem;color:#1E40AF;text-transform:uppercase;letter-spacing:.03em}.cmk .th{text-transform:none;margin-left:6px;color:#64748B;font-weight:400}
+.cmscene{background:#FFFBEB;border-color:#FDE68A}.cmrole{background:#F5F3FF;border-color:#DDD6FE}
+.cmsteps{margin:0;padding-left:20px;display:grid;gap:2px}.cmsteps li b{margin-right:6px}.cmsteps li small{color:#64748B}
+.cmprog{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(7,1fr);gap:2px;text-align:center}.cmprog li{display:grid;justify-items:center;gap:2px;min-width:0}.cmprog small{font-size:.62rem;color:#64748B;line-height:1.1;overflow-wrap:anywhere}
+.cmdot{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font:700 .78rem/1 sans-serif;background:#E2E8F0;color:#475569}.cmprog li.on .cmdot{background:#16A34A;color:#fff}.cmprog li.skip .cmdot{background:#CBD5E1;color:#475569}.cmprog li.cur .cmdot{outline:3px solid #2563EB;outline-offset:1px;background:#DBEAFE;color:#1E3A8A}.cmprog li.cur small{color:#1E3A8A;font-weight:700}
+.cmlog{display:grid;gap:8px}.cmbub{border-radius:14px;padding:8px 12px;max-width:92%;border:1.5px solid #E2E8F0;background:#fff;display:grid;gap:2px}.cmbub p{margin:0}.cmbub.you{justify-self:end;background:#ECFDF5;border-color:#A7F3D0}.cmbub.npc{justify-self:start}
+.cmbub.masked{border-style:dashed}.cmbub.repeat{border-color:#2563EB;background:#EFF6FF}.cmwho{display:flex;align-items:center;gap:6px;font-size:.8rem;color:#475569}.cmwho small{color:#64748B}.cmwho .tpic{width:34px;height:34px;margin-right:0}.cmbub .tsay{justify-self:start;margin-top:4px}
+.cmact{display:grid;gap:8px}.cmact .hint{margin:0}.cmact .topts{display:grid;gap:8px}.cm .topt.ok{border-color:#16A34A;background:#F0FDF4}.cm .topt.no{opacity:.55}.cmsay{font-weight:700}.cmhint{margin-top:4px}
+.cmpreps{list-style:none;margin:0;padding:0;display:grid;gap:8px}.cmprep{display:flex;align-items:center;gap:10px;border:1.5px solid #E2E8F0;border-radius:12px;padding:8px 10px;background:#fff}.cmprep>div{flex:1;min-width:0}.cmopt{color:#92400E;font-size:.72rem}
+.cmaud{margin:0;font-size:.78rem;color:#64748B}.cmnav{gap:8px}.cmnav .btn{flex:1}.cmgo{width:100%}.cmdone{margin:0;font-weight:700;color:#166534}.cmbig{font-weight:800;font-size:1.05rem}.cmmr{background:#FFFDF5;border-color:#FDE68A}
 .mrxp{display:flex;align-items:center;gap:12px;padding:14px;border-radius:16px;background:linear-gradient(135deg,#EEF4FF,#F0FDF4);border:2px solid #DCE7FF}
 .mrxp b{font:800 2rem/1 'Mitr',var(--display);color:#1E40AF;font-variant-numeric:tabular-nums}.mrxp span{color:#14306E;font-weight:600}
 .mrbadges{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px}
@@ -967,7 +981,7 @@ function vcKey(text,slow){const s=(slow?'s|':'n|')+String(text).replace(/\s+/g,'
   for(let i=0;i<s.length;i++){const c=s.charCodeAt(i);h1=Math.imul(h1^c,2654435761);h2=Math.imul(h2^c,1597334677)}
   h1=Math.imul(h1^(h1>>>16),2246822507)^Math.imul(h2^(h2>>>13),3266489909);h2=Math.imul(h2^(h2>>>16),2246822507)^Math.imul(h1^(h1>>>13),3266489909);
   return(4294967296*(2097151&h2)+(h1>>>0)).toString(16)}
-const BUILD='20261110f';/* bump when voice files change: it forces browsers to fetch the new files together */
+const BUILD='20261111a';/* bump when voice files change: it forces browsers to fetch the new files together */
 try{fetch('voice/index.json?v='+BUILD).then(r=>r.ok?r.json():null).then(j=>{if(j&&j.clips&&j.bundles)VC.idx=j}).catch(e=>{VC.err='index: '+e})}catch(e){}
 /* One shared <audio> element (works with the iPhone silent switch). It is "unlocked" by the first tap. */
 function vcEl(){try{if(!VC.el){VC.el=new Audio();VC.el.preload='auto';VC.el.setAttribute('playsinline','')}
@@ -4626,6 +4640,196 @@ function hubAuto(sc){const T=(a,b)=>{const n=sc.npcs[a-1];return n&&n.turns[b-1]
   .map(x=>['R',x.n.name+': “'+x.t.npc+'”',x.t.th,x.t.o,x.t.why]);
  const write=P.map(p=>p[0]).filter(s=>{const w=s.split(' ').length;return w>=3&&w<=9}).slice(0,4).map(s=>({t:'order',q:'Put the words in order.',th:'เรียงคำให้เป็นประโยค',w:s.split(' ')}));
  return {auto:true,title:null,words,listen,quiz:[...mean,...reply],parts:{M:['Meaning','ความหมาย'],R:['Replies','การตอบโต้']},write,soon:['read']}}
+/* ===== CORE-M02 "Help Me in Class!" — LOCAL PROTOTYPE practice mission (ST-CORE-002, 11 Nov 2026). NOT DEPLOYED / NOT RESEARCH-READY.
+   Authority: owner dispatch LOCAL IMPLEMENTATION ONLY (handover V1.0 file 07). Content trace: CHAT 03 Script Revised Candidate V1.1 (file 01)
+   + the four local prototype decisions D-M02-L01…L04 (file 06). Nothing here is final approved content or a speaking assessment.
+   - A separate mission layer: the class85 scene, its 12 NPC turns, its 6 PREP lines, stars and Hub are not touched.
+   - Own storage key (below). It never writes sanor-town-app-v1, sanor-town-rewards-v1 or sanor-town-research-v1.
+   - No XP, coins or badges. No research logging (RLOG is never called). No microphone, no recording.
+   - "Sure. Here you are." is not stored again: it is read from the legacy PREP line (PREP.class85[3], called M02-PREP-04 in the documents).
+   - WHY texts in the documents name options by letter (B…, C…). Options are shuffled on screen, so the letter is replaced by "This answer" / "คำตอบนี้". */
+const CORE_KEY='sanor-town-core-missions-v1',CORE_SCHEMA=1;
+const CM_P4=()=>PREP.class85[3];/* shared content reference: M02-PREP-04 */
+const CORE_M02={id:'CORE-M02',sceneId:'class85',contentVersion:'M02-LOCAL-PROTOTYPE-V1.0',name:'Help Me in Class!',
+ order:['N01','N02','N02-R','N03','N04','N05','N06'],optional:['N05'],
+ /* short step labels on the progress bar (interface words, not dialogue) */
+ label:{N01:['Ask','ขอยืม'],N02:['Respond','ตอบรับ'],'N02-R':['Swap roles','สลับบทบาท'],N03:['Repeat','ขอให้พูดซ้ำ'],N04:['Help','ขอให้ช่วย'],N05:['Bonus','เสริม'],N06:['Thanks','ขอบคุณ']},
+ /* PREP for this mission: the six M02-V2 candidates (file 01, section 2). V2-02 is the legacy line by reference. */
+ prep:[{id:'M02-V2-01',en:'May I borrow your eraser, please?',th:'ขอยืมยางลบของเธอได้ไหม'},
+  {id:'M02-V2-02',ref:true},
+  {id:'M02-V2-03',en:'Could you say that again, please?',th:'ช่วยพูดอีกครั้งได้ไหมครับ/คะ'},
+  {id:'M02-V2-04',en:'Could you help me with this word, please?',th:'ช่วยฉันเรื่องคำนี้ได้ไหมครับ/คะ'},
+  {id:'M02-V2-05',en:'May I go to the board, please?',th:'ขออนุญาตไปที่กระดานได้ไหมครับ/คะ',optional:true},
+  {id:'M02-V2-06',en:'Thank you for your help.',th:'ขอบคุณที่ช่วยเหลือ'}],
+ /* beats: scene = situation card · npc = NPC line · choose = pick 1 of 3 (first is right; shuffled on screen) · say = one learner line · any = every option is acceptable */
+ states:{
+  N01:[{k:'scene',en:'You need an eraser. Pim has one. Ask to borrow it politely.',th:'นักเรียนต้องการใช้ยางลบ พิมมียางลบอยู่ ให้ขอยืมจากพิมอย่างสุภาพ'},/* D-M02-L01 */
+   {k:'choose',to:'pim',o:['May I borrow your eraser, please?','May I borrow your ruler, please?','I have an eraser.'],
+    hint:['Look for the eraser and begin with a polite request.','ดูสิ่งของที่ต้องการและเริ่มคำขอสุภาพ'],
+    why:[['asks for the wrong item.','ขอของผิดชนิด'],['states ownership, not a request.','บอกว่ามีของ ไม่ได้ขอยืม']],
+    ok:['Good. You asked Pim for an eraser politely.','ดีมาก ขอ Pim ยืมยางลบได้สุภาพ']}],
+  N02:[{k:'npc',who:'pim',ref:true},/* Pim's own line (D-M02-L02): never counted as the learner's */
+   {k:'choose',to:'pim',prompt:['Pim gives you the eraser. What do you say?','พิมส่งยางลบให้ นักเรียนควรพูดว่าอะไร'],o:['Thank you.','May I borrow your ruler, please?','I have an eraser.'],
+    hint:['Thank Pim for helping you.','กล่าวขอบคุณพิมที่ช่วยเหลือ'],
+    why:[['starts a different request.',''],['states possession rather than thanking.','']],
+    ok:['You thanked Pim politely.','นักเรียนกล่าวขอบคุณพิมอย่างสุภาพ']}],
+  'N02-R':[{k:'role'},{k:'npc',who:'pim',en:'May I borrow your ruler, please?',th:'ขอยืมไม้บรรทัดของเธอได้ไหม'},/* D-M02-L03 */
+   {k:'choose',to:'pim',o:[{ref:true},'My ruler is blue.','May I borrow your ruler, please?'],
+    hint:['Offer the ruler Pim asked to borrow.','ตอบรับและส่งไม้บรรทัดที่พิมขอยืม'],
+    why:[['describes the ruler without offering it.',''],['repeats the request instead of responding.','']],
+    ok:['You offered the ruler politely.','นักเรียนตอบรับและให้ยืมไม้บรรทัดอย่างสุภาพ']}],
+  N03:[{k:'scene',en:"Student did not hear teacher's page number.",th:'นักเรียนฟังเลขหน้าไม่ทัน'},
+   /* controlled missed-page-number cue: the page number is hidden until the learner asks for repetition */
+   {k:'npc',who:'teacher',en:'Please open your book to page twenty-five.',th:'กรุณาเปิดหนังสือหน้า 25',mask:['Please open your book to page ……','กรุณาเปิดหนังสือหน้า ……'],sayAs:'Please open your book to page'},
+   {k:'choose',to:'teacher',o:['Could you say that again, please?','Could you give me an eraser, please?','I know the answer.'],
+    hint:['Ask for repetition, then listen for the repeated page number.','ขอให้พูดซ้ำและฟังเลขหน้าอีกครั้ง'],
+    why:[['requests an item.','ขอของ'],['does not repair misunderstanding.','ไม่ขอให้พูดซ้ำ']],
+    ok:['Good. The teacher repeats “Page twenty-five,” and you acknowledge.','ดีมาก ครูพูดซ้ำว่า หน้า 25 และนักเรียนตอบรับ']},
+   {k:'npc',who:'teacher',en:'Page twenty-five.',th:'หน้า 25',repeat:true},
+   {k:'say',to:'teacher',en:'OK.',th:'ครับ/ค่ะ'}],
+  N04:[{k:'scene',en:'Student needs the meaning of “library.”',th:'นักเรียนไม่เข้าใจคำว่า library'},
+   {k:'choose',to:'teacher',o:['Could you help me with this word, please?','Could you clean the room, please?','I finished my worksheet.'],
+    hint:['Ask help with the unfamiliar word and respond to the explanation.','ขอความช่วยเหลือเรื่องคำศัพท์และตอบรับคำอธิบาย'],
+    why:[['asks about cleaning.','ขอให้ทำความสะอาด'],['reports completion.','บอกว่างานเสร็จ']],
+    ok:['Good. The teacher explains the word, and you acknowledge.','ดีมาก ครูอธิบายคำศัพท์ และนักเรียนตอบรับ']},
+   {k:'npc',who:'teacher',en:'Of course. The word “library” means a place for books.',th:'ได้สิ คำว่า library คือสถานที่สำหรับหนังสือ'},
+   /* D-M02-L04: default acknowledgement + two acceptable practice variations; the step is not complete before one of them is given */
+   {k:'any',to:'teacher',o:['I see. Thank you, Mr. Krit.','I understand now. Thank you.','Thank you, I understand.'],th:'เข้าใจแล้วครับ/ค่ะ ขอบคุณครับ/ค่ะ คุณครู'}],
+  N05:[{k:'scene',en:'Student wishes to go to the board.',th:'นักเรียนต้องการไปที่กระดาน'},
+   {k:'choose',to:'teacher',o:['May I go to the board, please?','Can you clean the board, please?','I went to the board yesterday.'],
+    hint:['Ask permission for your own action.','ขออนุญาตการกระทำของตนเอง'],
+    why:[['requests another person to act.','ขอให้คนอื่นทำ'],['reports past action.','เล่าอดีต']],
+    ok:['Good. The teacher gives permission, and you thank them.','ดีมาก ครูอนุญาตและนักเรียนขอบคุณ']},
+   {k:'npc',who:'teacher',en:'Yes, you may.',th:'ได้สิ'},
+   {k:'say',to:'teacher',en:'Thank you.',th:'ขอบคุณ'}],
+  N06:[{k:'scene',en:'After receiving help.',th:'หลังได้รับความช่วยเหลือ'},
+   {k:'choose',to:'teacher',o:['Thank you for your help.','Help me now.','I need help again.'],
+    hint:['Thank the person who helped you.','ขอบคุณผู้ที่ช่วยเหลือ'],
+    why:[['is abrupt.','เป็นคำสั่งห้วน'],['makes a new request, not a closing.','เป็นคำขอใหม่ ไม่ใช่ปิดบท']],
+    ok:['Good. Your partner says, “You’re welcome.”','ดีมาก คู่สนทนาตอบว่า ด้วยความยินดี']},
+   {k:'npc',who:'teacher',en:"You're welcome.",th:'ด้วยความยินดี'}]}};
+/* ---- storage: one key, one record per curriculum mission; version-aware; never touches legacy keys ---- */
+function coreLoad(){try{const d=JSON.parse(localStorage.getItem(CORE_KEY)||'null');if(d&&d.schemaVersion===CORE_SCHEMA&&d.missions&&typeof d.missions==='object')return d}catch(e){}
+ return {schemaVersion:CORE_SCHEMA,missions:{}}}
+function coreSave(d){try{localStorage.setItem(CORE_KEY,JSON.stringify(d))}catch(e){}}
+const cmReq=()=>CORE_M02.order.filter(s=>!CORE_M02.optional.includes(s));
+function cmNewRun(){const stages={};CORE_M02.order.forEach(s=>stages[s]=CORE_M02.optional.includes(s)?'pending':false);
+ return {state:'INTRO',stages,first:{},attempts:0,wrong:0,startedAt:Date.now()}}
+/* the current step always follows from the finished steps, so a step cannot be skipped by changing the saved state */
+function cmFix(run){const st=run.stages||{};let cur='DONE';
+ for(const s of CORE_M02.order){const opt=CORE_M02.optional.includes(s);if(opt?(st[s]!=='done'&&st[s]!=='skipped'):st[s]!==true){cur=s;break}}
+ const any=CORE_M02.order.some(s=>st[s]===true||st[s]==='done'||st[s]==='skipped');
+ if(!any&&(run.state==='INTRO'||run.state==='PREP'))return run;
+ if(!any&&!CORE_M02.order.includes(run.state)){run.state='INTRO';return run}
+ run.state=cur;return run}
+function cmGet(){const d=coreLoad();let r=d.missions[CORE_M02.id];
+ if(!r||typeof r!=='object')r={curriculumMissionId:CORE_M02.id,sceneId:CORE_M02.sceneId,contentVersion:CORE_M02.contentVersion,run:null,runs:0,
+  completion:{status:'not_started',completedAt:null,count:0},last:null,assessment:null,savedAt:null};
+ if(r.contentVersion!==CORE_M02.contentVersion){r.contentVersion=CORE_M02.contentVersion;r.run=null}/* other content version: keep the completion record, restart the unfinished run */
+ if(r.run){if(!r.run.stages||!r.run.first)r.run=null;else cmFix(r.run)}
+ if(!r.completion)r.completion={status:'not_started',completedAt:null,count:0};
+ d.missions[CORE_M02.id]=r;return [d,r]}
+function cmPut(d,r){r.savedAt=new Date().toISOString();if(r.completion.status!=='completed')r.completion.status=r.run?'in_progress':'not_started';coreSave(d)}
+function coreStatus(){const [,r]=cmGet(),req=cmReq(),run=r.run,n=run?req.filter(s=>run.stages[s]===true).length:0;
+ return {status:r.completion.status,completedAt:r.completion.completedAt,count:r.completion.count,runs:r.runs,inRun:!!run&&run.state!=='DONE'&&run.state!=='INTRO',state:run?run.state:null,done:n,total:req.length,last:r.last,contentVersion:r.contentVersion}}
+/* ---- screen ---- */
+function coreOpen(onExit){const M=CORE_M02,sc=SCENES.find(x=>x.id===M.sceneId),opener=document.activeElement;let [D,R]=cmGet(),busy=false,closed=false,guard=0;
+ const hold=()=>busy||Date.now()<guard;/* a second quick tap (double tap) must not press a button on the screen that has just appeared */
+ const npcOf=id=>sc.npcs.find(n=>n.id===id),bi=(e,t)=>[el('b',{class:'cmen'},e),t?el('small',{class:'cmth'},t):null];
+ const close=(then)=>{if(closed)return;closed=true;stopSay();bg.remove();document.removeEventListener('keydown',onk);if(opener&&opener.focus)opener.focus();(then||onExit||(()=>{}))()};
+ const onk=e=>{if(e.key==='Escape')close()};
+ const x=el('button',{class:'tx cmx',type:'button','aria-label':'Exit mission (progress is saved)',onclick:()=>close()},'×');
+ const body=el('div',{class:'cmb'}),box=el('div',{class:'sheet card stack mrs cm',role:'dialog','aria-modal':'true','aria-label':'Core mission M02 '+M.name},body);
+ const bg=el('div',{class:'sheetbg'},box);document.body.append(bg);document.addEventListener('keydown',onk);
+ const put=()=>cmPut(D,R);
+ const head=(sub)=>el('div',{class:'row cmhead'},el('div',{},el('small',{class:'cmtag'},'CORE-M02 · practice prototype'),el('h2',{},M.name),sub?el('small',{class:'cmsub'},sub):null),x);
+ const prog=(cur)=>el('ol',{class:'cmprog','aria-label':'Mission steps'},M.order.map((s,i)=>{const v=R.run?R.run.stages[s]:false,done=v===true||v==='done',skip=v==='skipped';
+  return el('li',{class:(done?'on ':'')+(skip?'skip ':'')+(s===cur?'cur':''),'data-step':s,'aria-current':s===cur?'step':false},el('span',{class:'cmdot','aria-hidden':'true'},done?'✓':skip?'–':String(i+1)),
+   el('small',{},M.label[s][0]),el('span',{class:'vh'},' '+(done?'done':skip?'skipped':s===cur?'current':'not done')+(M.optional.includes(s)?', optional':'')))}));
+ const sayBtn=(t,l)=>el('button',{class:'tsay',type:'button','aria-label':'Listen: '+t,onclick:()=>say(t,.9)},l||'Listen⁣ฟัง');
+ const note=el('p',{class:'hubnote'},'Practice only. Choosing an answer is not a speaking score. No XP. Saved only on this phone.⁣ฝึกเท่านั้น การเลือกคำตอบไม่ใช่คะแนนการพูด ไม่มี XP บันทึกในเครื่องนี้เท่านั้น');
+ const show=(...k)=>{stopSay();busy=false;guard=Date.now()+350;body.replaceChildren(...k.flat().filter(Boolean));box.scrollTop=0;const f=body.querySelector('[data-focus]')||x;if(f&&f.focus)f.focus({preventScroll:true})};
+ /* intro: situation and goal come from the existing class85 mission card (by reference, not copied) */
+ function intro(){const m=MISSIONS[M.sceneId],st=coreStatus(),resume=R.run&&R.run.state!=='INTRO'&&R.run.state!=='DONE';
+  show(head('ห้องเรียน อาคาร 3 · ภารกิจหลักสูตร (รุ่นทดลอง)'),
+   el('div',{class:'cmcard'},el('b',{class:'cmk'},'Situation⁣สถานการณ์'),el('p',{},bi(m.sit[0],m.sit[1])),el('b',{class:'cmk'},'Goal⁣เป้าหมาย'),el('p',{},bi(m.goal[0],m.goal[1]))),
+   el('div',{class:'cmcard'},el('b',{class:'cmk'},'Steps⁣ขั้นตอน'),el('ol',{class:'cmsteps'},M.order.map(s=>el('li',{},el('b',{},M.label[s][0]),el('small',{},M.label[s][1]+(M.optional.includes(s)?' · optional · ไม่บังคับ':'')))))),
+   st.status==='completed'?el('p',{class:'cmdone','data-status':'completed'},'✓ Practice flow completed⁣ทำภารกิจฝึกครบแล้ว'):null,
+   note,
+   resume?el('button',{class:'btn cta cmgo','data-act':'resume','data-focus':'',type:'button',onclick:()=>{toast('Resumed · เล่นต่อจากที่ค้างไว้');route()}},'Continue ▶⁣เล่นต่อ ('+(M.label[R.run.state]?M.label[R.run.state][0]:'PREP')+')'):null,
+   el('button',{class:resume?'btn ghost':'btn cta cmgo','data-act':'start','data-focus':resume?false:'',type:'button',onclick:()=>{if(hold())return;busy=true;R.run=cmNewRun();R.run.state='PREP';put();prep()}},
+    st.status==='completed'?'Play again ▶⁣เล่นอีกครั้ง':resume?'Start over⁣เริ่มใหม่':'Start ▶⁣เริ่มภารกิจ'))}
+ function prep(){const rows=M.prep.map(p=>{const t=p.ref?CM_P4():[p.en,p.th];
+   return el('li',{class:'cmprep','data-prep':p.id},el('div',{},bi(t[0],t[1]),p.optional?el('small',{class:'cmopt'},'optional · ไม่บังคับ'):null),sayBtn(t[0]))});
+  show(head('PREP · ฝึกประโยคก่อนคุย'),el('p',{class:'mrlead'},'Listen and say each sentence aloud. Then start talking.⁣ฟังแล้วพูดตามทีละประโยค จากนั้นเริ่มคุย'),
+   el('ul',{class:'cmpreps'},rows),el('p',{class:'cmaud'},'Sound: your phone’s computer voice (English only). No sound? Read the sentence aloud.⁣เสียง: เสียงสังเคราะห์ของเครื่อง (ภาษาอังกฤษเท่านั้น) ถ้าไม่มีเสียง ให้อ่านออกเสียงเอง'),
+   el('div',{class:'row cmnav'},el('button',{class:'btn ghost','data-act':'prep-back',type:'button',onclick:()=>{R.run.state='INTRO';put();intro()}},'← Back⁣ย้อนกลับ'),
+    el('button',{class:'btn cta cmgo','data-act':'prep-next','data-focus':'',type:'button',onclick:()=>{if(hold())return;busy=true;R.run.state=M.order[0];put();route()}},'Start talking ▶⁣เริ่มคุย')))}
+ function route(){const run=R.run;if(!run)return intro();cmFix(run);
+  if(run.state==='INTRO')return intro();if(run.state==='PREP')return prep();if(run.state==='DONE')return summary();
+  if(M.optional.includes(run.state)&&run.stages[run.state]==='pending')return offer(run.state);
+  play(run.state)}
+ function offer(s){show(head('Bonus step · ขั้นเสริม'),prog(s),el('div',{class:'cmcard'},el('p',{},bi('Bonus: ask the teacher for permission. You can skip it.','ขั้นเสริม: ขออนุญาตครู ข้ามได้ ไม่มีผลต่อการทำภารกิจครบ'))),
+   el('div',{class:'row cmnav'},el('button',{class:'btn ghost','data-act':'skip',type:'button',onclick:()=>{if(hold())return;busy=true;R.run.stages[s]='skipped';put();route()}},'Skip →⁣ข้าม'),
+    el('button',{class:'btn cta cmgo','data-act':'bonus','data-focus':'',type:'button',onclick:()=>{if(hold())return;busy=true;play(s)}},'Try the bonus ▶⁣ลองทำ')))}
+ /* one step: NPC and learner lines build up as a short conversation; the step is saved as done only after its last line */
+ function play(s){const beats=M.states[s],run=R.run,log=el('div',{class:'cmlog','aria-live':'polite'}),act=el('div',{class:'cmact'}),top=[];let i=0;
+  const bubble=(who,en,th,cls)=>{const n=who==='you'?null:npcOf(who),p=n?npcPic(n):null;
+   log.append(el('div',{class:'cmbub '+(who==='you'?'you ':'npc ')+(cls||''),'data-speaker':who},
+    who==='you'?el('span',{class:'cmwho'},'You⁣นักเรียน'):el('span',{class:'cmwho'},p?el('img',{class:'tpic',src:'img/'+p+'.png',alt:'',width:'46',height:'46'}):null,el('b',{},n.name),el('small',{},String(n.role).split('⁣')[0])),
+    el('p',{class:'ten'},en),th?el('p',{class:'tth'},th):null));box.scrollTop=box.scrollHeight};
+  const finish=()=>{run.stages[s]=M.optional.includes(s)?'done':true;
+   if(cmFix(run).state==='DONE'){/* completion is recorded once; later runs only add practice attempts */
+    const req=cmReq(),ft=req.reduce((a,k)=>a+(run.first[k]===1?1:0),0);R.runs=(R.runs||0)+1;
+    R.last={firstTry:ft,items:req.length,wrong:run.wrong,attempts:run.attempts,bonus:run.stages.N05,at:new Date().toISOString(),contentVersion:M.contentVersion};
+    if(R.completion.status!=='completed'){R.completion.status='completed';R.completion.completedAt=R.last.at;R.completion.count=1}}
+   put();route()};
+  const next=()=>{stopSay();guard=Date.now()+350;act.replaceChildren();if(i>=beats.length)return finish();const b=beats[i];
+   if(b.k==='scene'){top.push(el('div',{class:'cmcard cmscene'},el('b',{class:'cmk'},'Situation⁣สถานการณ์'),el('p',{},bi(b.en,b.th))));i++;return next()}
+   if(b.k==='role'){top.push(el('div',{class:'cmcard cmrole','data-role':'reversal'},el('p',{},bi('Swap roles: now Pim asks, and you answer.','สลับบทบาท: ตอนนี้พิมเป็นฝ่ายขอยืม นักเรียนเป็นฝ่ายตอบ'))));i++;return next()}
+   if(b.k==='npc'){const t=b.ref?CM_P4():[b.en,b.th],shown=b.mask||t;bubble(b.who,shown[0],shown[1],(b.mask?'masked ':'')+(b.repeat?'repeat':''));
+    log.lastChild.append(sayBtn(b.sayAs||t[0]));i++;
+    if(i>=beats.length){act.replaceChildren(el('button',{class:'btn cta cmgo','data-act':'next','data-focus':'',type:'button',onclick:()=>{if(hold())return;busy=true;finish()}},'Next ▶⁣ต่อไป'));draw();return}
+    return next()}
+   if(b.k==='say'){act.replaceChildren(el('p',{class:'hint'},'Your turn. Say it aloud, then tap.⁣ตาของนักเรียน พูดออกเสียงแล้วแตะ'),
+     el('button',{class:'topt cmsay','data-act':'say','data-focus':'',type:'button',onclick:()=>{if(hold())return;busy=true;bubble('you',b.en,b.th);i++;busy=false;next()}},b.en,el('small',{class:'cmth'},b.th)));draw();return}
+   if(b.k==='any'){act.replaceChildren(el('p',{class:'hint'},'Your turn. Any of these is fine. Say it aloud, then tap.⁣ตาของนักเรียน ใช้ประโยคใดก็ได้ พูดออกเสียงแล้วแตะ'),b.th?el('p',{class:'cmth cmanyth'},b.th):null,
+     el('div',{class:'topts'},b.o.map(o=>el('button',{class:'topt','data-act':'any',type:'button',onclick:()=>{if(hold())return;busy=true;bubble('you',o,o===b.o[0]?b.th:'');i++;busy=false;next()}},o))));draw();return}
+   /* choose */
+   const opts=b.o.map((o,k)=>({t:typeof o==='string'?o:CM_P4()[0],k})),fb=el('p',{class:'tfb','aria-live':'polite'});let solved=false;
+   const btns=shuffle(opts.slice()).map(o=>{const bt=el('button',{class:'topt','data-opt':String(o.k),type:'button',onclick:()=>{if(solved||bt.disabled||hold())return;
+     run.attempts++;if(run.first[s]===undefined)run.first[s]=o.k===0?1:0;
+     if(o.k===0){solved=true;btns.forEach(z=>z.disabled=true);bt.classList.add('ok');bubble('you',o.t,'');put();
+      fb.className='tfb good';fb.replaceChildren(el('span',{class:'twhy'},'✓ '+b.ok[0]),b.ok[1]?el('span',{class:'thintl'},b.ok[1]):null);
+      act.append(el('button',{class:'btn cta cmgo','data-act':'next','data-focus':'',type:'button',onclick:()=>{if(hold())return;busy=true;i++;busy=false;next()}},'Next ▶⁣ต่อไป'));act.lastChild.focus({preventScroll:true})}
+     else{run.wrong++;bt.disabled=true;bt.classList.add('no');put();const w=b.why[o.k-1];fb.className='tfb';
+      fb.replaceChildren(el('span',{class:'twhy'},'Not quite. ✗ This answer '+w[0]),w[1]?el('span',{class:'thintl'},'คำตอบนี้'+w[1]):null,el('span',{class:'thintl cmhint'},'\u{1F4A1} '+b.hint[0]+(b.hint[1]?' · '+b.hint[1]:'')))}}},o.t);return bt});
+   act.replaceChildren(el('p',{class:'hint'},b.prompt?b.prompt[0]:'Your turn. What do you say?',el('small',{class:'cmth'},b.prompt?b.prompt[1]:'ตาของนักเรียน ควรพูดว่าอะไร')),el('div',{class:'topts'},btns),fb);draw()};
+  const draw=()=>{if(!body.contains(log))show(head(M.label[s][0]+' · '+M.label[s][1]+(M.optional.includes(s)?' (optional)':'')),prog(s),top,log,act)};
+  run.state=s;put();next()}
+ /* three separate results: practice score, mission completion, speaking (never judged by the game) */
+ function summary(){const st=coreStatus(),L=R.last||{firstTry:0,items:cmReq().length,wrong:0,bonus:'pending'};
+  show(head('Summary · สรุปผล'),prog(null),
+   el('div',{class:'cmcard cmsum','data-sum':'practice'},el('b',{class:'cmk'},'A · Practice score⁣คะแนนฝึก'),el('p',{class:'cmbig'},'First try right: '+L.firstTry+' / '+L.items),
+    el('small',{class:'cmth'},'ตอบถูกตั้งแต่ครั้งแรก '+L.firstTry+' จาก '+L.items+' ข้อ · Bonus step: '+(L.bonus==='done'?'done · ทำแล้ว':'skipped · ข้าม')+' (not counted · ไม่นับคะแนน)')),
+   el('div',{class:'cmcard cmsum','data-sum':'mission'},el('b',{class:'cmk'},'B · Mission⁣ภารกิจ'),el('p',{class:'cmbig'},'✓ Practice flow completed'),
+    el('small',{class:'cmth'},'ทำภารกิจฝึกครบทุกขั้นที่บังคับแล้ว · Runs · จำนวนรอบที่เล่น: '+st.runs+' · No XP or badge · ไม่มี XP หรือเหรียญ')),
+   el('div',{class:'cmcard cmsum','data-sum':'speaking'},el('b',{class:'cmk'},'C · Speaking⁣การพูด'),el('p',{class:'cmbig'},'Not assessed in the game'),
+    el('small',{class:'cmth'},'เกมไม่ได้ประเมินการพูด ครูเป็นผู้ประเมินการพูดจริงแยกต่างหาก')),
+   note,
+   el('button',{class:'btn cta cmgo','data-act':'missions','data-focus':'',type:'button',onclick:()=>close()},'Back to Missions⁣กลับหน้าภารกิจ'),
+   el('div',{class:'row cmnav'},el('button',{class:'btn ghost','data-act':'replay',type:'button',onclick:()=>{if(hold())return;busy=true;R.run=cmNewRun();put();intro()}},'Play again⁣เล่นอีกครั้ง'),
+    el('button',{class:'btn ghost','data-act':'map',type:'button',onclick:()=>close(()=>placesSheet(z=>goPlace(z,render)))},'School Map⁣แผนที่โรงเรียน')))}
+ if(R.run&&R.run.state==='DONE')summary();else intro();
+ return close}
+/* card on the Missions screen */
+function coreMissionCard(reopen){const st=coreStatus(),tag=st.status==='completed'?['Completed','จบแล้ว','ok']:st.status==='in_progress'?['In progress','กำลังทำ','']:['Not started','ยังไม่เริ่ม',''];
+ return el('section',{class:'mrcard cmmr','data-core':'CORE-M02','aria-label':'Core mission M02 '+CORE_M02.name+', '+st.done+' of '+st.total+' steps, '+tag[0]},
+  el('div',{class:'mrtop'},el('div',{},el('b',{},CORE_M02.name),el('small',{},'CORE-M02 · ห้องเรียน อาคาร 3 · รุ่นทดลอง (prototype)')),el('span',{class:'mrtag '+tag[2]},tag[0]+' · '+tag[1])),
+  el('div',{class:'mrbar',role:'progressbar','aria-valuemin':'0','aria-valuemax':String(st.total),'aria-valuenow':String(st.status==='completed'&&!st.inRun?st.total:st.done),'aria-label':'Steps done'},el('i',{style:'width:'+((st.status==='completed'&&!st.inRun?st.total:st.done)/st.total*100)+'%'})),
+  el('p',{class:'mrlead'},(st.status==='completed'&&!st.inRun?st.total:st.done)+' / '+st.total+' steps · ทำแล้ว '+(st.status==='completed'&&!st.inRun?st.total:st.done)+' จาก '+st.total+' ขั้น'),
+  el('p',{class:'mrnote'},'Practice only. No XP. Speaking is assessed by your teacher.⁣ฝึกเท่านั้น ไม่มี XP ครูเป็นผู้ประเมินการพูด'),
+  el('button',{class:'btn cta mrgo','data-act':'core-open',type:'button',onclick:reopen},st.status==='not_started'?'Start mission⁣เริ่มภารกิจ':st.inRun?'Continue mission⁣เล่นต่อ':'Open mission⁣เปิดภารกิจ'))}
 /* ===== ST-UX-007 CS-1: station Hub with learning modes (School Canteen first). Talk = the 3D scene (unchanged).
    Words / Listen / Speak / Read / Write / Quiz are practice: they never change stars, money or XP. Speak is practice only (no microphone, no score). ===== */
 const HUBMODES=[['talk','Talk','คุยภารกิจหลัก','\u{1F4AC}'],['words','Words','คำศัพท์','\u{1F524}'],['listen','Listen','ฟัง','\u{1F3A7}'],['speak','Speak','พูดตาม','\u{1F5E3}️'],
@@ -4812,9 +5016,10 @@ function missionsSheet(){const m=canteenMission(),sc=SCENES.find(x=>x.id==='cant
    (()=>{const r=el('p',{class:'mrrew'});const ic=el('span',{class:'mrbmini','aria-hidden':'true'});ic.innerHTML=RW_ART;r.append(ic,el('span',{},rewardLine));return r})(),
    m.state==='done'?el('p',{class:'mrnote'},'Playing again is fine, but it does not add more XP.⁣เล่นซ้ำได้ แต่จะไม่ได้ XP เพิ่ม'):null,
    sc?el('button',{class:'btn cta mrgo',type:'button',onclick:()=>{close();playPlace(sc,render)}},m.state==='new'?'Go to the Canteen⁣ไปโรงอาหาร':'Open the Canteen⁣เปิดโรงอาหาร'):null),
+  el('h3',{},'Core mission (prototype)⁣ภารกิจหลักสูตร (รุ่นทดลอง)'),coreMissionCard(()=>{close();coreOpen(missionsSheet)}),/* CORE-M02 local prototype (11 Nov): src/55-core-m02.js */
   el('h3',{},'More missions⁣ภารกิจอื่น'),
   el('ul',{class:'mrfut'},RW_FUTURE.map(([e,t])=>el('li',{},el('span',{},el('b',{},e),el('small',{},t)),el('span',{class:'mrtag'},'Future · เร็ว ๆ นี้')))),
-  el('p',{class:'mrnote'},'Only the Canteen mission is open now. Other missions are not available yet.⁣ตอนนี้เปิดเฉพาะภารกิจโรงอาหาร ภารกิจอื่นยังไม่เปิดใช้')])}
+  el('p',{class:'mrnote'},'Only the missions above are open now. Other missions are not available yet.⁣ตอนนี้เปิดเฉพาะภารกิจด้านบน ภารกิจอื่นยังไม่เปิดใช้')])}
 /* Profile (5 Nov, task 6 / 3D item 1): the player picks a boy or a girl character (renders of the teacher's Meshy models, img/avatar).
    Saved on this device only (its own key; nothing is sent anywhere). The pick shows on the home banner and on the win screen. */
 const AVKEY='sanor-town-avatar-v1',AVS={boy:['Boy','นักเรียนชาย'],girl:['Girl','นักเรียนหญิง']};
@@ -5497,7 +5702,8 @@ function openScene(id,bl){
  playPlace(sc,closeTown,bl);
  if(!TOWN){closeTown();return false}
  return true}
-return {open,openScene,mount,unmount,close:closeTown,get g(){return TOWN},SCENES,LOCKED,hubData:id=>{const s=SCENES.find(x=>x.id===id);return s&&hubOK(s)?(HUB[id]||hubAuto(s)):null},shop:SHOPI,rw:{read:rwRead,xp:rwXP,grant:rwGrant,canteen:canteenMission}};
+return {open,openScene,mount,unmount,close:closeTown,get g(){return TOWN},SCENES,LOCKED,hubData:id=>{const s=SCENES.find(x=>x.id===id);return s&&hubOK(s)?(HUB[id]||hubAuto(s)):null},shop:SHOPI,rw:{read:rwRead,xp:rwXP,grant:rwGrant,canteen:canteenMission},
+ core:{key:CORE_KEY,mission:CORE_M02,status:coreStatus,open:coreOpen,missions:missionsSheet}};/* CORE-M02 local prototype: read-only handles for the tests */
 })();
 
 /* ============ START ============ */
