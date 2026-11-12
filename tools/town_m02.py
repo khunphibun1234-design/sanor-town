@@ -150,7 +150,7 @@ with sync_playwright() as p:
     r = rec(); t = pg.locator('.cm').inner_text()
     ck('11a completion saved once: status completed, count 1, runs 1', r['completion']['status'] == 'completed' and r['completion']['count'] == 1 and r['runs'] == 1 and r['contentVersion'] == 'M02-LOCAL-PROTOTYPE-V1.2', r['completion'])
     ck('11b summary A practice score: first try 2 / 6 (N01, N02, N02-R, N03 missed on purpose), bonus skipped and not counted', 'First try right: 2 / 6' in t and 'skipped' in t and rec()['last']['firstTry'] == 2, rec().get('last'))
-    ck('11c summary B mission completed; C speaking "Not assessed in the game"', 'Practice flow completed' in t and 'Not assessed in the game' in t and 'ครูเป็นผู้ประเมินการพูด' in t)
+    ck('11c summary B mission completed; C speaking "Not assessed in the game"', '✓ Required practice steps completed' in t and 'Not assessed in the game' in t and 'ครูเป็นผู้ประเมินการพูด' in t)
     ck('11d no "Speaking Passed" / CEFR claim anywhere on the summary', 'passed' not in t.lower() and 'cefr' not in t.lower() and 'a2' not in t.lower())
     done_at = r['completion']['completedAt']
     # ---------- 10 replay ----------
@@ -349,6 +349,75 @@ with sync_playwright() as p:
         pg.keyboard.press('Escape'); w(150)
     pg.set_viewport_size(p.devices[DEV]['viewport']); w(150)
     ck('20c at 320/375/390/412/430 px every label word except "permission" fits its column (no forced mid-word break)', all(not b for _, b in fit), fit)
+    # ---------- 21 ST-DEV-003-CR01: seven UI copy rows, exact AFTER from CHAT 03 Decision Matrix V1.1 (Q01-Q12) ----------
+    DONE_EN, DONE_TH = '✓ Required practice steps completed', '✓ ทำกิจกรรมฝึกครบทุกขั้นตอนที่บังคับแล้ว'
+    def summary_with(bonus, ft=4):
+        st = {x: True for x in ORDER}; st['N05'] = bonus
+        d = {"schemaVersion": 1, "missions": {"CORE-M02": {"curriculumMissionId": "CORE-M02", "sceneId": "class85", "contentVersion": "M02-LOCAL-PROTOTYPE-V1.2",
+             "run": {"state": "DONE", "stages": st, "first": {}, "attempts": 9, "wrong": 2, "startedAt": 1}, "runs": 1,
+             "completion": {"status": "completed", "completedAt": "2026-11-12T09:00:00.000Z", "count": 1},
+             "last": {"firstTry": ft, "items": 6, "wrong": 2, "attempts": 9, "bonus": bonus, "at": "2026-11-12T09:00:00.000Z", "contentVersion": "M02-LOCAL-PROTOTYPE-V1.2"}, "assessment": None, "savedAt": None}}}
+        pg.evaluate("([k,v])=>localStorage.setItem(k,v)", [CK, json.dumps(d)]); pg.reload(); ready(); missions(); pg.locator('[data-act=core-open]').click(); w()
+        return pg.locator('.cm').inner_text()
+    xp0 = pg.evaluate("()=>SanorTown.rw.xp(SanorTown.rw.read())")
+    t = summary_with('skipped')
+    opt = pg.evaluate("()=>[...document.querySelectorAll('[data-cid=\"M02-UI-SUM-04\"]')].map(e=>[e.dataset.n05,e.querySelector('.cmen').textContent,e.querySelector('.cmth').textContent])")
+    ck('21a Q04 SUM-04 skipped: exactly one line, "Optional step: skipped (not counted)" / "ภารกิจเสริม: ข้าม (ไม่นับรวมในคะแนนฝึก)"; no "completed", no "Bonus"',
+       opt == [['skipped', 'Optional step: skipped (not counted)', 'ภารกิจเสริม: ข้าม (ไม่นับรวมในคะแนนฝึก)']] and 'Optional step: completed' not in t and 'Bonus' not in t and 'bonus' not in t, opt)
+    sum6 = pg.evaluate("()=>{const b=document.querySelector('[data-cid=\"M02-UI-SUM-06\"]');return [b.textContent,b.nextElementSibling.textContent]}")
+    ck('21b Q05 SUM-06 exact EN and TH (Thai line starts with the exact TH; Runs line kept)', sum6[0] == DONE_EN and sum6[1].startswith(DONE_TH + ' · Runs · จำนวนรอบที่เล่น: 1'), sum6)
+    ck('21c Q06 SUM-08 Thai "ไม่มี XP หรือป้ายรางวัล"; "เหรียญ" gone; English "No XP or badge" kept', 'No XP or badge · ไม่มี XP หรือป้ายรางวัล' in sum6[1] and 'เหรียญ' not in t, sum6[1])
+    tc = pg.evaluate("()=>document.querySelector('[data-sum=practice]').textContent")
+    ck('21d deferred SUM-02 / SUM-03 unchanged (source text; heading is shown in capitals by existing CSS)', 'A · Practice score' in tc and 'คะแนนฝึก' in t and 'First try right: 4 / 6' in tc and 'ตอบถูกตั้งแต่ครั้งแรก 4 จาก 6 ข้อ' in tc, tc)
+    pg.keyboard.press('Escape'); w(150)
+    t = summary_with('done', 6)
+    opt = pg.evaluate("()=>[...document.querySelectorAll('[data-cid=\"M02-UI-SUM-04\"]')].map(e=>[e.dataset.n05,e.querySelector('.cmen').textContent,e.querySelector('.cmth').textContent])")
+    ck('21e Q04 SUM-04 done: exactly one line, "Optional step: completed (not counted)" / "ภารกิจเสริม: ทำแล้ว (ไม่นับรวมในคะแนนฝึก)"; score still out of 6',
+       opt == [['done', 'Optional step: completed (not counted)', 'ภารกิจเสริม: ทำแล้ว (ไม่นับรวมในคะแนนฝึก)']] and 'skipped' not in t and 'First try right: 6 / 6' in t, opt)
+    # Q05: INT-05 on the intro of a completed mission equals SUM-06
+    pg.locator('[data-act=replay]').click(); w()
+    i5 = pg.evaluate("()=>{const e=document.querySelector('[data-cid=\"M02-UI-INT-05\"]');return e?[...e.children].map(x=>x.textContent):(document.querySelector('.cmdone')||{}).textContent}")
+    ck('21f Q05 INT-05 exact EN/TH, identical to SUM-06', pg.locator('[data-cid="M02-UI-INT-05"]').count() == 1 and DONE_EN in pg.locator('.cmdone').inner_text() and DONE_TH in pg.locator('.cmdone').inner_text() and 'Practice flow completed' not in pg.locator('.cm').inner_text(), i5)
+    pg.keyboard.press('Escape'); w(150)
+    ck('21g Q06 no XP, coin or badge awarded by these screens', pg.evaluate("()=>SanorTown.rw.xp(SanorTown.rw.read())") == xp0)
+    # OFR-02 on the N05 offer screen
+    st = {x: (True if ORDER.index(x) < 5 else False) for x in ORDER}; st['N05'] = 'pending'
+    d = {"schemaVersion": 1, "missions": {"CORE-M02": {"curriculumMissionId": "CORE-M02", "sceneId": "class85", "contentVersion": "M02-LOCAL-PROTOTYPE-V1.2",
+         "run": {"state": "N05", "stages": st, "first": {}, "attempts": 0, "wrong": 0, "startedAt": 1}, "runs": 0, "completion": {"status": "in_progress", "completedAt": None, "count": 0}, "last": None, "assessment": None, "savedAt": None}}}
+    pg.evaluate("([k,v])=>localStorage.setItem(k,v)", [CK, json.dumps(d)]); pg.reload(); ready(); missions(); pg.locator('[data-act=core-open]').click(); w()
+    ck('21h Q08 same contentVersion V1.2: a saved run at N05 is kept (Continue offered, not restarted)', pg.locator('[data-act=resume]').count() == 1)
+    pg.locator('[data-act=resume]').click(); w()
+    ck('21i Q01 OFR-02 button exact "Try optional step ▶" / "ลองทำภารกิจเสริม"', pg.locator('[data-act=bonus]').inner_text().split('\n') == ['Try optional step ▶', 'ลองทำภารกิจเสริม'], pg.locator('[data-act=bonus]').inner_text())
+    pg.keyboard.press('Escape'); w(150)
+    # DLG-07 on a fragment WHY (N01) and a full-sentence WHY (N02)
+    dl = []
+    for step, oid in (('N01', 'N01-D1'), ('N02', 'N02-D1')):
+        jump(step); pg.locator(f'.cm .topt[data-opt="{oid}"]').click(); w(120); f = fbt()
+        th = pg.evaluate("()=>{const s=document.querySelector('.tfb .thintl');return s?s.textContent:''}")
+        dl.append((step, f.count('Not quite. ✗'), f.count('ยังไม่ถูกต้อง ✗'), th, pg.locator('.tfb[aria-live=polite]').count()))
+        pg.keyboard.press('Escape'); w(150)
+    ck('21j Q03 DLG-07: "Not quite. ✗" and "ยังไม่ถูกต้อง ✗" exactly once each, before the unchanged Thai WHY; prefix rules kept; live region present',
+       dl[0][1:3] == (1, 1) and dl[0][3] == 'ยังไม่ถูกต้อง ✗ คำตอบนี้ขอของผิดชนิด' and dl[1][1:3] == (1, 1) and dl[1][3] == 'ยังไม่ถูกต้อง ✗ ประโยคนี้เป็นการขอยืมของอีกชิ้น ไม่ใช่การกล่าวขอบคุณพิม' and all(x[4] == 1 for x in dl), dl)
+    # deferred INT-08 and SR-03 unchanged
+    jump('N03'); pg.keyboard.press('Escape'); w(150); pg.locator('[data-act=core-open]').click(); w()
+    ck('21k deferred INT-08 "Continue ▶ / เล่นต่อ (Ask to repeat)" and SR-03 "Mission steps" unchanged',
+       pg.locator('[data-act=resume]').inner_text().split('\n') == ['Continue ▶', 'เล่นต่อ (Ask to repeat)'] and pg.evaluate("()=>{const o=SanorTown.core;return true}"), pg.locator('[data-act=resume]').inner_text())
+    pg.locator('[data-act=resume]').click(); w()
+    ck('21l SR-03 progress bar label still "Mission steps"', pg.locator('.cmprog').get_attribute('aria-label') == 'Mission steps')
+    pg.keyboard.press('Escape'); w(150)
+    # CRD-02 on the Missions card, and no sideways overflow
+    crd = []
+    for wd in (320, 390, 412, 430):
+        pg.set_viewport_size({'width': wd, 'height': 800}); w(150)
+        if pg.locator('[data-core="CORE-M02"]').count() == 0: missions()
+        c = pg.locator('[data-core="CORE-M02"]')
+        crd.append((wd, pg.evaluate("()=>[...document.querySelectorAll('[data-core=\"CORE-M02\"] .cmcrd')].map(e=>e.textContent)"),
+                    pg.evaluate("()=>{const c=document.querySelector('[data-core=\"CORE-M02\"]');return c.scrollWidth<=c.clientWidth+1&&document.documentElement.scrollWidth<=innerWidth+1}")))
+    pg.set_viewport_size(p.devices[DEV]['viewport']); w(150)
+    ck('21m Q07 CRD-02 two lines exact, CORE-M02 kept, no overflow at 320/390/412/430 px',
+       all(x[1] == ['CORE-M02 · Classroom, Building 3 · Prototype', 'CORE-M02 · ห้องเรียน อาคาร 3 · รุ่นทดลอง'] and x[2] for x in crd) and pg.locator('[data-core="CORE-M02"]').get_attribute('data-core') == 'CORE-M02', crd)
+    pg.keyboard.press('Escape'); w(150)
+    pg.evaluate("k=>localStorage.removeItem(k)", CK)
     ck('no page errors', not errs, errs[:2])
     b.close()
 print('%d / %d PASS' % (sum(res), len(res)))

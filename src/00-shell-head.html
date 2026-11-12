@@ -702,7 +702,7 @@ body:has(.sxnav){padding-bottom:calc(84px + env(safe-area-inset-bottom,0px))}
 .cmbub.masked{border-style:dashed}.cmbub.repeat{border-color:#2563EB;background:#EFF6FF}.cmwho{display:flex;align-items:center;gap:6px;font-size:.8rem;color:#475569}.cmwho small{color:#64748B}.cmwho .tpic{width:34px;height:34px;margin-right:0}.cmbub .tsay{justify-self:start;margin-top:4px}
 .cmact{display:grid;gap:8px}.cmact .hint{margin:0}.cmact .topts{display:grid;gap:8px}.cm .topt.ok{border-color:#16A34A;background:#F0FDF4}.cm .topt.no{opacity:.55}.cmsay{font-weight:700}.cmhint{margin-top:4px}
 .cmpreps{list-style:none;margin:0;padding:0;display:grid;gap:8px}.cmprep{display:flex;align-items:center;gap:10px;border:1.5px solid #E2E8F0;border-radius:12px;padding:8px 10px;background:#fff}.cmprep>div{flex:1;min-width:0}.cmopt{color:#92400E;font-size:.72rem}
-.cmaud{margin:0;font-size:.78rem;color:#64748B}.cmnav{gap:8px}.cmnav .btn{flex:1}.cmgo{width:100%}.cmdone{margin:0;font-weight:700;color:#166534}.cmbig{font-weight:800;font-size:1.05rem}.cmmr{background:#FFFDF5;border-color:#FDE68A}
+.cmaud{margin:0;font-size:.78rem;color:#64748B}.cmnav{gap:8px}.cmnav .btn{flex:1}.cmgo{width:100%}.cmdone{margin:0;font-weight:700;color:#166534}.cmoptsum{margin:4px 0 0}.cmoptsum .cmen{font-weight:600;font-size:.9rem}.cmno{font-weight:700}.mrtop small.cmcrd{display:block}.cmbig{font-weight:800;font-size:1.05rem}.cmmr{background:#FFFDF5;border-color:#FDE68A}
 .mrxp{display:flex;align-items:center;gap:12px;padding:14px;border-radius:16px;background:linear-gradient(135deg,#EEF4FF,#F0FDF4);border:2px solid #DCE7FF}
 .mrxp b{font:800 2rem/1 'Mitr',var(--display);color:#1E40AF;font-variant-numeric:tabular-nums}.mrxp span{color:#14306E;font-weight:600}
 .mrbadges{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px}
@@ -981,7 +981,7 @@ function vcKey(text,slow){const s=(slow?'s|':'n|')+String(text).replace(/\s+/g,'
   for(let i=0;i<s.length;i++){const c=s.charCodeAt(i);h1=Math.imul(h1^c,2654435761);h2=Math.imul(h2^c,1597334677)}
   h1=Math.imul(h1^(h1>>>16),2246822507)^Math.imul(h2^(h2>>>13),3266489909);h2=Math.imul(h2^(h2>>>16),2246822507)^Math.imul(h1^(h1>>>13),3266489909);
   return(4294967296*(2097151&h2)+(h1>>>0)).toString(16)}
-const BUILD='20261112c';/* bump when voice files change: it forces browsers to fetch the new files together */
+const BUILD='20261112d';/* bump when voice files change: it forces browsers to fetch the new files together */
 try{fetch('voice/index.json?v='+BUILD).then(r=>r.ok?r.json():null).then(j=>{if(j&&j.clips&&j.bundles)VC.idx=j}).catch(e=>{VC.err='index: '+e})}catch(e){}
 /* One shared <audio> element (works with the iPhone silent switch). It is "unlocked" by the first tap. */
 function vcEl(){try{if(!VC.el){VC.el=new Audio();VC.el.preload='auto';VC.el.setAttribute('playsinline','')}
