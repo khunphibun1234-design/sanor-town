@@ -83,7 +83,7 @@ with sync_playwright() as p:
     wrong(2); fb = pg.locator('.cm .tfb').inner_text()
     ck('06c second wrong option has its own WHY', 'This answer states ownership, not a request.' in fb and 'คำตอบนี้บอกว่ามีของ ไม่ได้ขอยืม' in fb, fb)
     right(); fb = pg.locator('.cm .tfb').inner_text()
-    ck('06d correct answer: OK feedback EN/TH and the learner line in the conversation', 'Good. You asked Pim for an eraser politely.' in fb and 'ดีมาก ขอ Pim ยืมยางลบได้สุภาพ' in fb and bub() == [['you', 'May I borrow your eraser, please?']], fb)
+    ck('06d correct answer: OK feedback EN/TH and the learner line in the conversation', 'Good. You asked Pim for an eraser politely.' in fb and 'ดีมาก นักเรียนขอยืมยางลบจากพิมอย่างสุภาพ' in fb and bub() == [['you', 'May I borrow your eraser, please?']], fb)
     ck('06e first-try record for N01 = wrong (0), attempts 3, wrong 2', rec()['run']['first'].get('N01') == 0 and rec()['run']['attempts'] == 3 and rec()['run']['wrong'] == 2, rec()['run'])
     # double tap must not skip a step
     pg.locator('.cm [data-act=next]').dblclick(); w()
@@ -148,7 +148,7 @@ with sync_playwright() as p:
     ck('03e exactly one correct option and 3 distinct options at every choose step', all(one) and len(one) == 5 + 1, one)
     # ---------- completion summary ----------
     r = rec(); t = pg.locator('.cm').inner_text()
-    ck('11a completion saved once: status completed, count 1, runs 1', r['completion']['status'] == 'completed' and r['completion']['count'] == 1 and r['runs'] == 1 and r['contentVersion'] == 'M02-LOCAL-PROTOTYPE-V1.1', r['completion'])
+    ck('11a completion saved once: status completed, count 1, runs 1', r['completion']['status'] == 'completed' and r['completion']['count'] == 1 and r['runs'] == 1 and r['contentVersion'] == 'M02-LOCAL-PROTOTYPE-V1.2', r['completion'])
     ck('11b summary A practice score: first try 2 / 6 (N01, N02, N02-R, N03 missed on purpose), bonus skipped and not counted', 'First try right: 2 / 6' in t and 'skipped' in t and rec()['last']['firstTry'] == 2, rec().get('last'))
     ck('11c summary B mission completed; C speaking "Not assessed in the game"', 'Practice flow completed' in t and 'Not assessed in the game' in t and 'ครูเป็นผู้ประเมินการพูด' in t)
     ck('11d no "Speaking Passed" / CEFR claim anywhere on the summary', 'passed' not in t.lower() and 'cefr' not in t.lower() and 'a2' not in t.lower())
@@ -177,7 +177,7 @@ with sync_playwright() as p:
     ck('13c localStorage keys: only the new core key was added', CK in keys and RK not in keys, keys)
     # ---------- guards against a changed save ----------
     fresh()
-    bad = {"schemaVersion": 1, "missions": {"CORE-M02": {"curriculumMissionId": "CORE-M02", "sceneId": "class85", "contentVersion": "M02-LOCAL-PROTOTYPE-V1.1", "runs": 0,
+    bad = {"schemaVersion": 1, "missions": {"CORE-M02": {"curriculumMissionId": "CORE-M02", "sceneId": "class85", "contentVersion": "M02-LOCAL-PROTOTYPE-V1.2", "runs": 0,
            "run": {"state": "N06", "stages": {"N01": True, "N02": False, "N02-R": False, "N03": False, "N04": False, "N05": "pending", "N06": False}, "first": {}, "attempts": 0, "wrong": 0},
            "completion": {"status": "in_progress", "completedAt": None, "count": 0}, "last": None, "assessment": None}}}
     pg.evaluate("([k,v])=>localStorage.setItem(k,v)", [CK, json.dumps(bad)]); pg.reload(); ready(); open_core(); pg.locator('[data-act=resume]').click(); w()
@@ -275,23 +275,59 @@ with sync_playwright() as p:
     ck('18b no WHY in any step has an empty English or Thai text', empty == [], empty)
     labs = pg.evaluate("()=>SanorTown.core.mission.label")
     want = {'N01': ['Ask to borrow', 'ขออนุญาตยืม'], 'N02': ['Say thank you', 'กล่าวขอบคุณ'], 'N02-R': ['Swap roles', 'สลับบทบาท'], 'N03': ['Ask to repeat', 'ขอให้พูดซ้ำ'],
-            'N04': ['Ask for help', 'ขอความช่วยเหลือ'], 'N05': ['Optional permission', 'ภารกิจเสริม: ขออนุญาต'], 'N06': ['Close politely', 'กล่าวขอบคุณและจบบทสนทนา']}
+            'N04': ['Ask for help', 'ขอความช่วยเหลือ'], 'N05': ['Ask permission', 'ขออนุญาต'], 'N06': ['Close politely', 'กล่าวขอบคุณและจบบทสนทนา']}
     jump('N01'); bar = pg.evaluate("()=>[...document.querySelectorAll('.cmprog li small')].map(e=>e.textContent)")
-    ck('18c step labels equal CHAT 03 QA section 7 and are shown on the progress bar', labs == want and bar == [want[s][0] for s in ORDER], [labs == want, bar])
+    ck('18c step labels equal CHAT 03 QA section 7 (N05: Copy Return G-05) and are shown on the progress bar', labs == want and bar == [want[s][0] for s in ORDER], [labs == want, bar])
     pg.keyboard.press('Escape'); w(150)
-    ck('18d contentVersion is M02-LOCAL-PROTOTYPE-V1.1', pg.evaluate("()=>SanorTown.core.mission.contentVersion") == 'M02-LOCAL-PROTOTYPE-V1.1')
+    ck('18d contentVersion is M02-LOCAL-PROTOTYPE-V1.2', pg.evaluate("()=>SanorTown.core.mission.contentVersion") == 'M02-LOCAL-PROTOTYPE-V1.2')
     v10 = {"schemaVersion": 1, "missions": {"CORE-M02": {"curriculumMissionId": "CORE-M02", "sceneId": "class85", "contentVersion": "M02-LOCAL-PROTOTYPE-V1.0", "runs": 2,
            "run": {"state": "N03", "stages": {"N01": True, "N02": True, "N02-R": True, "N03": False, "N04": False, "N05": "pending", "N06": False}, "first": {"N01": 1}, "attempts": 3, "wrong": 0, "startedAt": 1},
            "completion": {"status": "completed", "completedAt": "2026-11-11T08:00:00.000Z", "count": 1}, "last": {"firstTry": 6, "items": 6}, "assessment": None, "savedAt": None}}}
     pg.evaluate("([k,v])=>localStorage.setItem(k,v)", [CK, json.dumps(v10)]); pg.reload(); ready()
     st = pg.evaluate("()=>SanorTown.core.status()"); r = rec()
     ck('18e a V1.0 save (completed, run at N03): run restarts, completion date, count, runs and last result kept, version becomes V1.1',
-       st['inRun'] is False and st['state'] is None and st['status'] == 'completed' and st['completedAt'] == '2026-11-11T08:00:00.000Z' and st['count'] == 1 and st['runs'] == 2 and st['last'] == {"firstTry": 6, "items": 6} and st['contentVersion'] == 'M02-LOCAL-PROTOTYPE-V1.1', st)
+       st['inRun'] is False and st['state'] is None and st['status'] == 'completed' and st['completedAt'] == '2026-11-11T08:00:00.000Z' and st['count'] == 1 and st['runs'] == 2 and st['last'] == {"firstTry": 6, "items": 6} and st['contentVersion'] == 'M02-LOCAL-PROTOTYPE-V1.2', st)
     # the stored record is rewritten at the next save (Start): the V1.0 run is gone, completion kept
     if pg.locator('[data-act=core-open]').count() == 0: missions()
     pg.locator('[data-act=core-open]').click(); w(); ck('18f V1.0 save: intro offers Play again, not Continue', pg.locator('[data-act=resume]').count() == 0 and 'Play again' in pg.locator('[data-act=start]').inner_text())
     pg.locator('[data-act=start]').click(); w(); r = rec()
-    ck('18g after Start the stored record is V1.1 with a new run at PREP; completion and run count kept', r['contentVersion'] == 'M02-LOCAL-PROTOTYPE-V1.1' and r['run']['state'] == 'PREP' and r['completion'] == v10['missions']['CORE-M02']['completion'] and r['runs'] == 2, [r.get('contentVersion'), r.get('run', {}).get('state'), r.get('completion')])
+    ck('18g after Start the stored record is V1.1 with a new run at PREP; completion and run count kept', r['contentVersion'] == 'M02-LOCAL-PROTOTYPE-V1.2' and r['run']['state'] == 'PREP' and r['completion'] == v10['missions']['CORE-M02']['completion'] and r['runs'] == 2, [r.get('contentVersion'), r.get('run', {}).get('state'), r.get('completion')])
+    pg.keyboard.press('Escape'); w(150)
+    pg.evaluate("k=>localStorage.removeItem(k)", CK)
+    # ---------- 19 V1.2 exact copy (CHAT 03 Official Language Copy Return, owner approved 12 Nov 07:37) ----------
+    jump('N01'); pg.locator('.cm .topt[data-opt="N01-KEY"]').click(); w(120); f = fbt()
+    ck('19a G-08b N01 OK: EN kept, TH exact', 'Good. You asked Pim for an eraser politely.' in f and 'ดีมาก นักเรียนขอยืมยางลบจากพิมอย่างสุภาพ' in f and 'Pim ยืม' not in f, f)
+    pg.keyboard.press('Escape'); w(150)
+    jump('N03'); sc = pg.locator('.cmscene').inner_text()
+    ck('19b G-01 N03 situation card exact EN/TH; old "did not hear" text gone',
+       'The page number is hidden for this practice. Ask Mr. Krit to repeat the instruction.' in sc and 'กิจกรรมฝึกนี้ซ่อนเลขหน้าไว้ ให้นักเรียนขอให้ครูกฤตพูดคำสั่งอีกครั้ง' in sc and 'did not hear' not in pg.locator('.cm').inner_text() and 'ฟังเลขหน้าไม่ทัน' not in pg.locator('.cm').inner_text(), sc)
+    ck('19c N03 mechanism unchanged: teacher line still masked', pg.locator('.cmbub.masked').count() == 1 and '……' in pg.locator('.cmbub.masked').inner_text())
+    pg.keyboard.press('Escape'); w(150)
+    jump('N06'); pg.locator('.cm .topt[data-opt="N06-KEY"]').click(); w(120); f = fbt(); pg.locator('.cm [data-act=next]').click(); w()
+    log = pg.evaluate("()=>[...document.querySelectorAll('.cmlog .cmbub')].map(e=>[e.dataset.speaker,e.querySelector('.ten').textContent,(e.querySelector('.tth')||{}).textContent])")
+    ck('19d G-08a N06 OK exact EN/TH; Mr. Krit reply line kept', 'Good. Mr. Krit says, “You’re welcome.”' in f and 'ดีมาก ครูกฤตตอบว่า “ด้วยความยินดี”' in f and 'partner' not in f and 'คู่สนทนา' not in f
+       and ['teacher', "You're welcome.", 'ด้วยความยินดี'] in log, [f, log])
+    pg.keyboard.press('Escape'); w(150)
+    if pg.locator('[data-act=core-open]').count() == 0: missions()
+    pg.evaluate("k=>localStorage.removeItem(k)", CK); pg.reload(); ready(); missions(); pg.locator('[data-act=core-open]').click(); w()
+    li = pg.evaluate("()=>[...document.querySelectorAll('.cmsteps li')].map(e=>[e.querySelector('b').textContent,e.querySelector('small').textContent])")
+    ck('19e G-05 intro step list: "Ask permission · optional" / "ขออนุญาต · ไม่บังคับ", optional shown once', li[5] == ['Ask permission · optional', 'ขออนุญาต · ไม่บังคับ'] and pg.locator('.cmsteps').inner_text().count('optional') == 1, li[5])
+    pg.keyboard.press('Escape'); w(150)
+    st = {x: (True if ORDER.index(x) < 5 else False) for x in ORDER}; st['N05'] = 'pending'; st['N06'] = False
+    d = {"schemaVersion": 1, "missions": {"CORE-M02": {"curriculumMissionId": "CORE-M02", "sceneId": "class85", "contentVersion": "M02-LOCAL-PROTOTYPE-V1.2",
+         "run": {"state": "N05", "stages": st, "first": {}, "attempts": 0, "wrong": 0, "startedAt": 1}, "runs": 0, "completion": {"status": "in_progress", "completedAt": None, "count": 0}, "last": None, "assessment": None, "savedAt": None}}}
+    pg.evaluate("([k,v])=>localStorage.setItem(k,v)", [CK, json.dumps(d)])
+    if pg.locator('[data-act=core-open]').count() == 0: missions()
+    pg.locator('[data-act=core-open]').click(); w(); pg.locator('[data-act=resume]').click(); w()
+    off = pg.locator('.cm').inner_text()
+    ck('19f G-05 bonus offer: header "Optional step · ภารกิจเสริม" and exact EN/TH description', 'Optional step · ภารกิจเสริม' in off and 'Ask Mr. Krit for permission to go to the board. You can skip this step.' in off
+       and 'ขออนุญาตครูกฤตไปที่กระดาน นักเรียนสามารถข้ามขั้นตอนนี้ได้' in off and 'Bonus step' not in off, off[:200])
+    pg.locator('[data-act=bonus]').click(); w(); hd = pg.locator('.cmsub').inner_text()
+    ck('19g G-05 step header: "Ask permission (optional) · ขออนุญาต (ไม่บังคับ)"', hd == 'Ask permission (optional) · ขออนุญาต (ไม่บังคับ)', hd)
+    pg.keyboard.press('Escape'); w(150)
+    pg.locator('[data-act=core-open]').click(); w(); pg.locator('[data-act=resume]').click(); w(); pg.locator('[data-act=skip]').click(); w()
+    r = rec()
+    ck('19h N05 stays optional: skipping it opens N06; completion does not depend on it', r['run']['stages']['N05'] == 'skipped' and cur() == 'N06', r['run']['stages'])
     pg.keyboard.press('Escape'); w(150)
     pg.evaluate("k=>localStorage.removeItem(k)", CK)
     ck('no page errors', not errs, errs[:2])

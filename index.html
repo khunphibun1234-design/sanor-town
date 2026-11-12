@@ -981,7 +981,7 @@ function vcKey(text,slow){const s=(slow?'s|':'n|')+String(text).replace(/\s+/g,'
   for(let i=0;i<s.length;i++){const c=s.charCodeAt(i);h1=Math.imul(h1^c,2654435761);h2=Math.imul(h2^c,1597334677)}
   h1=Math.imul(h1^(h1>>>16),2246822507)^Math.imul(h2^(h2>>>13),3266489909);h2=Math.imul(h2^(h2>>>16),2246822507)^Math.imul(h1^(h1>>>13),3266489909);
   return(4294967296*(2097151&h2)+(h1>>>0)).toString(16)}
-const BUILD='20261112a';/* bump when voice files change: it forces browsers to fetch the new files together */
+const BUILD='20261112b';/* bump when voice files change: it forces browsers to fetch the new files together */
 try{fetch('voice/index.json?v='+BUILD).then(r=>r.ok?r.json():null).then(j=>{if(j&&j.clips&&j.bundles)VC.idx=j}).catch(e=>{VC.err='index: '+e})}catch(e){}
 /* One shared <audio> element (works with the iPhone silent switch). It is "unlocked" by the first tap. */
 function vcEl(){try{if(!VC.el){VC.el=new Audio();VC.el.preload='auto';VC.el.setAttribute('playsinline','')}
@@ -4641,6 +4641,7 @@ function hubAuto(sc){const T=(a,b)=>{const n=sc.npcs[a-1];return n&&n.turns[b-1]
  const write=P.map(p=>p[0]).filter(s=>{const w=s.split(' ').length;return w>=3&&w<=9}).slice(0,4).map(s=>({t:'order',q:'Put the words in order.',th:'เรียงคำให้เป็นประโยค',w:s.split(' ')}));
  return {auto:true,title:null,words,listen,quiz:[...mean,...reply],parts:{M:['Meaning','ความหมาย'],R:['Replies','การตอบโต้']},write,soon:['read']}}
 /* ===== CORE-M02 "Help Me in Class!" — PROTOTYPE practice mission (ST-CORE-002, 11 Nov 2026). On the live site since build 20261111a (owner Option A). NOT RESEARCH-READY.
+   V1.2 (ST-DEV-002, 12 Nov 2026): G-01, G-05, G-08 exact copy from CHAT 03 Official Language Copy Return (owner approved 12 Nov 07:37).
    V1.1 (ST-DEV-002, 12 Nov 2026): L-01 Thai WHY for N02/N02-R and L-04 step labels from CHAT 03 Post-Implementation Content & Language QA V1.0 (sections 4 and 7); L-02 stable option IDs.
    Authority: owner dispatch LOCAL IMPLEMENTATION ONLY (handover V1.0 file 07). Content trace: CHAT 03 Script Revised Candidate V1.1 (file 01)
    + the four local prototype decisions D-M02-L01…L04 (file 06). Nothing here is final approved content or a speaking assessment.
@@ -4652,10 +4653,10 @@ function hubAuto(sc){const T=(a,b)=>{const n=sc.npcs[a-1];return n&&n.turns[b-1]
      A WHY marked 'full' (third item) is a complete sentence from CHAT 03 QA section 4 and is shown as written, without that prefix. */
 const CORE_KEY='sanor-town-core-missions-v1',CORE_SCHEMA=1;
 const CM_P4=()=>PREP.class85[3];/* shared content reference: M02-PREP-04 */
-const CORE_M02={id:'CORE-M02',sceneId:'class85',contentVersion:'M02-LOCAL-PROTOTYPE-V1.1',name:'Help Me in Class!',
+const CORE_M02={id:'CORE-M02',sceneId:'class85',contentVersion:'M02-LOCAL-PROTOTYPE-V1.2',name:'Help Me in Class!',
  order:['N01','N02','N02-R','N03','N04','N05','N06'],optional:['N05'],
  /* short step labels on the progress bar (interface words, not dialogue) */
- label:{N01:['Ask to borrow','ขออนุญาตยืม'],N02:['Say thank you','กล่าวขอบคุณ'],'N02-R':['Swap roles','สลับบทบาท'],N03:['Ask to repeat','ขอให้พูดซ้ำ'],N04:['Ask for help','ขอความช่วยเหลือ'],N05:['Optional permission','ภารกิจเสริม: ขออนุญาต'],N06:['Close politely','กล่าวขอบคุณและจบบทสนทนา']},/* L-04: CHAT 03 QA V1.0 section 7 */
+ label:{N01:['Ask to borrow','ขออนุญาตยืม'],N02:['Say thank you','กล่าวขอบคุณ'],'N02-R':['Swap roles','สลับบทบาท'],N03:['Ask to repeat','ขอให้พูดซ้ำ'],N04:['Ask for help','ขอความช่วยเหลือ'],N05:['Ask permission','ขออนุญาต'],N06:['Close politely','กล่าวขอบคุณและจบบทสนทนา']},/* L-04: CHAT 03 QA V1.0 section 7; N05 from the Official Language Copy Return (G-05) */
  /* PREP for this mission: the six M02-V2 candidates (file 01, section 2). V2-02 is the legacy line by reference. */
  prep:[{id:'M02-V2-01',en:'May I borrow your eraser, please?',th:'ขอยืมยางลบของเธอได้ไหม'},
   {id:'M02-V2-02',ref:true},
@@ -4669,7 +4670,7 @@ const CORE_M02={id:'CORE-M02',sceneId:'class85',contentVersion:'M02-LOCAL-PROTOT
    {k:'choose',id:['N01-KEY','N01-D1','N01-D2'],ans:'N01-KEY',to:'pim',o:['May I borrow your eraser, please?','May I borrow your ruler, please?','I have an eraser.'],
     hint:['Look for the eraser and begin with a polite request.','ดูสิ่งของที่ต้องการและเริ่มคำขอสุภาพ'],
     why:{'N01-D1':['asks for the wrong item.','ขอของผิดชนิด'],'N01-D2':['states ownership, not a request.','บอกว่ามีของ ไม่ได้ขอยืม']},
-    ok:['Good. You asked Pim for an eraser politely.','ดีมาก ขอ Pim ยืมยางลบได้สุภาพ']}],
+    ok:['Good. You asked Pim for an eraser politely.','ดีมาก นักเรียนขอยืมยางลบจากพิมอย่างสุภาพ']}],/* G-08b */
   N02:[{k:'npc',who:'pim',ref:true},/* Pim's own line (D-M02-L02): never counted as the learner's */
    {k:'choose',id:['N02-KEY','N02-D1','N02-D2'],ans:'N02-KEY',to:'pim',prompt:['Pim gives you the eraser. What do you say?','พิมส่งยางลบให้ นักเรียนควรพูดว่าอะไร'],o:['Thank you.','May I borrow your ruler, please?','I have an eraser.'],
     hint:['Thank Pim for helping you.','กล่าวขอบคุณพิมที่ช่วยเหลือ'],
@@ -4680,7 +4681,7 @@ const CORE_M02={id:'CORE-M02',sceneId:'class85',contentVersion:'M02-LOCAL-PROTOT
     hint:['Offer the ruler Pim asked to borrow.','ตอบรับและส่งไม้บรรทัดที่พิมขอยืม'],
     why:{'N02-R-D1':['This describes the ruler but does not offer it.','ประโยคนี้บอกสีของไม้บรรทัด แต่ไม่ได้ยื่นให้พิมยืม','full'],'N02-R-D2':['Pim is asking to borrow your ruler; this repeats her request instead of answering.','พิมกำลังขอยืมไม้บรรทัดของเธอ ประโยคนี้ถามขอยืมกลับแทนที่จะตอบรับ','full']},/* L-01: CHAT 03 QA V1.0 section 4 */
     ok:['You offered the ruler politely.','นักเรียนตอบรับและให้ยืมไม้บรรทัดอย่างสุภาพ']}],
-  N03:[{k:'scene',en:"Student did not hear teacher's page number.",th:'นักเรียนฟังเลขหน้าไม่ทัน'},
+  N03:[{k:'scene',en:'The page number is hidden for this practice. Ask Mr. Krit to repeat the instruction.',th:'กิจกรรมฝึกนี้ซ่อนเลขหน้าไว้ ให้นักเรียนขอให้ครูกฤตพูดคำสั่งอีกครั้ง'},/* G-01 */
    /* controlled missed-page-number cue: the page number is hidden until the learner asks for repetition.
       L-06: a deliberate, scripted information gap for guided repair practice (marked instructional scaffold).
       It is not a claim that unclear speech was heard, and not a listening-achievement result. */
@@ -4710,7 +4711,7 @@ const CORE_M02={id:'CORE-M02',sceneId:'class85',contentVersion:'M02-LOCAL-PROTOT
    {k:'choose',id:['N06-KEY','N06-D1','N06-D2'],ans:'N06-KEY',to:'teacher',o:['Thank you for your help.','Help me now.','I need help again.'],
     hint:['Thank the person who helped you.','ขอบคุณผู้ที่ช่วยเหลือ'],
     why:{'N06-D1':['is abrupt.','เป็นคำสั่งห้วน'],'N06-D2':['makes a new request, not a closing.','เป็นคำขอใหม่ ไม่ใช่ปิดบท']},
-    ok:['Good. Your partner says, “You’re welcome.”','ดีมาก คู่สนทนาตอบว่า ด้วยความยินดี']},
+    ok:['Good. Mr. Krit says, “You’re welcome.”','ดีมาก ครูกฤตตอบว่า “ด้วยความยินดี”']},/* G-08a; Mr. Krit's reply line below is kept */
    {k:'npc',who:'teacher',en:"You're welcome.",th:'ด้วยความยินดี'}]}};
 /* ---- storage: one key, one record per curriculum mission; version-aware; never touches legacy keys ---- */
 function coreLoad(){try{const d=JSON.parse(localStorage.getItem(CORE_KEY)||'null');if(d&&d.schemaVersion===CORE_SCHEMA&&d.missions&&typeof d.missions==='object')return d}catch(e){}
@@ -4757,7 +4758,7 @@ function coreOpen(onExit){const M=CORE_M02,sc=SCENES.find(x=>x.id===M.sceneId),o
  function intro(){const m=MISSIONS[M.sceneId],st=coreStatus(),resume=R.run&&R.run.state!=='INTRO'&&R.run.state!=='DONE';
   show(head('ห้องเรียน อาคาร 3 · ภารกิจหลักสูตร (รุ่นทดลอง)'),
    el('div',{class:'cmcard'},el('b',{class:'cmk'},'Situation⁣สถานการณ์'),el('p',{},bi(m.sit[0],m.sit[1])),el('b',{class:'cmk'},'Goal⁣เป้าหมาย'),el('p',{},bi(m.goal[0],m.goal[1]))),
-   el('div',{class:'cmcard'},el('b',{class:'cmk'},'Steps⁣ขั้นตอน'),el('ol',{class:'cmsteps'},M.order.map(s=>el('li',{},el('b',{},M.label[s][0]),el('small',{},M.label[s][1]+(M.optional.includes(s)?' · optional · ไม่บังคับ':'')))))),
+   el('div',{class:'cmcard'},el('b',{class:'cmk'},'Steps⁣ขั้นตอน'),el('ol',{class:'cmsteps'},M.order.map(s=>el('li',{},el('b',{},M.label[s][0]+(M.optional.includes(s)?' · optional':'')),el('small',{},M.label[s][1]+(M.optional.includes(s)?' · ไม่บังคับ':'')))))),
    st.status==='completed'?el('p',{class:'cmdone','data-status':'completed'},'✓ Practice flow completed⁣ทำภารกิจฝึกครบแล้ว'):null,
    note,
    resume?el('button',{class:'btn cta cmgo','data-act':'resume','data-focus':'',type:'button',onclick:()=>{toast('Resumed · เล่นต่อจากที่ค้างไว้');route()}},'Continue ▶⁣เล่นต่อ ('+(M.label[R.run.state]?M.label[R.run.state][0]:'PREP')+')'):null,
@@ -4773,7 +4774,7 @@ function coreOpen(onExit){const M=CORE_M02,sc=SCENES.find(x=>x.id===M.sceneId),o
   if(run.state==='INTRO')return intro();if(run.state==='PREP')return prep();if(run.state==='DONE')return summary();
   if(M.optional.includes(run.state)&&run.stages[run.state]==='pending')return offer(run.state);
   play(run.state)}
- function offer(s){show(head('Bonus step · ขั้นเสริม'),prog(s),el('div',{class:'cmcard'},el('p',{},bi('Bonus: ask the teacher for permission. You can skip it.','ขั้นเสริม: ขออนุญาตครู ข้ามได้ ไม่มีผลต่อการทำภารกิจครบ'))),
+ function offer(s){show(head('Optional step · ภารกิจเสริม'),prog(s),el('div',{class:'cmcard'},el('p',{},bi('Ask Mr. Krit for permission to go to the board. You can skip this step.','ขออนุญาตครูกฤตไปที่กระดาน นักเรียนสามารถข้ามขั้นตอนนี้ได้'))),/* G-05 */
    el('div',{class:'row cmnav'},el('button',{class:'btn ghost','data-act':'skip',type:'button',onclick:()=>{if(hold())return;busy=true;R.run.stages[s]='skipped';put();route()}},'Skip →⁣ข้าม'),
     el('button',{class:'btn cta cmgo','data-act':'bonus','data-focus':'',type:'button',onclick:()=>{if(hold())return;busy=true;play(s)}},'Try the bonus ▶⁣ลองทำ')))}
  /* one step: NPC and learner lines build up as a short conversation; the step is saved as done only after its last line */
@@ -4809,7 +4810,7 @@ function coreOpen(onExit){const M=CORE_M02,sc=SCENES.find(x=>x.id===M.sceneId),o
      else{run.wrong++;bt.disabled=true;bt.classList.add('no');put();const w=b.why[o.id];fb.className='tfb';
       fb.replaceChildren(el('span',{class:'twhy'},'Not quite. ✗ '+(w[2]==='full'?'':'This answer ')+w[0]),w[1]?el('span',{class:'thintl'},(w[2]==='full'?'':'คำตอบนี้')+w[1]):null,el('span',{class:'thintl cmhint'},'\u{1F4A1} '+b.hint[0]+(b.hint[1]?' · '+b.hint[1]:'')))}}},o.t);return bt});
    act.replaceChildren(el('p',{class:'hint'},b.prompt?b.prompt[0]:'Your turn. What do you say?',el('small',{class:'cmth'},b.prompt?b.prompt[1]:'ตาของนักเรียน ควรพูดว่าอะไร')),el('div',{class:'topts'},btns),fb);draw()};
-  const draw=()=>{if(!body.contains(log))show(head(M.label[s][0]+' · '+M.label[s][1]+(M.optional.includes(s)?' (optional)':'')),prog(s),top,log,act)};
+  const draw=()=>{if(!body.contains(log))show(head(M.label[s][0]+(M.optional.includes(s)?' (optional)':'')+' · '+M.label[s][1]+(M.optional.includes(s)?' (ไม่บังคับ)':'')),prog(s),top,log,act)};
   run.state=s;put();next()}
  /* three separate results: practice score, mission completion, speaking (never judged by the game) */
  function summary(){const st=coreStatus(),L=R.last||{firstTry:0,items:cmReq().length,wrong:0,bonus:'pending'};
