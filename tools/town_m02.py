@@ -276,7 +276,7 @@ with sync_playwright() as p:
     labs = pg.evaluate("()=>SanorTown.core.mission.label")
     want = {'N01': ['Ask to borrow', 'ขออนุญาตยืม'], 'N02': ['Say thank you', 'กล่าวขอบคุณ'], 'N02-R': ['Swap roles', 'สลับบทบาท'], 'N03': ['Ask to repeat', 'ขอให้พูดซ้ำ'],
             'N04': ['Ask for help', 'ขอความช่วยเหลือ'], 'N05': ['Ask permission', 'ขออนุญาต'], 'N06': ['Close politely', 'กล่าวขอบคุณและจบบทสนทนา']}
-    jump('N01'); bar = pg.evaluate("()=>[...document.querySelectorAll('.cmprog li small')].map(e=>e.textContent)")
+    jump('N01'); bar = pg.evaluate("()=>[...document.querySelectorAll('.cmprog li small')].map(e=>e.textContent.replace(/\u00AD/g,''))")
     ck('18c step labels equal CHAT 03 QA section 7 (N05: Copy Return G-05) and are shown on the progress bar', labs == want and bar == [want[s][0] for s in ORDER], [labs == want, bar])
     pg.keyboard.press('Escape'); w(150)
     ck('18d contentVersion is M02-LOCAL-PROTOTYPE-V1.2', pg.evaluate("()=>SanorTown.core.mission.contentVersion") == 'M02-LOCAL-PROTOTYPE-V1.2')
@@ -330,6 +330,25 @@ with sync_playwright() as p:
     ck('19h N05 stays optional: skipping it opens N06; completion does not depend on it', r['run']['stages']['N05'] == 'skipped' and cur() == 'N06', r['run']['stages'])
     pg.keyboard.press('Escape'); w(150)
     pg.evaluate("k=>localStorage.removeItem(k)", CK)
+    # ---------- 20 G-06 progress-bar hyphenation (CSS + one soft hyphen at draw time) ----------
+    jump('N01')
+    hy = pg.evaluate("()=>{const s=document.querySelector('.cmprog small'),c=getComputedStyle(s);return [c.hyphens||c.webkitHyphens,c.webkitHyphens]}")
+    ck('20a progress-bar labels use manual hyphenation (no automatic hyphens)', hy[0] == 'manual', hy)
+    raw = pg.evaluate("()=>[...document.querySelectorAll('.cmprog small')].map(e=>e.textContent)")
+    ck('20b only "permission" carries a soft hyphen; with it removed every label equals the approved text; mission data unchanged',
+       [x for x in raw if '­' in x] == ['Ask per­mission'] and pg.evaluate("()=>SanorTown.core.mission.label.N05[0]") == 'Ask permission'
+       and pg.evaluate("()=>SanorTown.core.mission.contentVersion") == 'M02-LOCAL-PROTOTYPE-V1.2', raw)
+    pg.keyboard.press('Escape'); w(150)
+    fit = []
+    for wd in (320, 375, 390, 412, 430):
+        pg.set_viewport_size({'width': wd, 'height': 800}); w(150); jump('N01')
+        r = pg.evaluate("""()=>[...document.querySelectorAll('.cmprog li')].map(li=>{const s=li.querySelector('small'),cw=li.getBoundingClientRect().width;
+            const c=document.createElement('span');c.style.cssText='position:absolute;visibility:hidden;white-space:nowrap;font:'+getComputedStyle(s).font;document.body.append(c);
+            const bad=s.textContent.replace(/\\u00AD/g,'').split(' ').filter(x=>x!=='permission').filter(x=>{c.textContent=x;return c.offsetWidth>cw});c.remove();return bad})""")
+        fit.append((wd, sum(r, [])))
+        pg.keyboard.press('Escape'); w(150)
+    pg.set_viewport_size(p.devices[DEV]['viewport']); w(150)
+    ck('20c at 320/375/390/412/430 px every label word except "permission" fits its column (no forced mid-word break)', all(not b for _, b in fit), fit)
     ck('no page errors', not errs, errs[:2])
     b.close()
 print('%d / %d PASS' % (sum(res), len(res)))

@@ -106,9 +106,12 @@ function coreOpen(onExit){const M=CORE_M02,sc=SCENES.find(x=>x.id===M.sceneId),o
  const bg=el('div',{class:'sheetbg'},box);document.body.append(bg);document.addEventListener('keydown',onk);
  const put=()=>cmPut(D,R);
  const head=(sub)=>el('div',{class:'row cmhead'},el('div',{},el('small',{class:'cmtag'},'CORE-M02 · practice prototype'),el('h2',{},M.name),sub?el('small',{class:'cmsub'},sub):null),x);
+ /* G-06: progress-bar labels use manual hyphenation only (Safari over-hyphenated with hyphens:auto).
+    The one word too wide for a narrow column gets a soft hyphen here, at draw time only; the label text itself is unchanged. */
+ const SHY={permission:'per\u00ADmission'},progLabel=t=>t.replace(/\b(permission)\b/g,w=>SHY[w]);
  const prog=(cur)=>el('ol',{class:'cmprog','aria-label':'Mission steps'},M.order.map((s,i)=>{const v=R.run?R.run.stages[s]:false,done=v===true||v==='done',skip=v==='skipped';
   return el('li',{class:(done?'on ':'')+(skip?'skip ':'')+(s===cur?'cur':''),'data-step':s,'aria-current':s===cur?'step':false},el('span',{class:'cmdot','aria-hidden':'true'},done?'✓':skip?'–':String(i+1)),
-   el('small',{},M.label[s][0]),el('span',{class:'vh'},' '+(done?'done':skip?'skipped':s===cur?'current':'not done')+(M.optional.includes(s)?', optional':'')))}));
+   el('small',{},progLabel(M.label[s][0])),el('span',{class:'vh'},' '+(done?'done':skip?'skipped':s===cur?'current':'not done')+(M.optional.includes(s)?', optional':'')))}));
  const sayBtn=(t,l)=>el('button',{class:'tsay',type:'button','aria-label':'Listen: '+t,onclick:()=>say(t,.9)},l||'Listen⁣ฟัง');
  const note=el('p',{class:'hubnote'},'Practice only. Choosing an answer is not a speaking score. No XP. Saved only on this phone.⁣ฝึกเท่านั้น การเลือกคำตอบไม่ใช่คะแนนการพูด ไม่มี XP บันทึกในเครื่องนี้เท่านั้น');
  const show=(...k)=>{stopSay();busy=false;guard=Date.now()+350;body.replaceChildren(...k.flat().filter(Boolean));box.scrollTop=0;const f=body.querySelector('[data-focus]')||x;if(f&&f.focus)f.focus({preventScroll:true})};
