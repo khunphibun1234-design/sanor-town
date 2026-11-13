@@ -13,7 +13,7 @@ def main():
     def check(name, ok, info=''):
         res.append(bool(ok)); print(('OK  ' if ok else 'FAIL'), name, info)
     with sync_playwright() as p:
-        b = p.chromium.launch(args=['--use-gl=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'])
+        b = p.chromium.launch(args=['--host-resolver-rules=MAP sanor.test 127.0.0.1:8767', '--use-gl=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'])
         pg = b.new_page(viewport={'width': 390, 'height': 844})
         pg.on('pageerror', lambda e: errs.append(str(e)))
         def fresh(store=None):
@@ -58,7 +58,10 @@ def main():
         m = sheet('Missions')
         check('MR-01 Missions opens as a dialog', m.count() == 1 and m.get_attribute('aria-modal') == 'true')
         check('MR-01 first visit shows 0/3, Not started, no XP', st()['n'] == 0 and 'Not started' in m.inner_text() and rw() is None)
-        check('MR-14 future missions are labelled, not buttons', pg.locator('.mrs .mrfut li').count() == 4 and pg.locator('.mrs .mrfut button').count() == 0)
+        # ST-MEX-001: in the local preview only (localhost), the Daily missions row has one "Open preview" button; on the site there is none
+        pv = pg.evaluate("()=>SanorTown.daily.preview()")
+        check('MR-14 future missions are labelled, not buttons' + (' (local preview: Daily missions has its preview button only)' if pv else ''),
+              pg.locator('.mrs .mrfut li').count() == 4 and pg.locator('.mrs .mrfut button').count() == (1 if pv else 0) and pg.locator('.mrs .mrfut button[data-act=dm-open]').count() == (1 if pv else 0))
         close_sheet()
         check('MR-01 Esc closes and Home is still there', pg.locator('.mrs').count() == 0 and pg.locator('.sxnav').count() == 1)
         r = sheet('Rewards')

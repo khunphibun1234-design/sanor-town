@@ -186,7 +186,7 @@ function missionsSheet(){const m=canteenMission(),sc=SCENES.find(x=>x.id==='cant
    sc?el('button',{class:'btn cta mrgo',type:'button',onclick:()=>{close();playPlace(sc,render)}},m.state==='new'?'Go to the Canteen⁣ไปโรงอาหาร':'Open the Canteen⁣เปิดโรงอาหาร'):null),
   el('h3',{},'Core mission (prototype)⁣ภารกิจหลักสูตร (รุ่นทดลอง)'),coreMissionCard(()=>{close();coreOpen(missionsSheet)}),/* CORE-M02 local prototype (11 Nov): src/55-core-m02.js */
   el('h3',{},'More missions⁣ภารกิจอื่น'),
-  el('ul',{class:'mrfut'},RW_FUTURE.map(([e,t])=>el('li',{},el('span',{},el('b',{},e),el('small',{},t)),el('span',{class:'mrtag'},'Future · เร็ว ๆ นี้')))),
+  el('ul',{class:'mrfut'},RW_FUTURE.map(([e,t])=>e==='Daily missions'&&DM_PREVIEW()?dmFutureRow(e,t,()=>{close();dmOpen(DAILY_MISSIONS[0],missionsSheet)}):el('li',{},/* ST-MEX-001: local preview only */el('span',{},el('b',{},e),el('small',{},t)),el('span',{class:'mrtag'},'Future · เร็ว ๆ นี้')))),
   el('p',{class:'mrnote'},'Only the missions above are open now. Other missions are not available yet.⁣ตอนนี้เปิดเฉพาะภารกิจด้านบน ภารกิจอื่นยังไม่เปิดใช้')])}
 /* Profile (5 Nov, task 6 / 3D item 1): the player picks a boy or a girl character (renders of the teacher's Meshy models, img/avatar).
    Saved on this device only (its own key; nothing is sent anywhere). The pick shows on the home banner and on the win screen. */
@@ -871,5 +871,6 @@ function openScene(id,bl){
  if(!TOWN){closeTown();return false}
  return true}
 return {open,openScene,mount,unmount,close:closeTown,get g(){return TOWN},SCENES,LOCKED,hubData:id=>{const s=SCENES.find(x=>x.id===id);return s&&hubOK(s)?(HUB[id]||hubAuto(s)):null},shop:SHOPI,rw:{read:rwRead,xp:rwXP,grant:rwGrant,canteen:canteenMission},
- core:{key:CORE_KEY,mission:CORE_M02,status:coreStatus,open:coreOpen,missions:missionsSheet}};/* CORE-M02 local prototype: read-only handles for the tests */
+ core:{key:CORE_KEY,mission:CORE_M02,status:coreStatus,open:coreOpen,missions:missionsSheet},
+ daily:{key:DM_KEY,missions:DAILY_MISSIONS,day:dmDay,today:dmToday,items:dmItems,status:dmStatus,open:dmOpen,preview:DM_PREVIEW}};/* ST-MEX-001 local prototype: read-only handles for the tests *//* CORE-M02 local prototype: read-only handles for the tests */
 })();
