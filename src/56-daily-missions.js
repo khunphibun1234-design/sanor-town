@@ -1,6 +1,6 @@
 /* ===== Daily Missions — BATCH 01 local prototype (ST-MEX-001, 12 Nov 2026) =====
    One playable Daily mission ("Daily Greeting Challenge") and a registry so that more daily missions can be added later.
-   LOCAL PREVIEW ONLY: the mission opens only when the page is served from this computer (localhost / 127.0.0.1).
+   LOCAL PREVIEW ONLY: the mission opens only from this computer or a private LAN address (see dmHostOK).
    On the published site the Missions screen still shows "Daily missions · Future" exactly as before.
    Content: every practice item is an existing, teacher-approved talk turn, used BY REFERENCE (scene id, NPC id, turn index)
    and checked against a stored copy of the NPC line; an item whose source changed is left out. No new English or Thai
@@ -9,7 +9,14 @@
    No XP, coins or badges: reward eligibility is reported as "no approved rule" and nothing is granted.
    Practice only: choosing an answer is not a speaking score. */
 const DM_KEY='sanor-town-daily-missions-v1',DM_SCHEMA=1,DM_KEEP_DAYS=30;
-const DM_PREVIEW=()=>{try{return /^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname)}catch(e){return false}};
+/* Preview gate (ST-MEX-001 V1.2, Option A Restricted LAN Preview): this computer (localhost, 127.0.0.1, [::1]) or a private LAN
+   IPv4 address (10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16), checked number by number. Any domain name (github.io included)
+   and any public IP stay closed. No query flag can open it. */
+const dmHostOK=h=>{h=String(h==null?'':h).toLowerCase();if(h==='localhost'||h==='127.0.0.1'||h==='[::1]')return true;
+ const m=/^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/.exec(h);if(!m)return false;
+ const o=m.slice(1).map(Number);if(m.slice(1).some((x,i)=>String(o[i])!==x||o[i]>255))return false;
+ return o[0]===10||(o[0]===172&&o[1]>=16&&o[1]<=31)||(o[0]===192&&o[1]===168)};
+const DM_PREVIEW=()=>{try{return dmHostOK(location.hostname)}catch(e){return false}};
 /* the daily date in Thailand time (UTC+7 all year, no daylight saving) */
 const dmDay=(t)=>new Date((t===undefined?Date.now():t)+7*3600e3).toISOString().slice(0,10);
 /* small seeded shuffle so that every phone gets the same items on the same day */

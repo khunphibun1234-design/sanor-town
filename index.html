@@ -981,7 +981,7 @@ function vcKey(text,slow){const s=(slow?'s|':'n|')+String(text).replace(/\s+/g,'
   for(let i=0;i<s.length;i++){const c=s.charCodeAt(i);h1=Math.imul(h1^c,2654435761);h2=Math.imul(h2^c,1597334677)}
   h1=Math.imul(h1^(h1>>>16),2246822507)^Math.imul(h2^(h2>>>13),3266489909);h2=Math.imul(h2^(h2>>>16),2246822507)^Math.imul(h1^(h1>>>13),3266489909);
   return(4294967296*(2097151&h2)+(h1>>>0)).toString(16)}
-const BUILD='20261113a';/* bump when voice files change: it forces browsers to fetch the new files together */
+const BUILD='20261113b';/* bump when voice files change: it forces browsers to fetch the new files together */
 try{fetch('voice/index.json?v='+BUILD).then(r=>r.ok?r.json():null).then(j=>{if(j&&j.clips&&j.bundles)VC.idx=j}).catch(e=>{VC.err='index: '+e})}catch(e){}
 /* One shared <audio> element (works with the iPhone silent switch). It is "unlocked" by the first tap. */
 function vcEl(){try{if(!VC.el){VC.el=new Audio();VC.el.preload='auto';VC.el.setAttribute('playsinline','')}
@@ -4844,7 +4844,7 @@ function coreMissionCard(reopen){const st=coreStatus(),tag=st.status==='complete
   el('button',{class:'btn cta mrgo','data-act':'core-open',type:'button',onclick:reopen},st.status==='not_started'?'Start mission⁣เริ่มภารกิจ':st.inRun?'Continue mission⁣เล่นต่อ':'Open mission⁣เปิดภารกิจ'))}
 /* ===== Daily Missions — BATCH 01 local prototype (ST-MEX-001, 12 Nov 2026) =====
    One playable Daily mission ("Daily Greeting Challenge") and a registry so that more daily missions can be added later.
-   LOCAL PREVIEW ONLY: the mission opens only when the page is served from this computer (localhost / 127.0.0.1).
+   LOCAL PREVIEW ONLY: the mission opens only from this computer or a private LAN address (see dmHostOK).
    On the published site the Missions screen still shows "Daily missions · Future" exactly as before.
    Content: every practice item is an existing, teacher-approved talk turn, used BY REFERENCE (scene id, NPC id, turn index)
    and checked against a stored copy of the NPC line; an item whose source changed is left out. No new English or Thai
@@ -4853,7 +4853,14 @@ function coreMissionCard(reopen){const st=coreStatus(),tag=st.status==='complete
    No XP, coins or badges: reward eligibility is reported as "no approved rule" and nothing is granted.
    Practice only: choosing an answer is not a speaking score. */
 const DM_KEY='sanor-town-daily-missions-v1',DM_SCHEMA=1,DM_KEEP_DAYS=30;
-const DM_PREVIEW=()=>{try{return /^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname)}catch(e){return false}};
+/* Preview gate (ST-MEX-001 V1.2, Option A Restricted LAN Preview): this computer (localhost, 127.0.0.1, [::1]) or a private LAN
+   IPv4 address (10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16), checked number by number. Any domain name (github.io included)
+   and any public IP stay closed. No query flag can open it. */
+const dmHostOK=h=>{h=String(h==null?'':h).toLowerCase();if(h==='localhost'||h==='127.0.0.1'||h==='[::1]')return true;
+ const m=/^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/.exec(h);if(!m)return false;
+ const o=m.slice(1).map(Number);if(m.slice(1).some((x,i)=>String(o[i])!==x||o[i]>255))return false;
+ return o[0]===10||(o[0]===172&&o[1]>=16&&o[1]<=31)||(o[0]===192&&o[1]===168)};
+const DM_PREVIEW=()=>{try{return dmHostOK(location.hostname)}catch(e){return false}};
 /* the daily date in Thailand time (UTC+7 all year, no daylight saving) */
 const dmDay=(t)=>new Date((t===undefined?Date.now():t)+7*3600e3).toISOString().slice(0,10);
 /* small seeded shuffle so that every phone gets the same items on the same day */
@@ -5858,7 +5865,7 @@ function openScene(id,bl){
  return true}
 return {open,openScene,mount,unmount,close:closeTown,get g(){return TOWN},SCENES,LOCKED,hubData:id=>{const s=SCENES.find(x=>x.id===id);return s&&hubOK(s)?(HUB[id]||hubAuto(s)):null},shop:SHOPI,rw:{read:rwRead,xp:rwXP,grant:rwGrant,canteen:canteenMission},
  core:{key:CORE_KEY,mission:CORE_M02,status:coreStatus,open:coreOpen,missions:missionsSheet},
- daily:{key:DM_KEY,missions:DAILY_MISSIONS,day:dmDay,today:dmToday,items:dmItems,status:dmStatus,open:dmOpen,preview:DM_PREVIEW}};/* ST-MEX-001 local prototype: read-only handles for the tests *//* CORE-M02 local prototype: read-only handles for the tests */
+ daily:{key:DM_KEY,missions:DAILY_MISSIONS,day:dmDay,today:dmToday,items:dmItems,status:dmStatus,open:dmOpen,preview:DM_PREVIEW,hostOK:dmHostOK}};/* ST-MEX-001 local prototype: read-only handles for the tests *//* CORE-M02 local prototype: read-only handles for the tests */
 })();
 
 /* ============ START ============ */

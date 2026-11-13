@@ -872,5 +872,5 @@ function openScene(id,bl){
  return true}
 return {open,openScene,mount,unmount,close:closeTown,get g(){return TOWN},SCENES,LOCKED,hubData:id=>{const s=SCENES.find(x=>x.id===id);return s&&hubOK(s)?(HUB[id]||hubAuto(s)):null},shop:SHOPI,rw:{read:rwRead,xp:rwXP,grant:rwGrant,canteen:canteenMission},
  core:{key:CORE_KEY,mission:CORE_M02,status:coreStatus,open:coreOpen,missions:missionsSheet},
- daily:{key:DM_KEY,missions:DAILY_MISSIONS,day:dmDay,today:dmToday,items:dmItems,status:dmStatus,open:dmOpen,preview:DM_PREVIEW}};/* ST-MEX-001 local prototype: read-only handles for the tests *//* CORE-M02 local prototype: read-only handles for the tests */
+ daily:{key:DM_KEY,missions:DAILY_MISSIONS,day:dmDay,today:dmToday,items:dmItems,status:dmStatus,open:dmOpen,preview:DM_PREVIEW,hostOK:dmHostOK}};/* ST-MEX-001 local prototype: read-only handles for the tests *//* CORE-M02 local prototype: read-only handles for the tests */
 })();
